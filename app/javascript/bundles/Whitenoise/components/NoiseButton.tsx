@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { FunctionComponent } from 'react';
-
 export interface Props {
     // TODO: what is the proper typing for a callback?
     onSelect: any;
