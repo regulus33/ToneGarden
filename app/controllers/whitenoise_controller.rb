@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class WhitenoiseController < ApplicationController
-  layout "hello_world"
+  skip_before_action :authorize
+  layout "whitenoise"
 
   def index
     @whitenoise_props = { name: "Stranger" }
