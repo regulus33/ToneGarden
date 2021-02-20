@@ -1,8 +1,8 @@
 import { createContext, useContext } from 'react';
 
 export enum Theme {
-    Dark = 'Dark',
-    Light = 'Light',
+    Dark = 'dark',
+    Light = 'light',
 }
 
 export type ThemeContextType = {
@@ -11,4 +11,4 @@ export type ThemeContextType = {
 }
 
 export const ThemeContext = createContext<ThemeContextType>({ theme: Theme.Dark, setTheme: theme => console.warn('no theme provider')});
-export const useTheme = () => useContext(ThemeContext);
+export const useTheme = () => useContext(ThemeContext)
