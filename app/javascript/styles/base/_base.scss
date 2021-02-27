@@ -1,0 +1,19 @@
+*,
+*::after,
+*::before
+{
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  //defines what 1 rem is
+  font-size: 62.5%;
+}
+
+body {
+  font-weight: 400;
+  line-height: 1.7;
+  box-sizing: border-box;
+}

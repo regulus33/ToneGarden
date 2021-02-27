@@ -1,23 +1,23 @@
 import * as React from 'react';
-import { FunctionComponent } from 'react'
-import { classList } from "../../Helpers/ViewHelper";
-import { useTheme } from '../../state/ThemeContext';
+import {FunctionComponent} from 'react'
+import {classList} from "../../Helpers/ViewHelper";
+import {useTheme} from '../../state/ThemeContext';
+import ContentWrapper from "../../App/components/ContentWrapper";
+import AuthForm from "../../Shared/components/AuthForm";
 
 interface SignupScreenProps {
 // buttonText: string;
 }
 
-interface ContentProps {
-    darkMode: boolean
-}
 
-const SignupScreen: FunctionComponent<SignupScreenProps> = ( props ) => {
-    const { theme } = useTheme();
-    return(
-        <div className={'paget-container'}>
-            <a>darkMode toggle</a>
-            <h1 className={classList(['page-title'], theme)}>Signup</h1>
-        </div>
+const SignupScreen: FunctionComponent<SignupScreenProps> = (props) => {
+    const {theme} = useTheme();
+    return (
+        <ContentWrapper theme={theme}>
+            <div className={classList(['form-container'], theme)}>
+                <AuthForm/>
+            </div>
+        </ContentWrapper>
     );
 }
 

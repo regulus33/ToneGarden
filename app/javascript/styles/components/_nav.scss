@@ -1,0 +1,13 @@
+
+.nav {
+  display: flex;
+  min-height: 3rem;
+  //border-bottom: 1px solid #cacaca;
+  justify-content: center;
+  align-items: center;
+  padding: 1.8rem;
+  margin-bottom: 2.4rem;
+  &--dark {
+    color: white;
+  }
+}
