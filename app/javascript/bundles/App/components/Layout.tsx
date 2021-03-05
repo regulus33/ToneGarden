@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {FunctionComponent, ReactNode} from 'react';
 import {classList} from "../../Helpers/ViewHelper";
-import {Theme, useTheme} from '../../state/ThemeContext';
+import {Theme, useTheme} from '../../State/ThemeContext';
 
 // using an interface to describe the requirement of having the x property that is a y type
 export interface Props {
@@ -28,7 +28,7 @@ const Content: FunctionComponent<ContentProps> = (props) => {
                     setTheme(Theme.Dark);
                     break;
                 default:
-                    throw('Unknown Theme type in theme state!')
+                    throw('Unknown Theme type in theme State!')
             }
         }
     }
