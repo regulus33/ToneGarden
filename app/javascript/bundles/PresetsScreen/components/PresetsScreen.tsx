@@ -30,9 +30,9 @@ const PresetsScreen: FunctionComponent<PresetsScreenProps> = (props) => {
                         presets.map((preset: Preset) => {
                             return(
                                 <List.Item>
-                                    <div>H</div>
+                                    <div>{preset.rangeSymbol()}</div>
                                     <List.Header as='a'>{preset.name}</List.Header>
-                                    <List.Description as='a'>{preset.range}</List.Description>
+                                    <List.Description as='a'>{preset.rangeString()}</List.Description>
                                 </List.Item>
                             )
                         })
