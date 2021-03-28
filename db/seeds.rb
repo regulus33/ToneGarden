@@ -5,3 +5,9 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+# MUST BE 40hz from eachother and under 1500hz subtract small from large and you get brat frequency
+Preset.create(name: 'BETA', left: 700, right: 720)
+Preset.create(name: 'THETA', left: 800, right: 807)
+Preset.create(name: 'GAMMA', left: 766.15, right: 766.15 + 30)
+Preset.create(name: 'DELTA', left: 342.24, right: 342.24 + 3)
+Preset.create(name: 'ALPHA', left: 600.24, right: 600.24 + 12)

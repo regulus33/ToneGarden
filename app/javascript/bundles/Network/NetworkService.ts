@@ -32,11 +32,14 @@ export default class NetworkService {
     }
 
     public async get(route: string) {
+        let url = `${NetworkService.baseUrl}/${route}`
+
         const headers = new Headerz(route).deliver();
-        const rawResponse = await fetch(`${NetworkService.baseUrl}/${route}`, {
+        const rawResponse = await fetch(url, {
             method: 'GET',
             headers
         })
+        console.warn(`Processing GET to ${url} headers:`, headers)
         return await rawResponse.json()
     }
 
