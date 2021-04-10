@@ -14,8 +14,6 @@ const rangeMap = {
     'gamma': [30, 39]
 }
 
-
-
 export default class Preset {
     id: string;
     left: number;
@@ -55,6 +53,7 @@ export default class Preset {
     rangeSymbol(): string {
        return symbolMap[this.rangeString()]
     }
+
     // 4 for 4 to 7 is true
     // 7 for 4 to 7 is true
     private isInRange(num: number, range: number[]): boolean {
