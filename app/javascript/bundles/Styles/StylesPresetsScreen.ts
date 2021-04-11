@@ -1,6 +1,7 @@
 import {makeStyles} from "@material-ui/core/styles";
 import Gradient from "../Models/Gradient";
 import { rangeStrings } from "../Utils/HardCoded";
+import Colors from "./Colors";
 
 const gradients = new Object
 
@@ -10,11 +11,22 @@ rangeStrings.forEach((str) => {
     gradients[str] =  `linear-gradient(to right, ${pair[0]}, ${pair[1]})`
 })
 
-const clipText = {
-
-};
-
 const useStyles = makeStyles({
+    controls: {
+        display: 'flex',
+        justifyContent: 'center',
+    },
+    playArrowIcon: {
+      width: 32,
+      height: 32
+    },
+    cardContent: {
+        display: 'flex',
+        justifyContent: 'space-between'
+    },
+    gridContainer: {
+        backgroundColor: Colors.backgroundGrey
+    },
     rangeString: {
         '&::first-letter': {
             textTransform: 'uppercase',

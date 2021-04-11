@@ -39,20 +39,37 @@ const PresetsScreen: FunctionComponent<PresetsScreenProps> = (props) => {
 
     if (presets.length > 0) {
         return (
-            <Grid container spacing={2}>                    {
+            <Grid container spacing={2} className={classes.gridContainer}> {
                 presets.map((preset: Preset) => {
                     return (
-                        <Grid item xs={2} md={4} lg={4}>
+                        <Grid item xs={4} lg={4}>
                             <Card>
                                 <CardContent>
-                                    <Typography component="h5" variant="h5">
-                                        { preset.name }
-                                    </Typography>
-                                    <div className={ classes[preset.rangeString()] }>
-                                        <span>{ preset.rangeSymbol() } &nbsp;</span>
-                                        <p className={ classes.rangeString }>{ preset.rangeString() }</p>
+                                    <div className={classes.cardContent}>
+                                        <Typography component="h5" variant="h5">
+                                        <span className={classes[preset.rangeString()]}>
+                                            <span>{preset.rangeSymbol()} &nbsp;</span>
+                                        </span>
+                                            {preset.name}
+                                        </Typography>
+                                        <Link to={`/preset_show/${preset.id}`}>Edit</Link>
                                     </div>
+                                    {/*<span className={classes[preset.rangeString()]}>*/}
+                                    {/*    <span>{preset.rangeSymbol()} &nbsp;</span>*/}
+                                    {/*    <p className={classes.rangeString}>{preset.rangeString()}</p>*/}
+                                    {/*</span>*/}
                                 </CardContent>
+                                <div className={classes.controls}>
+                                    <IconButton aria-label="previous">
+                                        {"TODO?" === 'rtl' ? <SkipNextIcon/> : <SkipPreviousIcon/>}
+                                    </IconButton>
+                                    <IconButton aria-label="play/pause">
+                                        <PlayArrowIcon className={classes.playArrowIcon}/>
+                                    </IconButton>
+                                    <IconButton aria-label="next">
+                                        {"TODO?" === 'rtl' ? <SkipPreviousIcon/> : <SkipNextIcon/>}
+                                    </IconButton>
+                                </div>
                             </Card>
                         </Grid>
                     )

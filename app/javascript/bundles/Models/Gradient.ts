@@ -5,7 +5,7 @@ const rangeToColorsMap = {
     'beta'  : ['#ff6105', '#ffb805'],
     'theta' : ['#2605ff', '#a600ff'],
     'gamma' : ['#05ff8a', '#00ccff'],
-    'delta' : ['#ffc105', '#ff0084'],
+    'delta' : ['#8800ff', '#ff3705'],
 }
 
 export default class Gradient {
