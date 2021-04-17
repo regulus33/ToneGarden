@@ -5,29 +5,37 @@ import Routes from "../../Network/Routes";
 import Preset from '../../Models/Preset';
 import { useParams } from 'react-router-dom';
 import Mixer from '../../Models/Mixer';
+import {useTitle} from '../../State/TitleContext'
+import Slider from '@material-ui/core/Slider';
+import {Card} from "@material-ui/core";
+import useStyles from '../../Styles/StylesPresetShowScreen'
+import {useGradient} from "../../State/GradientContext";
+
 interface PresetShowScreenProps {
 // buttonText: string;
 }
 
 
 const PresetShowScreen: FunctionComponent<PresetShowScreenProps> = (props) => {
-    const [preset, setPreset] = useState(new Preset({}))
+    const { setTitle } = useTitle();
+    const { setGradient } = useGradient();
+    const [preset, setPreset] = useState(new Preset({}));
     const { preset_id } = useParams();
-
+    const classes = useStyles();
     useEffect(()=> {
         NetworkService
             .getInstance()
             .get(Routes.PresetShow(preset_id))
             .then(function (json) {
                 const preset = new Preset(json.preset);
+                setTitle(`${preset.rangeSymbol()} ${preset.name}`)
+                setGradient(preset.gradient())
                 setPreset(preset);
             })},[])
-
     if (preset) {
-        // fix me, this should be triggered by user input
         const mx = new Mixer(preset.left, preset.right)
         return (
-          <h1>There is a preset here it be bruv: {preset.name} </h1>
+           <div>jkj</div>
         );
     } else {
         return (

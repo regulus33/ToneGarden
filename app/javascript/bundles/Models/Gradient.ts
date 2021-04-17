@@ -1,11 +1,11 @@
 import Preset from "./Preset";
 
 const rangeToColorsMap = {
-    'alpha' : ['#0558ff', '#05ffe2'],
-    'beta'  : ['#ff6105', '#ffb805'],
-    'theta' : ['#2605ff', '#a600ff'],
-    'gamma' : ['#05ff8a', '#00ccff'],
-    'delta' : ['#8800ff', '#ff3705'],
+    'alpha': ['#0558ff', '#05ffe2'],
+    'beta': ['#5005ff', '#ffb805'],
+    'theta': ['#2605ff', '#a600ff'],
+    'gamma': ['#3b66bd', '#00ccff'],
+    'delta': ['#8800ff', '#0593ff'],
 }
 
 export default class Gradient {
@@ -16,8 +16,13 @@ export default class Gradient {
         this.rangeString = rangeString;
     }
 
-    gradientPair(){
-       return rangeToColorsMap[this.rangeString]
+    gradientPair() {
+        return rangeToColorsMap[this.rangeString]
+    }
+
+    backGround() {
+        const pair = this.gradientPair();
+        return `linear-gradient(to right, ${pair[0]}, ${pair[1]})`
     }
 
 }
