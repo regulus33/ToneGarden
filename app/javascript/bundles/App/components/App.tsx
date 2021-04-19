@@ -9,17 +9,8 @@ import {ThemeContext, Theme} from "../../State/ThemeContext";
 import {GradientContext} from "../../State/GradientContext";
 import Gradient from '../../Models/Gradient';
 import {TitleContext} from "../../State/TitleContext";
-
-// const useStyles = makeStyles((theme) => ({
-//     root: {
-//         flexGrow: 1,
-//     },
-//     paper: {
-//         padding: theme.spacing(2),
-//         textAlign: 'center',
-//         color: theme.palette.text.secondary,
-//     },
-// }));
+import BinauralBeat from "../../Models/BinauralBeat";
+import {BinauralBeatContext} from "../../State/BinauralBeatContext";
 
 export interface Props {
     match: any
@@ -29,10 +20,12 @@ const App: FunctionComponent<Props> = (props) => {
     const [theme, setTheme] = React.useState(Theme.Light);
     const [title, setTitle] = React.useState('Binaural Beats');
     const [gradient, setGradient] = React.useState( new Gradient('alpha'));
+    const [binauralBeat, setBinauralBeat] = React.useState(BinauralBeat.getInstance);
     return (
         <ThemeContext.Provider value={{theme, setTheme}}>
             <TitleContext.Provider value={{title, setTitle}}>
                 <GradientContext.Provider value={{gradient, setGradient}}>
+                <BinauralBeatContext.Provider value={{binauralBeat, setBinauralBeat}}>
                     <BrowserRouter>
                         <Switch>
                             <Layout>
@@ -43,6 +36,7 @@ const App: FunctionComponent<Props> = (props) => {
                             </Layout>
                         </Switch>
                     </BrowserRouter>
+                </BinauralBeatContext.Provider>
                 </GradientContext.Provider>
             </TitleContext.Provider>
         </ThemeContext.Provider>
