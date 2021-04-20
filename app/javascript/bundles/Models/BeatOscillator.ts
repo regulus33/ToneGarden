@@ -1,14 +1,26 @@
 import { Oscillator } from "tone";
+import CarrierOscillator from "./CarrierOscillator";
 
 class BeatOscillator {
-
     frequency: number
-    oscillator: Oscillator
+    toneOscillator: Oscillator
+    carrierOscillator: CarrierOscillator
 
     constructor(frequency: number) {
-      this.oscillator = new Oscillator(frequency, "sine");
+      this.toneOscillator = new Oscillator(frequency, "sine");
       this.frequency = frequency;
     }
+
+    setFrequency(value: number, carrierOscillator: CarrierOscillator) {
+        this.toneOscillator.frequency.value = value;
+
+        if(!this.carrierOscillator) {
+            this.carrierOscillator = carrierOscillator;
+        }
+
+        this.carrierOscillator.setFrequencyFromBase(value);
+    }
+
 }
 
 export default BeatOscillator

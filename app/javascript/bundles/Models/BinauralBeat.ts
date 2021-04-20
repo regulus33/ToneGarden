@@ -1,31 +1,35 @@
-import { Panner, Signal, Frequency} from 'tone';
+import { Panner, Signal, Frequency, Context} from 'tone';
 import BeatOscillator from './BeatOscillator';
+import {number} from "prop-types";
+import {ChangeEvent} from "react";
+import CarrierOscillator from "./CarrierOscillator";
 
 // TODO: check out audio panner.
 // When you click a preset you should be immediately brough here and tones should ramp up
 // https://tonejs.github.io/docs/14.7.77/Oscillator#channelInterpretation
 export default class BinauralBeat {
-    leftOscillator: BeatOscillator
-    rightOscillator: BeatOscillator
+    beatOscillator: BeatOscillator
+    carrierOscillator: CarrierOscillator
     pannerLeft: Panner
     pannerRight: Panner
     playing: boolean = false
 
     private static instance: BinauralBeat;
-    private static defaultLeft = 440;
-    private static defaultRight = 420;
+    private static defaultBeat = 440;
+    private static defaultCarrier = 20;
 
-    private constructor(left: number, right: number) {
-        this.leftOscillator = new BeatOscillator(left);
-        this.rightOscillator = new BeatOscillator(right);
+    private constructor(beatFrequency: number, carrierOffset: number) {
+        this.beatOscillator = new BeatOscillator(beatFrequency);
+        this.carrierOscillator = new CarrierOscillator(carrierOffset, this.beatOscillator);
         this.panAndConnectOscillators();
+        this.setBeatFrequency = this.setBeatFrequency.bind(this)
     }
 
-    public static getInstance(left?: number, right?:number): BinauralBeat {
+    public static getInstance(beat?: number, carrier?:number): BinauralBeat {
         if (!BinauralBeat.instance) {
             BinauralBeat.instance = new BinauralBeat(
-                left || BinauralBeat.defaultLeft,
-                right || BinauralBeat.defaultRight
+                beat || BinauralBeat.defaultBeat,
+                carrier  || BinauralBeat.defaultCarrier
             );
         }
 
@@ -37,11 +41,11 @@ export default class BinauralBeat {
        if(this.playing) return;
        this.pannerLeft = new Panner(1).toDestination();
        this.pannerLeft.pan.rampTo(-1,0.5);
-       this.leftOscillator.oscillator.connect(this.pannerLeft).start();
+       this.beatOscillator.toneOscillator.connect(this.pannerLeft).start();
 
        this.pannerRight = new Panner(-1).toDestination()
        this.pannerRight.pan.rampTo(1, 0.5);
-       this.rightOscillator.oscillator.connect(this.pannerRight).start();
+       this.carrierOscillator.toneOscillator.connect(this.pannerRight).start();
        this.playing = true;
     }
 
@@ -50,15 +54,22 @@ export default class BinauralBeat {
     }
 
     rightOscillatorMinMax(): Array<number> {
-       return [this.leftOscillator.frequency - 40, this.leftOscillator.frequency + 40]
+       return [this.beatOscillator.frequency - 40, this.beatOscillator.frequency + 40]
     }
 
-    updateLeftPitch(frequency: number){
-        this.leftOscillator.oscillator.disconnect(this.pannerLeft)
-        this.rightOscillator.oscillator.disconnect(this.pannerRight)
-        this.leftOscillator.oscillator.dispose();
-        this.rightOscillator.oscillator.dispose();
+    setBeatFrequency(event: ChangeEvent){
+        const frequency = event.target.getAttribute('aria-valuenow')
+        this.beatOscillator.setFrequency(Number(frequency), this.carrierOscillator)
     }
+
+    updateRightPitch(event: ChangeEvent){
+        // this.leftOscillator.oscillator.disconnect(this.pannerLeft)
+        // this.rightOscillator.oscillator.disconnect(this.pannerRight)
+        // this.leftOscillator.oscillator.dispose();
+        // this.rightOscillator.oscillator.dispose();
+    }
+
+
 
 
 
