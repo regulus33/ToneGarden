@@ -1,13 +1,15 @@
-import { Panner, Signal, Frequency, Context} from 'tone';
+import {Panner, Signal, Frequency, Context, Destination, getDestination} from 'tone';
 import BeatOscillator from './BeatOscillator';
-import {number} from "prop-types";
-import {ChangeEvent} from "react";
 import CarrierOscillator from "./CarrierOscillator";
 
 // TODO: check out audio panner.
-// When you click a preset you should be immediately brough here and tones should ramp up
+// When you click a preset you should be immediately brought here and tones should ramp up
 // https://tonejs.github.io/docs/14.7.77/Oscillator#channelInterpretation
 export default class BinauralBeat {
+
+    public static carrierMinMax = [0,40]
+    public static beatMinMax = [0,1500]
+
     beatOscillator: BeatOscillator
     carrierOscillator: CarrierOscillator
     pannerLeft: Panner
@@ -22,7 +24,10 @@ export default class BinauralBeat {
         this.beatOscillator = new BeatOscillator(beatFrequency);
         this.carrierOscillator = new CarrierOscillator(carrierOffset, this.beatOscillator);
         this.panAndConnectOscillators();
-        this.setBeatFrequency = this.setBeatFrequency.bind(this)
+
+        this.onBeatFreqChange = this.onBeatFreqChange.bind(this)
+        this.onCarrierFreqChange = this.onCarrierFreqChange.bind(this)
+        this.play = this.play.bind(this)
     }
 
     public static getInstance(beat?: number, carrier?:number): BinauralBeat {
@@ -49,28 +54,26 @@ export default class BinauralBeat {
        this.playing = true;
     }
 
-    leftOscillatorMinMax(): Array<number> {
-      return  [0, 1500]
+    onBeatFreqChange(frequency: Number){
+        this.beatOscillator.setFrequency(this.carrierOscillator, Number(frequency))
     }
 
-    rightOscillatorMinMax(): Array<number> {
-       return [this.beatOscillator.frequency - 40, this.beatOscillator.frequency + 40]
+    onCarrierFreqChange(offset: Number){
+        this.carrierOscillator.offset = Number(offset)
+        this.beatOscillator.setFrequency(this.carrierOscillator, null)
     }
 
-    setBeatFrequency(event: ChangeEvent){
-        const frequency = event.target.getAttribute('aria-valuenow')
-        this.beatOscillator.setFrequency(Number(frequency), this.carrierOscillator)
+    pause(){
+        getDestination().mute = true
     }
 
-    updateRightPitch(event: ChangeEvent){
-        // this.leftOscillator.oscillator.disconnect(this.pannerLeft)
-        // this.rightOscillator.oscillator.disconnect(this.pannerRight)
-        // this.leftOscillator.oscillator.dispose();
-        // this.rightOscillator.oscillator.dispose();
+    play(){
+        if(this.playing) {
+            console.log('trying to unmute')
+            getDestination().mute = false
+        } else {
+            this.panAndConnectOscillators()
+        }
     }
-
-
-
-
 
 }

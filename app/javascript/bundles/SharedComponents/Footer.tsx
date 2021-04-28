@@ -8,6 +8,8 @@ import RestoreIcon from '@material-ui/icons/Restore';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import useStyles from "../Styles/StylesFooter";
+import {IconButton} from "@material-ui/core";
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 interface FooterProps {
 }
 
@@ -20,10 +22,11 @@ const Footer: FunctionComponent<FooterProps> = (props) => {
     };
     return (
         <BottomNavigation value={value} onChange={handleChange} className={classes.root}>
+            <IconButton>
+                <PlayArrowIcon></PlayArrowIcon>
+            </IconButton>
             <BottomNavigationAction label="Recents" value="recents" icon={<RestoreIcon />} />
-            <BottomNavigationAction label="Favorites" value="favorites" icon={<FavoriteIcon />} />
             <BottomNavigationAction label="Nearby" value="nearby" icon={<LocationOnIcon />} />
-            <BottomNavigationAction label="Folder" value="folder" icon={<FolderIcon />} />
         </BottomNavigation>
     );
 }

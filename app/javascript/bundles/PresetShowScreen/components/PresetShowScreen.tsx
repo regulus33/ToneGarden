@@ -5,24 +5,25 @@ import Routes from "../../Network/Routes";
 import Preset from '../../Models/Preset';
 import {useParams} from 'react-router-dom';
 import BinauralBeat from '../../Models/BinauralBeat';
-import {useTitle} from '../../State/TitleContext'
 import useStyles from '../../Styles/StylesPresetShowScreen'
 import {useGradient} from "../../State/GradientContext";
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import {CardHeader, Slider} from "@material-ui/core";
+import Paper     from '@material-ui/core/Paper';
 import PitchSlider from "../../SharedComponents/PitchSlider";
+import AudioControls from "../../SharedComponents/AudioControls";
+import Button from "@material-ui/core/Button";
+import {useTitle} from '../../State/TitleContext'
+import {useBinauralBeat} from "../../State/BinauralBeatContext";
 
 interface PresetShowScreenProps {
-// buttonText: string;
 }
 
 const PresetShowScreen: FunctionComponent<PresetShowScreenProps> = (props) => {
     const {setTitle} = useTitle();
-    const {setGradient} = useGradient();
+    const {gradient, setGradient} = useGradient();
+    const {binauralBeat, setBinauralBeat} = useBinauralBeat();
     const [preset, setPreset] = useState(new Preset({}));
     const {preset_id} = useParams();
-    const classes = useStyles();
+    const classes = useStyles(gradient.toProps());
     useEffect(() => {
         NetworkService
             .getInstance()
@@ -35,27 +36,33 @@ const PresetShowScreen: FunctionComponent<PresetShowScreenProps> = (props) => {
             })
     }, [])
     if (preset) {
-        const beat = BinauralBeat.getInstance(preset.left, preset.right)
+        const binauralBeat = BinauralBeat.getInstance(preset.left, preset.right)
+        console.log('Preset screen', gradient.dominantColor())
         return (
-            <Card className={classes.presetFormCard}>
-                <CardContent>
-                    <CardHeader title={'Edit'}/>
-                </CardContent>
+            <Paper className={classes.presetFormCard}>
                 <div className={classes.pitchSliderContainer}>
                 <PitchSlider
-                    minMax={beat.leftOscillatorMinMax()}
+                    minMax={BinauralBeat.beatMinMax}
                     label={'Main tone'}
-                    default={beat.beatOscillator.frequency}
-                    updatePitch={beat.setBeatFrequency}
+                    default={binauralBeat.beatOscillator.frequency}
+                    handleSliderChangeCallback={binauralBeat.onBeatFreqChange}
                 />
                 <PitchSlider
-                    minMax={beat.rightOscillatorMinMax()}
+                    minMax={BinauralBeat.carrierMinMax}
                     label={'Secondary tone'}
-                    default={beat.carrierOscillator.offset}
-                    updatePitch={beat.updateRightPitch}
+                    default={binauralBeat.carrierOscillator.offset}
+                    handleSliderChangeCallback={binauralBeat.onCarrierFreqChange}
                 />
                 </div>
-            </Card>
+                <div className={classes.audioControlsContainer}>
+                    <AudioControls handlePlayPress={binauralBeat.play} handlePausePress={binauralBeat.pause}/>
+                    <div className={classes.saveButtonContainer}>
+                        <Button variant="contained" className={classes.saveButton}>
+                            Save
+                        </Button>
+                    </div>
+                </div>
+            </Paper>
         );
     } else {
         return (

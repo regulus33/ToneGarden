@@ -11,14 +11,22 @@ class BeatOscillator {
       this.frequency = frequency;
     }
 
-    setFrequency(value: number, carrierOscillator: CarrierOscillator) {
-        this.toneOscillator.frequency.value = value;
-
-        if(!this.carrierOscillator) {
-            this.carrierOscillator = carrierOscillator;
+    setFrequency(carrierOscillator: CarrierOscillator, newValue?: number) {
+        let value = newValue
+        if(!newValue) {
+            console.log('BeatOscillator#setFrequency no value for newValue')
+            console.log('BeatOscillator#setFrequency you are probably setting the carrier')
+            value = this.frequency
         }
 
-        this.carrierOscillator.setFrequencyFromBase(value);
+        // IMPORTANT: set frequency for BOTH frequency and toneOscillator.frequency
+        this.frequency = value
+        this.toneOscillator.frequency.value = value
+
+        if(!this.carrierOscillator) {
+            this.carrierOscillator = carrierOscillator
+        }
+        this.carrierOscillator.setFrequencyFromBase(value)
     }
 
 }
