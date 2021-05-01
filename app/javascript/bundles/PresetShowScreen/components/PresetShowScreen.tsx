@@ -37,7 +37,6 @@ const PresetShowScreen: FunctionComponent<PresetShowScreenProps> = (props) => {
     }, [])
     if (preset) {
         const binauralBeat = BinauralBeat.getInstance(preset.left, preset.right)
-        console.log('Preset screen', gradient.dominantColor())
         return (
             <Paper className={classes.presetFormCard}>
                 <div className={classes.pitchSliderContainer}>
