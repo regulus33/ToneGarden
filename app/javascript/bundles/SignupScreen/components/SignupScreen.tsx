@@ -27,11 +27,12 @@ const SignupScreen: FunctionComponent<SignupScreenProps> = (props) => {
     }
 
     const onSubmit = async () => {
+        debugger
         const response = await NetworkService.getInstance().post(
             Routes.NewUser,
             { user: { email, password } }
         );
-        SecureStorageService.setToken(response.token);
+        await SecureStorageService.setToken(response.token);
         history.push('/presets')
     }
 

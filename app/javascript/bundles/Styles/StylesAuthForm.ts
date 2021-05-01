@@ -1,5 +1,6 @@
 import {makeStyles} from "@material-ui/core";
 import Breakpoints from "./Breakpoints";
+import Colors from "./Colors";
 
 interface Props {
     dominantColor: string,
@@ -41,5 +42,15 @@ export const useStyles = makeStyles({
     paper: {
         height: 'fit-content',
         padding: '24px 16px'
-    }
+    },
+    textField: (props: Props) => ({
+        '& div': {
+            '&:before': {
+                borderBottom: `1px solid ${Colors.deepGrey}`
+            },
+            '&:after': {
+                borderBottom: `2px solid ${props.dominantColor}`
+            }
+        }
+    })
 })
