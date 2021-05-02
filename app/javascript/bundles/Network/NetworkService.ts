@@ -1,5 +1,6 @@
 import Headerz from './Headerz'
 import {Dispatch} from "react";
+import GlobalError from "../Models/GlobalError";
 
 type RawResponse = {
     status: number,
@@ -11,11 +12,10 @@ export default class NetworkService {
     private static instance: NetworkService;
 
     public setAuthenticated: Dispatch<boolean>
+    public setError: Dispatch<GlobalError>
 
     private constructor() {
     }
-
-
 
     /**
      * The static method that controls the access to the singleton instance.
@@ -55,13 +55,23 @@ export default class NetworkService {
     }
 
     private notifyAuthContext(response: RawResponse){
+        console.log(response.status)
         switch (response.status) {
             case 401:
                 this.setAuthenticated(false)
+                this.setError(new GlobalError(null,response.status, null))
+                break
+            case 400:
+                this.setError(new GlobalError('Email alrready taken.', response.status, null))
+                break
             case 200:
                 this.setAuthenticated(true)
+                this.setError(null)
+                break
             case 201:
                 this.setAuthenticated(true)
+                this.setError(null)
+                break
         }
     }
 

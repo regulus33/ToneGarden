@@ -4,25 +4,27 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import {useStyles} from "../Styles/StylesAuthForm";
 import {Paper, Typography} from "@material-ui/core";
-import {useGradient} from "../State/GradientContext";
 import Gradient from "../Models/Gradient";
+import GlobalError from "../Models/GlobalError";
 
 interface AuthFormProps {
     onEmailChange(event: FormEvent<HTMLInputElement>): void,
     onPasswordChange(event: FormEvent<HTMLInputElement>): void,
     onSubmit(any): void,
-    gradient: Gradient
+    gradient: Gradient,
+    error?: GlobalError
 }
 
-const AuthForm: FunctionComponent<AuthFormProps> = ({onEmailChange, onPasswordChange, onSubmit, gradient}) => {
+const AuthForm: FunctionComponent<AuthFormProps> = ({onEmailChange, onPasswordChange, onSubmit, gradient, error}) => {
     const classes = useStyles(gradient.toProps());
 
     return (
         <Paper className={classes.paper}>
             <div>
                 <Typography className={classes.heading} variant='h5'>Signup</Typography>
-                <form id="signup" className={classes.authform}>
-                    <TextField label='Email'
+                <form className={classes.authform}>
+                    <TextField error={(error!=null)}
+                               label={(error != null) ? error.message : 'Email'}
                                onInput={onEmailChange}
                                variant='standard'
                                type={'email'}
