@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get '/', to: 'initializers#index'
   get '/signup', to: 'initializers#index'
   get '/presets', to: 'initializers#index'
+  get '/settings', to: 'initializers#index'
   get '/preset_show/:preset_id', to: 'initializers#index'
 
   # Json api

@@ -1,6 +1,7 @@
 import Headerz from './Headerz'
 import {Dispatch} from "react";
 import GlobalError from "../Models/GlobalError";
+import SecureStorageService from "./SecureStorageService";
 
 type RawResponse = {
     status: number,
@@ -14,9 +15,7 @@ export default class NetworkService {
     public setAuthenticated: Dispatch<boolean>
     public setError: Dispatch<GlobalError>
 
-    private constructor() {
-    }
-
+    private constructor() {}
     /**
      * The static method that controls the access to the singleton instance.
      *
@@ -51,7 +50,7 @@ export default class NetworkService {
             headers
         })
         console.warn(`Processing GET to ${url} headers:`, headers)
-        this.notifyAuthContext(rawResponse)
+        await this.notifyAuthContext(rawResponse)
         return await rawResponse.json()
     }
 
@@ -59,23 +58,26 @@ export default class NetworkService {
         console.log(response.status)
         switch (response.status) {
             case 401:
-                this.setAuthenticated(false)
+                this.setAuthenticatedAndStore(false)
                 this.setError(new GlobalError(null,response.status, null))
                 break
             case 400:
-                console.log('setting the error')
                 this.setError(new GlobalError('Email alrready taken.', response.status, null))
                 break
             case 200:
-                console.log('here')
-                this.setAuthenticated(true)
+                this.setAuthenticatedAndStore(true)
                 this.setError(null)
                 break
             case 201:
-                this.setAuthenticated(true)
+                this.setAuthenticatedAndStore(true)
                 this.setError(null)
                 break
         }
+    }
+
+    setAuthenticatedAndStore(value: boolean) {
+        this.setAuthenticated(value)
+        return SecureStorageService.setIsAuth(value)
     }
 
 
