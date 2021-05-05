@@ -79,8 +79,4 @@ export default class NetworkService {
         this.setAuthenticated(value)
         return SecureStorageService.setIsAuth(value)
     }
-
-
-
-
 }

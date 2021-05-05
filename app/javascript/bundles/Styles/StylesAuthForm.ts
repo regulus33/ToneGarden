@@ -52,5 +52,15 @@ export const useStyles = makeStyles({
                 borderBottom: `2px solid ${props.dominantColor}`
             }
         }
-    })
+    }),
+    noAccountContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        paddingTop: '16px',
+        maxWidth: '50%'
+    },
+    noAccountButtonsContainer: {
+        display: 'flex',
+        justifyContent: 'space-between'
+    }
 })

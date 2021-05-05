@@ -12,7 +12,8 @@ import Gradient from "../Models/Gradient";
 
 interface HeaderProps {
     screen: string,
-    gradient: Gradient
+    gradient: Gradient,
+    toggleSettingsDrawer: ()=>void
 }
 
 const Header: FunctionComponent<HeaderProps> = (props) => {
@@ -21,6 +22,14 @@ const Header: FunctionComponent<HeaderProps> = (props) => {
     return (
         <AppBar position="static"  style={{background: props.gradient.backGround()}}>
             <Toolbar>
+                <IconButton
+                    color="inherit"
+                    aria-label="open drawer"
+                    onClick={props.toggleSettingsDrawer}
+                    edge="start"
+                >
+                    <MenuIcon />
+                </IconButton>
                 <Typography variant="h6" className={classes.title}>
                     {props.screen}
                 </Typography>

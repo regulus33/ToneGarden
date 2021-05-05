@@ -1,6 +1,5 @@
 import {Component, FunctionComponent} from "react";
 import {Route, Redirect} from 'react-router-dom';
-import SignupScreen from "../../SignupScreen/components/SignupScreen";
 import * as React from "react";
 import {useAuthenticated} from "../../State/AuthContext";
 
@@ -17,7 +16,7 @@ const AuthenticatedRoute: FunctionComponent<Props> = (props) => {
     return(
         <Route
             render={props =>
-                authenticated ? <Component {...props}/> : <Redirect to={"/signup"}/>
+                authenticated ? <Component {...props}/> : <Redirect to={"/signin"}/>
             }
             exact path={path}
             title={title} />
