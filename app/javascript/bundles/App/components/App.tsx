@@ -12,7 +12,7 @@ import {ErrorContext} from "../../State/ErrorContext"
 import Gradient from '../../Models/Gradient'
 import {TitleContext} from "../../State/TitleContext"
 import BinauralBeat from "../../Models/BinauralBeat"
-import {BinauralBeatContext} from "../../State/BinauralBeatContext"
+import {BinauralBeatContext, defaultBinauralBeatState} from "../../State/BinauralBeatContext"
 import {SettingsDrawerContext} from "../../State/SettingsDrawerContext"
 import NetworkService from "../../Network/NetworkService"
 import AuthenticatedRoute from "./AuthenticatedRoute"
@@ -27,13 +27,16 @@ const App: FunctionComponent = () => {
     const [theme, setTheme] = React.useState(Theme.Light)
     const [title, setTitle] = React.useState('Binaural Beats')
     const [gradient, setGradient] = React.useState(new Gradient('alpha'))
-    const [binauralBeat, setBinauralBeat] = React.useState(BinauralBeat.getInstance)
+    const [binauralBeatState, setBinauralBeatState] = React.useState(defaultBinauralBeatState())
     const [error, setError] = React.useState(null)
-    // TODO: make anchor change in mobile to top or botom
+
+    // TODO: we should use Anchor or remove it.
     const [drawerState, setDrawerState] = React.useState(new DrawerState(false, 'left' ))
 
+    // Pass Dispatches to Singletons
     NetworkService.getInstance().setAuthenticated = setAuthenticated
     NetworkService.getInstance().setError = setError
+    BinauralBeat.getInstance().setBinauralBeatState = setBinauralBeatState
 
     const [loaded, setLoaded] = useState(false)
 
@@ -50,7 +53,7 @@ const App: FunctionComponent = () => {
                         <SettingsDrawerContext.Provider value={{drawerState, setDrawerState}}>
                             <TitleContext.Provider value={{title, setTitle}}>
                                 <GradientContext.Provider value={{gradient, setGradient}}>
-                                    <BinauralBeatContext.Provider value={{binauralBeat, setBinauralBeat}}>
+                                    <BinauralBeatContext.Provider value={{binauralBeatState, setBinauralBeatState}}>
                                         <BrowserRouter>
                                             <Switch>
                                                 <Layout>

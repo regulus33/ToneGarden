@@ -7,7 +7,6 @@ import { useHistory } from 'react-router-dom'
 import SecureStorageService from "../../Network/SecureStorageService";
 import useStyles from "../../Styles/StylesGuestTokenScreen";
 
-
 interface Props {
 }
 

@@ -13,12 +13,15 @@ interface PitchSliderProps {
     minMax: Array<number>,
     default: number,
     handleSliderChangeCallback: (sliderValue: number) => void,
+    showTextInput?: boolean
 }
-
 
 const PitchSlider: FunctionComponent<PitchSliderProps> = (props) => {
     const { gradient } = useGradient();
-    const classes = useStyles(gradient.toProps())
+    const classes = useStyles({
+        textInputDisplay: (props.showTextInput ? 'inherit' : 'none'),
+        ...gradient.toProps()
+    })
     const [value, setValue] = React.useState<number | string | Array<number | string>>(30);
 
     const handleSliderChange = (event: ChangeEvent, newValue: number) => {

@@ -14,6 +14,10 @@ const useStyles = makeStyles({
             background: props.secondaryColor,
         }
     }),
+    largeSlider: {
+        marginTop: '14px',
+        padding: '8px'
+    },
    presetFormCard: {
        padding: '32px 16px',
        maxHeight: 'calc(100vh - 300px)',
