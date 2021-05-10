@@ -14,7 +14,6 @@ import Button from "@material-ui/core/Button"
 import {useTitle} from '../../State/TitleContext'
 import {useBinauralBeat} from "../../State/BinauralBeatContext";
 import ExtrasForm from "./ExtrasForm";
-import {Typography} from "@material-ui/core";
 
 interface PresetShowScreenProps {
 }
@@ -53,7 +52,8 @@ const PresetShowScreen: FunctionComponent<PresetShowScreenProps> = (props) => {
         return (
             <Paper className={classes.presetFormCard} elevation={0}>
                 <div className={classes.headerContainer}>
-                    <Typography variant={'h5'}>{preset.name}({preset.rangeString()})</Typography>
+                    <span className={classes.presetHeader}>{preset.name}</span>
+                    <span className={classes.presetSubtext} > ({preset.rangeString()})</span>
                 </div>
                 <div className={classes.pitchSliderContainer}>
                     <PitchSlider
