@@ -56,14 +56,15 @@ export const useStyles = makeStyles({
             }
         },
     }),
+
     textField: (props: Props) => ({
         '& div': {
             display: props.textInputDisplay,
             '&:before': {
-                borderBottom: `2px solid ${Colors.borderGrey}`
+                borderBottom: `.14rem solid ${Colors.borderGrey}`
             },
             '&:after': {
-                borderBottom: `2px solid ${Colors.defaultBlue}`
+                borderBottom: `.14rem solid ${Colors.defaultBlue}`
             }
         }
     })

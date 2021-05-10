@@ -14,15 +14,15 @@ const useStyles = makeStyles({
         [`@media (max-width: ${Breakpoints.mobile})`]: {
             maxWidth: '100%',
         },
-        maxWidth: '250px',
+        maxWidth: '18rem',
     },
     controls: {
         display: 'flex',
         justifyContent: 'center',
     },
     playArrowIcon: {
-        width: 32,
-        height: 32
+        width: '2.28rem',
+        height: '2.28rem'
     },
     cardContent: {
         display: 'flex',

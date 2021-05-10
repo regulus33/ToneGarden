@@ -1,9 +1,9 @@
 import * as React from 'react'
-import {FunctionComponent, useEffect, useState} from 'react'
+import {FunctionComponent} from 'react'
 import BinauralBeat from '../../Models/BinauralBeat'
 import PitchSlider from "../../SharedComponents/PitchSlider"
 import Gradient from "../../Models/Gradient";
-import {Accordion, AccordionActions, AccordionDetails, AccordionSummary, Typography} from "@material-ui/core";
+import {Accordion, AccordionSummary, Typography} from "@material-ui/core";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import useStyles from "../../Styles/StylesExtrasForm"
 

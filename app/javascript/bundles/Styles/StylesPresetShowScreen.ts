@@ -15,33 +15,33 @@ const useStyles = makeStyles({
         }
     }),
     headerContainer: {
-        padding: '16px 32px'
+        padding: '1.1rem 2.2rem'
     },
     presetFormCard: {
         height: 'fit-content',
-        minWidth: '500px',
+        minWidth: '35rem',
         margin: '0 auto',
         [`@media (max-width: ${Breakpoints.mobile})`]: {
             minWidth: 0,
-            width: 'calc(100vw - 32px)'
+            width: 'calc(100vw - 2.28rem)'
         }
     },
     pitchSliderContainer: {
         display: 'flex',
         justifyContent: 'space-around',
-        padding: '24px 0'
+        padding: '1.7rem .6rem',
     },
     audioControlsContainer: {
-        marginTop: '32px',
+        marginTop: '2.28rem',
         display: 'flex',
-        padding: '0 15px 0 17px',
+        padding: '0 1.07rem 0 1.2rem',
         justifyContent: 'space-between',
         '& svg': {
             transform: 'scale(130%)',
         }
     },
     saveButtonContainer: {
-        marginRight: '22px'
+        marginRight: '1.57rem'
     }
 })
 
