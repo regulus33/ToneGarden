@@ -1,8 +1,7 @@
 enum RoutesMap {
     NewUser = "/users",
     Login = "/users/login",
-    Presets = "/api/presets",
-    PresetShow = "/api/preset_show",
+    BinauralBeats = "/api/binaural_beats",
     Guest = "/users/guest"
 }
 
@@ -15,12 +14,12 @@ class Routes {
         return RoutesMap.Login
     }
 
-    public static get Presets(): string {
-        return RoutesMap.Presets
+    public static get BinauralBeats(): string {
+        return RoutesMap.BinauralBeats
     }
 
-    public static PresetShow(id: string): string {
-        return RoutesMap.PresetShow + '/' + id
+    public static BinauralBeatShow(id: string): string {
+        return RoutesMap.BinauralBeats + '/' + id
     }
 
     public static get Guest(): string {

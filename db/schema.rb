@@ -10,20 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_08_173227) do
+ActiveRecord::Schema.define(version: 2021_05_10_211424) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "presets", force: :cascade do |t|
+  create_table "binaural_beats", force: :cascade do |t|
+    t.boolean "playing"
+    t.float "beatOscillator"
+    t.float "carrierOscillator"
+    t.float "volume"
+    t.float "noiseLevel"
+    t.float "editable"
+    t.string "name"
+    t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.float "left", default: 0.0
-    t.float "right", default: 0.0
-    t.bigint "user_id"
-    t.string "name"
-    t.boolean "editable"
-    t.index ["user_id"], name: "index_presets_on_user_id"
+    t.index ["user_id"], name: "index_binaural_beats_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -34,5 +37,4 @@ ActiveRecord::Schema.define(version: 2021_05_08_173227) do
     t.string "anonymous_id"
   end
 
-  add_foreign_key "presets", "users"
 end

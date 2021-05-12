@@ -2,8 +2,8 @@ import * as React from 'react'
 import {FunctionComponent, useEffect, useState} from 'react'
 import {BrowserRouter, Switch, Route} from 'react-router-dom'
 import SignupScreen from "../../SignupScreen/components/SignupScreen"
-import PresetsScreen from "../../PresetsScreen/components/PresetsScreen"
-import PresetShowScreen from "../../PresetShowScreen/components/PresetShowScreen"
+import BinauralBeatsScreen from "../../BinauralBeatsScreen/components/BinauralBeatsScreen"
+import BinauralBeatEditScreen from "../../BinauralBeatEditScreen/components/BinauralBeatEditScreen"
 import Layout from './Layout'
 import {ThemeContext, Theme} from "../../State/ThemeContext"
 import {GradientContext} from "../../State/GradientContext"
@@ -57,16 +57,20 @@ const App: FunctionComponent = () => {
                                         <BrowserRouter>
                                             <Switch>
                                                 <Layout>
-                                                    <Route exact path="/signup" component={SignupScreen}
+                                                    <Route exact path="/signup"
+                                                           component={SignupScreen}
                                                            title="Signup"/>
-                                                    <Route exact path="/signin" component={SigninScreen}
+                                                    <Route exact path="/signin"
+                                                           component={SigninScreen}
                                                            title="Signin"/>
-                                                    <Route exact path="/guest" component={GuestTokenScreen}
+                                                    <Route exact path="/guest"
+                                                           component={GuestTokenScreen}
                                                            title="Guest"/>
-                                                    <AuthenticatedRoute path="/presets" component={PresetsScreen}
-                                                                        title="Presets"/>
+                                                    <AuthenticatedRoute path="/presets"
+                                                                        component={BinauralBeatsScreen}
+                                                                        title="BinauralBeats"/>
                                                     <AuthenticatedRoute path="/preset_show/:preset_id"
-                                                                        component={PresetShowScreen}
+                                                                        component={BinauralBeatEditScreen}
                                                                         title="Preset Show"/>
 
                                                 </Layout>

@@ -1,8 +1,7 @@
 import * as React from 'react'
-import {FunctionComponent, useEffect, useState} from 'react'
+import {FunctionComponent, useEffect} from 'react'
 import NetworkService from "../../Network/NetworkService"
 import Routes from "../../Network/Routes"
-import Preset from '../../Models/Preset'
 import {useParams} from 'react-router-dom'
 import BinauralBeat from '../../Models/BinauralBeat'
 import useStyles from '../../Styles/StylesPresetShowScreen'
@@ -16,13 +15,13 @@ import {useBinauralBeat} from "../../State/BinauralBeatContext";
 import ExtrasForm from "./ExtrasForm";
 
 interface PresetShowScreenProps {
+    location: any
 }
 
-const PresetShowScreen: FunctionComponent<PresetShowScreenProps> = (props) => {
+const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props) => {
     const {setTitle} = useTitle()
     const {gradient, setGradient} = useGradient()
     const {binauralBeatState, setBinauralBeatState} = useBinauralBeat()
-    const [preset, setPreset] = useState(new Preset({}))
     const {preset_id} = useParams()
     const classes = useStyles(gradient.toProps())
 
@@ -36,24 +35,36 @@ const PresetShowScreen: FunctionComponent<PresetShowScreenProps> = (props) => {
     }
 
     useEffect(() => {
-        NetworkService
-            .getInstance()
-            .get(Routes.PresetShow(preset_id))
-            .then(function (json) {
-                const preset = new Preset(json.preset)
-                setTitle(`${preset.rangeSymbol()} ${preset.name}`)
-                setGradient(preset.gradient())
-                setPreset(preset)
-            })
+        const localBeatState = props.location.binauralBeatState
+        if (localBeatState) {
+            setTitle(`${BinauralBeat.rangeSymbol(localBeatState.carrierOscillator)} ${localBeatState.name}`)
+            setGradient(BinauralBeat.gradient(localBeatState.carrierOscillator))
+            setBinauralBeatState(localBeatState)
+        } else {
+            NetworkService
+                .getInstance()
+                .get(Routes.BinauralBeatShow(preset_id))
+                .then(function (json) {
+                    const { binauralBeatState } = json
+                     const { carrierOscillator } = binauralBeatState
+                     setTitle(`${BinauralBeat.rangeSymbol(carrierOscillator)} ${binauralBeatState.name}`)
+                     setGradient(BinauralBeat.gradient(carrierOscillator))
+                     setBinauralBeatState(binauralBeatState)
+                })
+        }
     }, [])
 
-    if (preset) {
-        const binauralBeat = BinauralBeat.getInstance(preset.left, preset.right)
+    if (binauralBeatState) {
+        const binauralBeat = BinauralBeat.getInstance(
+            binauralBeatState.beatOscillator,
+            binauralBeatState.carrierOscillator,
+        )
         return (
             <Paper className={classes.presetFormCard} elevation={0}>
                 <div className={classes.headerContainer}>
-                    <span className={classes.presetHeader}>{preset.name}</span>
-                    <span className={classes.presetSubtext} > ({preset.rangeString()})</span>
+                    <span className={classes.presetHeader}>{binauralBeatState.name}</span>
+                    <span
+                        className={classes.presetSubtext}> ({BinauralBeat.rangeString(binauralBeatState.carrierOscillator)})</span>
                 </div>
                 <div className={classes.pitchSliderContainer}>
                     <PitchSlider
@@ -94,5 +105,5 @@ const PresetShowScreen: FunctionComponent<PresetShowScreenProps> = (props) => {
         )
     }
 }
-
-export default PresetShowScreen
+// @ts-ignore
+export default BinauralBeatEditScreen

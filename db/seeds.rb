@@ -6,8 +6,26 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 # MUST BE 40hz from eachother and under 1500hz subtract small from large and you get brat frequency
-Preset.create(name: 'Alertness', left: 700, right: 720, editable: false)
-Preset.create(name: 'Dreaming', left: 800, right: 807, editable: false)
-Preset.create(name: 'Peace', left: 766.15, right: 766.15 + 30, editable: false)
-Preset.create(name: 'Sleep', left: 342.24, right: 342.24 + 3, editable: false)
-Preset.create(name: 'Focus', left: 600.24, right: 600.24 + 12, editable: false)
+
+def nameee
+  result = ''
+  letters = %w(a b c d e f g h i j k l m n o p q r s t u v w x y z)
+  rand(3...7).times do
+    result << letters.sample
+  end
+  result
+end
+
+25.times do
+  beat = rand(20...20000)
+  carrier = rand(-40...40)
+  BinauralBeat.create(
+    name: nameee,
+    playing: [true, false].sample,
+    beatOscillator: beat,
+    carrierOscillator: carrier,
+    volume: 0,
+    noiseLevel: 0,
+    editable: [true, false].sample,
+  )
+end

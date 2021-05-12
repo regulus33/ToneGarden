@@ -1,2 +1,0 @@
-class Preset < ApplicationRecord
-end
