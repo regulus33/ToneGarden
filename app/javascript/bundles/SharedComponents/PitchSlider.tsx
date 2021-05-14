@@ -17,12 +17,13 @@ interface PitchSliderProps {
 }
 
 const PitchSlider: FunctionComponent<PitchSliderProps> = (props) => {
+    console.log('hi there, this is PitchSlider. default is: ' + props.default)
     const { gradient } = useGradient();
     const classes = useStyles({
         textInputDisplay: (props.showTextInput ? 'inherit' : 'none'),
         ...gradient.toProps()
     })
-    const [value, setValue] = React.useState<number | string | Array<number | string>>(30);
+    const [value, setValue] = React.useState<number | string | Array<number | string>>(props.default);
 
     const handleSliderChange = (event: ChangeEvent, newValue: number) => {
         setValue(Number(newValue))
@@ -44,7 +45,7 @@ const PitchSlider: FunctionComponent<PitchSliderProps> = (props) => {
         props.handleSliderChangeCallback(Number(value))
     };
 
-
+    console.log(props.default)
     return (
         <form
             className={classes.root}

@@ -45,7 +45,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
                 .getInstance()
                 .get(Routes.BinauralBeatShow(preset_id))
                 .then(function (json) {
-                    const { binauralBeatState } = json
+                     const { binauralBeatState } = json
                      const { carrierOscillator } = binauralBeatState
                      setTitle(`${BinauralBeat.rangeSymbol(carrierOscillator)} ${binauralBeatState.name}`)
                      setGradient(BinauralBeat.gradient(carrierOscillator))
@@ -53,12 +53,10 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
                 })
         }
     }, [])
-
     if (binauralBeatState) {
-        const binauralBeat = BinauralBeat.getInstance(
-            binauralBeatState.beatOscillator,
-            binauralBeatState.carrierOscillator,
-        )
+        console.log(binauralBeatState)
+        const binauralBeat = BinauralBeat.getInstance(binauralBeatState)
+        console.log('Just Before return in BinauralBeatEditScreen, binauralBeat.carrierOscillator.offset is: ' + binauralBeat.carrierOscillator.frequency)
         return (
             <Paper className={classes.presetFormCard} elevation={0}>
                 <div className={classes.headerContainer}>
@@ -96,7 +94,6 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
                 <ExtrasForm
                     gradient={gradient}
                     binauralBeat={binauralBeat}/>
-
             </Paper>
         )
     } else {
