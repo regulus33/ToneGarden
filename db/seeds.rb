@@ -17,7 +17,7 @@ def nameee
 end
 
 25.times do
-  beat = rand(20...20000)
+  beat = rand(40...1500)
   carrier = rand(-40...40)
   BinauralBeat.create(
     name: nameee,

@@ -32,55 +32,69 @@ export default class BinauralBeat {
     pannerLeft: Panner
     pannerRight: Panner
     noiseSource: NoiseSource
+
     volume: number = 0
     playing: boolean = false
     id: number
     name: string
-    setBinauralBeatState: Dispatch<BinauralBeatState>
-
     editable: boolean
+
+    setBinauralBeatState: Dispatch<BinauralBeatState>
 
     private audioConnected: boolean = false
 
     private static instance: BinauralBeat;
-    private static defaultBeat = 440;
-    private static defaultCarrier = 20;
 
     private constructor(binauralBeatState: BinauralBeatState) {
         this.convertBeatStateToSound(binauralBeatState)
     }
 
     convertBeatStateToSound(binauralBeatState: BinauralBeatState) {
-        const {volume, noiseLevel, beatOscillator, carrierOscillator} = binauralBeatState
+        const {
+            volume,
+            noiseLevel,
+            beatOscillator,
+            carrierOscillator } = binauralBeatState
 
         this.volume = volume
+
         this.beatOscillator = new BeatOscillator(beatOscillator)
-        this.carrierOscillator = new CarrierOscillator(carrierOscillator, this.beatOscillator)
+        this.carrierOscillator = new CarrierOscillator(
+            carrierOscillator,
+            this.beatOscillator
+        )
         this.noiseSource = new NoiseSource(noiseLevel)
 
-        this.onBeatFreqChange = this.onBeatFreqChange.bind(this)
+        this.onBeatFreqChange    = this.onBeatFreqChange.bind(this)
         this.onCarrierFreqChange = this.onCarrierFreqChange.bind(this)
-        this.play = this.play.bind(this)
-        this.pause = this.pause.bind(this)
-        this.onVolumeChange = this.onVolumeChange.bind(this)
-        this.toState = this.toState.bind(this)
-        this.onNoiseLevelChange = this.onNoiseLevelChange.bind(this)
+        this.play                = this.play.bind(this)
+        this.pause               = this.pause.bind(this)
+        this.onVolumeChange      = this.onVolumeChange.bind(this)
+        this.toState             = this.toState.bind(this)
+        this.onNoiseLevelChange  = this.onNoiseLevelChange.bind(this)
     }
-
-
 
     public static getInstance(binauralBeatState: BinauralBeatState): BinauralBeat {
         if (!BinauralBeat.instance) {
             BinauralBeat.instance = new BinauralBeat(binauralBeatState)
         } else {
+            BinauralBeat.instance.clearTonejsInstances()
             BinauralBeat.instance.convertBeatStateToSound(binauralBeatState)
+            BinauralBeat.instance.panAndConnectOscillators()
         }
 
         return BinauralBeat.instance;
     }
+
+    clearTonejsInstances(){
+        this.beatOscillator.toneOscillator.dispose()
+        this.carrierOscillator.toneOscillator.dispose()
+        this.noiseSource.toneNoise.dispose()
+    }
+
     public panAndConnectOscillators(): void {
 
-        if(this.playing) return;
+        // if(this.playing) return;
 
         this.pannerLeft = new Panner(1)
             .toDestination();
@@ -168,8 +182,9 @@ export default class BinauralBeat {
     }
 
     static rangeString(offset: number) :string {
-        if(offset <= 0 || offset > 40 )
-            return 'NA';
+        offset = Math.abs(offset)
+        if(offset > 40 )
+            return `Halt! offset out of bounds: ${offset}`
         if(this.isInRange(offset, rangeMap['alpha'])){
             return 'alpha';
         }

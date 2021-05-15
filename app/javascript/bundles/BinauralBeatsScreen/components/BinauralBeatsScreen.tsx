@@ -22,7 +22,6 @@ const BinauralBeatsScreen: FunctionComponent<PresetsScreenProps> = (props) => {
             .getInstance()
             .get(Routes.BinauralBeats)
             .then(function (json) {
-                debugger
                 const binauralBeatStates = new BinauralBeatsList(
                     json.binauralBeatStates).binauralBeatStates
                 setBinauralBeatStates(binauralBeatStates)
