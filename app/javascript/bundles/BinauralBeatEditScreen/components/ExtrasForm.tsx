@@ -40,7 +40,7 @@ const ExtrasForm: FunctionComponent<Props> = (props) => {
                         label={'Volume'}
                         default={props.binauralBeat.noiseSource.level}
                         handleSliderChangeCallback={props.binauralBeat.onNoiseLevelChange}
-                    />
+                     />
                 </div>
             </Accordion>
         </div>

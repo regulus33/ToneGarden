@@ -36,7 +36,10 @@ const App: FunctionComponent = () => {
     // Pass Dispatches to Singletons
     NetworkService.getInstance().setAuthenticated = setAuthenticated
     NetworkService.getInstance().setError = setError
+
     BinauralBeat.getInstance(defaultBinauralBeatState()).setBinauralBeatState = setBinauralBeatState
+    BinauralBeat.getInstance(defaultBinauralBeatState()).setGradient = setGradient
+    BinauralBeat.getInstance(defaultBinauralBeatState()).setTitle = setTitle
 
     const [loaded, setLoaded] = useState(false)
 

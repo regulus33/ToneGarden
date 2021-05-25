@@ -1,10 +1,11 @@
-import {Panner, Signal, Frequency, Context, Destination, getDestination, Volume, getContext} from 'tone';
+import {Panner, Signal, Frequency, Context, Destination, getDestination, Volume, getContext, Waveform, Meter, FFT} from 'tone';
 import BeatOscillator from './BeatOscillator';
 import CarrierOscillator from "./CarrierOscillator";
-import {Dispatch} from "react";
+import {Dispatch, SetStateAction} from "react";
 import {BinauralBeatState} from "../State/BinauralBeatContext";
 import NoiseSource from "./NoiseSource";
 import Gradient from "./Gradient";
+import SecureStorageService, {SecureStorageType} from "../Network/SecureStorageService";
 
 const symbolMap = {
     'alpha': 'α',
@@ -15,8 +16,8 @@ const symbolMap = {
 }
 
 const rangeMap = {
-    'alpha': [8,13],
-    'beta': [14,29],
+    'alpha': [8, 13],
+    'beta': [14, 29],
     'delta': [0.1, 3],
     'theta': [4, 7],
     'gamma': [30, 39]
@@ -24,8 +25,8 @@ const rangeMap = {
 
 export default class BinauralBeat {
 
-    public static carrierMinMax = [-40,40]
-    public static beatMinMax = [0,1500]
+    public static carrierMinMax = [-40, 40]
+    public static beatMinMax = [0, 1500]
 
     beatOscillator: BeatOscillator
     carrierOscillator: CarrierOscillator
@@ -34,14 +35,13 @@ export default class BinauralBeat {
     noiseSource: NoiseSource
 
     volume: number = 0
-    playing: boolean = false
     id: number
     name: string
     editable: boolean
 
     setBinauralBeatState: Dispatch<BinauralBeatState>
-
-    private audioConnected: boolean = false
+    setTitle: Dispatch<SetStateAction<string>>
+    setGradient: Dispatch<Gradient>
 
     private static instance: BinauralBeat;
 
@@ -54,7 +54,8 @@ export default class BinauralBeat {
             volume,
             noiseLevel,
             beatOscillator,
-            carrierOscillator } = binauralBeatState
+            carrierOscillator
+        } = binauralBeatState
 
         this.volume = volume
 
@@ -65,20 +66,20 @@ export default class BinauralBeat {
         )
         this.noiseSource = new NoiseSource(noiseLevel)
 
-        this.onBeatFreqChange    = this.onBeatFreqChange.bind(this)
+        this.onBeatFreqChange = this.onBeatFreqChange.bind(this)
         this.onCarrierFreqChange = this.onCarrierFreqChange.bind(this)
-        this.play                = this.play.bind(this)
-        this.pause               = this.pause.bind(this)
-        this.onVolumeChange      = this.onVolumeChange.bind(this)
-        this.toState             = this.toState.bind(this)
-        this.onNoiseLevelChange  = this.onNoiseLevelChange.bind(this)
+        this.play = this.play.bind(this)
+        this.pause = this.pause.bind(this)
+        this.onVolumeChange = this.onVolumeChange.bind(this)
+        this.toState = this.toState.bind(this)
+        this.onNoiseLevelChange = this.onNoiseLevelChange.bind(this)
+        this.onPitchSliderBlur = this.onPitchSliderBlur.bind(this)
     }
 
     public static getInstance(binauralBeatState: BinauralBeatState): BinauralBeat {
         if (!BinauralBeat.instance) {
             BinauralBeat.instance = new BinauralBeat(binauralBeatState)
         } else {
-            BinauralBeat.instance.clearTonejsInstances()
             BinauralBeat.instance.convertBeatStateToSound(binauralBeatState)
             BinauralBeat.instance.panAndConnectOscillators()
         }
@@ -86,22 +87,31 @@ export default class BinauralBeat {
         return BinauralBeat.instance;
     }
 
-    clearTonejsInstances(){
-        this.beatOscillator.toneOscillator.dispose()
-        this.carrierOscillator.toneOscillator.dispose()
-        this.noiseSource.toneNoise.dispose()
+    set isPlaying(is: boolean) {
+        SecureStorageService.setIsPlaying(is)
+    }
+
+    get isPlaying(): boolean {
+        return SecureStorageService.getIsPlaying()
+    }
+
+    get audioConnected(): boolean {
+        return SecureStorageService.getAudioConnected()
+    }
+
+    set audioConnected(connected) {
+        SecureStorageService.setAudioConnected(connected)
     }
 
     public panAndConnectOscillators(): void {
-
-        // if(this.playing) return;
+        if(this.audioConnected) return;
 
         this.pannerLeft = new Panner(1)
             .toDestination();
 
         this.pannerLeft
             .pan
-            .rampTo(-1,0.0);
+            .rampTo(-1, 0.0);
 
         this.beatOscillator
             .toneOscillator
@@ -119,54 +129,80 @@ export default class BinauralBeat {
             .toneOscillator
             .connect(this.pannerRight)
             .start();
-
         //NOISE
-        this.noiseSource = new NoiseSource()
-        this.noiseSource.toneNoise.toDestination()
-        this.noiseSource.toneNoise.start()
+        // this.noiseSource = new NoiseSource()
+        // this.noiseSource.toneNoise.toDestination()
 
-        this.playing = true
+        // this.noiseSource.toneNoise.start()
         this.audioConnected = true
     }
 
-    onBeatFreqChange(frequency: Number){
+    playing() {
+
+    }
+
+    onBeatFreqChange(frequency: Number) {
         this.beatOscillator.setFrequency(this.carrierOscillator, Number(frequency))
     }
 
-    onCarrierFreqChange(offset: Number){
+    onCarrierFreqChange(offset: Number) {
         this.carrierOscillator.offset = Number(offset)
         this.beatOscillator.setFrequency(this.carrierOscillator, null)
+        console.log(this.beatOscillator.toneOscillator.frequency.value);
+    }
+
+    onPitchSliderBlur(offset: number) {
+        this.setBinauralBeatState(this.toState())
+        this.setTitle(this.generateTitle())
+        this.setGradient(
+            BinauralBeat
+                .gradient(
+                    this
+                        .carrierOscillator
+                        .offset
+                )
+        )
+    }
+
+    private generateTitle(): string {
+        return BinauralBeat.rangeSymbol(
+            this.carrierOscillator.offset
+        ) + BinauralBeat.rangeString(
+            this.carrierOscillator.offset
+        )
     }
 
     onVolumeChange(value: number) {
-       getDestination().volume.value = value
-       this.volume = value
-    }
-
-    pause(){
-        getDestination().mute = true
-        this.playing = false
+        getDestination().volume.value = value
+        this.volume = value
         this.setBinauralBeatState(this.toState())
     }
 
-    play(){
-        if(this.audioConnected) {
+    pause() {
+        getDestination().mute = true
+        this.isPlaying = false
+        this.setBinauralBeatState(this.toState())
+    }
+
+    play() {
+        if (this.audioConnected) {
             getDestination().mute = false
         } else {
             this.panAndConnectOscillators()
         }
-        this.playing = true
+        this.isPlaying = true
         this.setBinauralBeatState(this.toState())
     }
 
-    onNoiseLevelChange(value: number){
+    onNoiseLevelChange(value: number) {
         console.log(`Noise level: ${value}`)
         this.noiseSource.toneNoise.volume.value = value
+        this.setBinauralBeatState(this.toState())
     }
 
     toState(): BinauralBeatState {
         return {
-            playing: this.playing,
+            playing: this.isPlaying,
             beatOscillator: this.beatOscillator.frequency,
             carrierOscillator: this.carrierOscillator.offset,
             volume: this.volume,
@@ -177,27 +213,27 @@ export default class BinauralBeat {
         }
     }
 
-    static  rangeSymbol(offset: number): string {
+    static rangeSymbol(offset: number): string {
         return symbolMap[BinauralBeat.rangeString(offset)]
     }
 
-    static rangeString(offset: number) :string {
+    static rangeString(offset: number): string {
         offset = Math.abs(offset)
-        if(offset > 40 )
+        if (offset > 40)
             return `Halt! offset out of bounds: ${offset}`
-        if(this.isInRange(offset, rangeMap['alpha'])){
+        if (this.isInRange(offset, rangeMap['alpha'])) {
             return 'alpha';
         }
-        if(this.isInRange(offset, rangeMap['beta'])){
+        if (this.isInRange(offset, rangeMap['beta'])) {
             return 'beta';
         }
-        if(this.isInRange(offset, rangeMap['gamma'])){
+        if (this.isInRange(offset, rangeMap['gamma'])) {
             return 'gamma';
         }
-        if(this.isInRange(offset, rangeMap['theta'])){
+        if (this.isInRange(offset, rangeMap['theta'])) {
             return 'theta';
         }
-        if(this.isInRange(offset, rangeMap['delta'])){
+        if (this.isInRange(offset, rangeMap['delta'])) {
             return 'delta';
         }
         return 'NA';
@@ -207,8 +243,12 @@ export default class BinauralBeat {
         return num >= range[0] && num <= range[1];
     }
 
-    static gradient(offset: number){
+    static gradient(offset: number) {
         return new Gradient(BinauralBeat.rangeString(offset));
+    }
+
+    audio(){
+
     }
 
 }

@@ -1,0 +1,2 @@
+class BinauralBeat < ApplicationRecord
+end

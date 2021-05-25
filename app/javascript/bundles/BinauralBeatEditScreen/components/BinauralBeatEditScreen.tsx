@@ -35,6 +35,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
     }
 
     useEffect(() => {
+        console.log('use effect running now')
         const localBeatState = props.location.binauralBeatState
         if (localBeatState) {
             setTitle(`${BinauralBeat.rangeSymbol(localBeatState.carrierOscillator)} ${localBeatState.name}`)
@@ -54,9 +55,9 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
         }
     }, [])
     if (binauralBeatState) {
-        console.log(binauralBeatState)
         const binauralBeat = BinauralBeat.getInstance(binauralBeatState)
-        console.log('Just Before return in BinauralBeatEditScreen, binauralBeat.carrierOscillator.offset is: ' + binauralBeat.carrierOscillator.frequency)
+        console.log('We are triggering a render in the BinauralBeatEdit')
+        console.log(binauralBeatState)
         return (
             <Paper className={classes.presetFormCard} elevation={0}>
                 <div className={classes.headerContainer}>
@@ -66,6 +67,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
                 </div>
                 <div className={classes.pitchSliderContainer}>
                     <PitchSlider
+                        handleSliderBlurCallback={binauralBeat.onPitchSliderBlur}
                         showTextInput
                         minMax={BinauralBeat.beatMinMax}
                         label={'Main tone'}
@@ -73,6 +75,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
                         handleSliderChangeCallback={binauralBeat.onBeatFreqChange}
                     />
                     <PitchSlider
+                        handleSliderBlurCallback={binauralBeat.onPitchSliderBlur}
                         showTextInput
                         minMax={BinauralBeat.carrierMinMax}
                         label={'Secondary tone'}
