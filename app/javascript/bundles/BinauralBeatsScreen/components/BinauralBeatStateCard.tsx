@@ -9,6 +9,7 @@ import useStyles from '../../Styles/StylesPresetCard'
 import {BinauralBeatState} from "../../State/BinauralBeatContext";
 import BinauralBeat from "../../Models/BinauralBeat";
 import {FunctionComponent} from "react";
+import FrequencyRangeHelper from "../../Helpers/FrequencyRangeHelper";
 interface Props {
     binauralBeatState: BinauralBeatState
 }
@@ -20,8 +21,8 @@ const BinauralBeatStateCard: FunctionComponent<Props> = (props) => {
         <CardContent>
             <div className={classes.cardContent}>
                 <Typography component="h5" variant="h5">
-                    <span className={classes[BinauralBeat.rangeString(carrierOscillator)]}>
-                        <span>{BinauralBeat.rangeSymbol(carrierOscillator)} &nbsp;</span>
+                    <span className={classes[FrequencyRangeHelper.rangeString(carrierOscillator)]}>
+                        <span>{FrequencyRangeHelper.rangeSymbol(carrierOscillator)} &nbsp;</span>
                     </span>
                     {binauralBeatState.name}
                 </Typography>
