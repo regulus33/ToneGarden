@@ -25,7 +25,7 @@ export default class BinauralBeat {
     id: number
     name: string
     editable: boolean
-    isPlaying: boolean
+    playing: boolean
 
     setBinauralBeatState: Dispatch<BinauralBeatState>
     setTitle: Dispatch<SetStateAction<string>>
@@ -34,25 +34,7 @@ export default class BinauralBeat {
     private static instance: BinauralBeat;
 
     private constructor(binauralBeatState: BinauralBeatState) {
-        this.stateToMemberVaraibles(binauralBeatState)
-    }
-
-    stateToMemberVaraibles(binauralBeatState: BinauralBeatState) {
-        const {
-            volume,
-            noiseLevel,
-            beatOscillator,
-            carrierOscillator
-        } = binauralBeatState
-
-        this.volume = volume
-
-        this.beatOscillator = new BeatOscillator(beatOscillator)
-        this.carrierOscillator = new CarrierOscillator(
-            carrierOscillator,
-            this.beatOscillator
-        )
-        this.noiseSource = new NoiseSource(noiseLevel)
+        this.hydrateFromState(binauralBeatState)
 
         this.onBeatFreqChange = this.onBeatFreqChange.bind(this)
         this.onCarrierFreqChange = this.onCarrierFreqChange.bind(this)
@@ -64,11 +46,37 @@ export default class BinauralBeat {
         this.onPitchSliderBlur = this.onPitchSliderBlur.bind(this)
     }
 
-    public static getInstance(binauralBeatState: BinauralBeatState): BinauralBeat {
+    hydrateFromState(binauralBeatState: BinauralBeatState) {
+        const {
+            id,
+            volume,
+            noiseLevel,
+            beatOscillator,
+            carrierOscillator,
+            editable,
+            name,
+            playing,
+        } = binauralBeatState
+
+        this.id = id
+        this.editable = editable
+        this.name = name
+        this.playing = playing
+        this.volume = volume
+        this.noiseSource = new NoiseSource(noiseLevel)
+        this.beatOscillator = new BeatOscillator(beatOscillator)
+        this.carrierOscillator = new CarrierOscillator(
+            carrierOscillator,
+            this.beatOscillator
+        )
+
+    }
+
+    public static getInstance(binauralBeatState?: BinauralBeatState): BinauralBeat {
         if (!BinauralBeat.instance) {
             BinauralBeat.instance = new BinauralBeat(binauralBeatState)
-        } else {
-            BinauralBeat.instance.stateToMemberVaraibles(binauralBeatState)
+        } else if(binauralBeatState) {
+            BinauralBeat.instance.hydrateFromState(binauralBeatState)
         }
 
         return BinauralBeat.instance;
@@ -98,11 +106,11 @@ export default class BinauralBeat {
     }
 
     private generateTitle(): string {
-        return FrequencyRangeHelper.rangeSymbol(
-            this.carrierOscillator.offset
-        ) + FrequencyRangeHelper.rangeString(
+        const symbol = FrequencyRangeHelper.rangeSymbol(
             this.carrierOscillator.offset
         )
+
+       return `${symbol} ${this.name}`
     }
 
     onVolumeChange(value: number) {
@@ -112,12 +120,12 @@ export default class BinauralBeat {
     }
 
     pause() {
-        this.isPlaying = false
+        this.playing = false
         this.setBinauralBeatState(this.toState())
     }
 
     play() {
-        this.isPlaying = true
+        this.playing = true
         this.setBinauralBeatState(this.toState())
     }
 
@@ -128,8 +136,11 @@ export default class BinauralBeat {
     }
 
     toState(): BinauralBeatState {
+        if(this.name === undefined) {
+            debugger
+        }
         return {
-            playing: this.isPlaying,
+            playing: this.playing,
             beatOscillator: this.beatOscillator.frequency,
             carrierOscillator: this.carrierOscillator.offset,
             volume: this.volume,
