@@ -8,11 +8,11 @@ import * as React from 'react'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import {FunctionComponent} from "react"
-import {Anchor} from "../../Models/DrawerState"
-import {useSettingsDrawer} from "../../State/SettingsDrawerContext";
+import {Anchor} from "../Models/DrawerState"
+import {useSettingsDrawer} from "../State/SettingsDrawerContext";
 import {ExitToApp, InfoRounded} from "@material-ui/icons";
-import SecureStorageService from "../../Network/SecureStorageService";
-import {useAuthenticated} from "../../State/AuthContext";
+import SecureStorageService from "../Network/SecureStorageService";
+import {useAuthenticated} from "../State/AuthContext";
 
 const useStyles = makeStyles({
     list: {

@@ -6,13 +6,14 @@ interface Props {
     secondaryColor: string,
 }
 
+// @ts-ignore
 const useStyles = makeStyles({
     saveButton: (props: Props) => ({
         backgroundColor: props.dominantColor,
         color: 'white',
         '&:hover': {
             background: props.secondaryColor,
-        }
+        },
     }),
     headerContainer: {
         padding: '1.1rem 2.2rem'

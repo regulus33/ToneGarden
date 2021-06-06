@@ -22,6 +22,15 @@ class Routes {
         return RoutesMap.BinauralBeats + '/' + id
     }
 
+    public static BinauralBeatUpdate(id: string): string {
+
+        return RoutesMap.BinauralBeats + '/' + id
+    }
+
+    public static BinauralBeatCreate(id: string): string {
+        return RoutesMap.BinauralBeats + '/' + id
+    }
+
     public static get Guest(): string {
         return RoutesMap.Guest
     }

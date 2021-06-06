@@ -1,11 +1,11 @@
 import * as React from 'react'
 import {FunctionComponent, useContext, useEffect} from 'react'
-import NetworkService from "../../Network/NetworkService"
-import Routes from "../../Network/Routes"
-import ProgressWheel from "../../SharedComponents/ProgressWheel"
+import NetworkService from "../Network/NetworkService"
+import Routes from "../Network/Routes"
+import ProgressWheel from "../SharedComponents/ProgressWheel"
 import { useHistory } from 'react-router-dom'
-import SecureStorageService from "../../Network/SecureStorageService";
-import useStyles from "../../Styles/StylesGuestTokenScreen";
+import SecureStorageService from "../Network/SecureStorageService";
+import useStyles from "../Styles/StylesGuestTokenScreen";
 
 interface Props {
 }

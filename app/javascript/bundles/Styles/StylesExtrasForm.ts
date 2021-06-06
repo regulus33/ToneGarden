@@ -8,7 +8,6 @@ const useStyles = makeStyles((props: Props) =>
     createStyles({
         root: {
             marginTop: '1.7rem',
-            width: '100%',
             borderTop: `.07rem solid ${Colors.borderGrey}`,
         },
         accordian: {
@@ -28,7 +27,7 @@ const useStyles = makeStyles((props: Props) =>
         },
         largeSlider: {
             marginTop: '1rem',
-            padding: '.57rem'
+            padding: '2rem'
         },
     }),
 );

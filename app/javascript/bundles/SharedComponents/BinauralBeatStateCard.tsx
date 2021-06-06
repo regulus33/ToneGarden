@@ -5,11 +5,13 @@ import IconButton from "@material-ui/core/IconButton";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import * as React from "react";
 import {Link} from "react-router-dom";
-import useStyles from '../../Styles/StylesPresetCard'
-import {BinauralBeatState} from "../../State/BinauralBeatContext";
-import BinauralBeat from "../../Models/BinauralBeat";
+import useStyles from '../Styles/StylesPresetCard'
+import {BinauralBeatState} from "../State/BinauralBeatContext";
+import BinauralBeat from "../Models/BinauralBeat";
 import {FunctionComponent} from "react";
-import FrequencyRangeHelper from "../../Helpers/FrequencyRangeHelper";
+import FrequencyRangeHelper from "../Helpers/FrequencyRangeHelper";
+import {history} from "react-router-dom"
+
 interface Props {
     binauralBeatState: BinauralBeatState
 }

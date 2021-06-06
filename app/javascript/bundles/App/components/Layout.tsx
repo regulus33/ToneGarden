@@ -8,7 +8,7 @@ import useStyles from "../../Styles/StylesLayout"
 import {useGradient} from "../../State/GradientContext"
 import {useSettingsDrawer} from "../../State/SettingsDrawerContext"
 import DrawerState from "../../Models/DrawerState"
-import SettingsDrawer from "../../SettingsDrawer/components/SettingsDrawer"
+import SettingsDrawer from "../../SharedComponents/SettingsDrawer"
 
 export interface Props {
 }

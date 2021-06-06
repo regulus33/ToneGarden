@@ -41,6 +41,17 @@ export default class NetworkService {
         return {ok: rawResponse.ok, ...json}
     }
 
+    public async put(route: string, body: Object) {
+        const headers = new Headerz(route).deliver();
+        const rawResponse = await fetch(`${NetworkService.baseUrl}/${route}`, {
+            method: 'PUT',
+            headers,
+            body: JSON.stringify(body)})
+        this.notifyAuthContext(rawResponse)
+        const json = await rawResponse.json();
+        return {ok: rawResponse.ok, ...json}
+    }
+
     public async get(route: string) {
         let url = `${NetworkService.baseUrl}/${route}`
 
