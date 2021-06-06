@@ -11,8 +11,6 @@ import {AuthContext} from "../../State/AuthContext"
 import {ErrorContext} from "../../State/ErrorContext"
 import Gradient from '../../Models/Gradient'
 import {TitleContext} from "../../State/TitleContext"
-import BinauralBeat from "../../Models/BinauralBeat"
-import {BinauralBeatContext, defaultBinauralBeatState, useBinauralBeat} from "../../State/BinauralBeatContext"
 import {SettingsDrawerContext} from "../../State/SettingsDrawerContext"
 import NetworkService from "../../Network/NetworkService"
 import AuthenticatedRoute from "./AuthenticatedRoute"
@@ -27,11 +25,10 @@ const App: FunctionComponent = () => {
     const [theme, setTheme] = React.useState(Theme.Light)
     const [title, setTitle] = React.useState('Binaural Beats')
     const [gradient, setGradient] = React.useState(new Gradient('alpha'))
-    const {binauralBeatState, setBinauralBeatState} = useBinauralBeat()
     const [error, setError] = React.useState(null)
 
     // TODO: we should use Anchor or remove it.
-    const [drawerState, setDrawerState] = React.useState(new DrawerState(false, 'left' ))
+    const [drawerState, setDrawerState] = React.useState(new DrawerState(false, 'left'))
 
     // TODO: no dispatches outside dom tree
     NetworkService.getInstance().setAuthenticated = setAuthenticated
@@ -52,32 +49,30 @@ const App: FunctionComponent = () => {
                         <SettingsDrawerContext.Provider value={{drawerState, setDrawerState}}>
                             <TitleContext.Provider value={{title, setTitle}}>
                                 <GradientContext.Provider value={{gradient, setGradient}}>
-                                    <BinauralBeatContext.Provider value={{binauralBeatState, setBinauralBeatState}}>
-                                        <BrowserRouter>
-                                            <Switch>
-                                                <Layout>
-                                                    <Route exact path="/signup"
-                                                           component={SignupScreen}
-                                                           title="Signup"/>
-                                                    <Route exact path="/signin"
-                                                           component={SigninScreen}
-                                                           title="Signin"/>
-                                                    <Route exact path="/guest"
-                                                           component={GuestTokenScreen}
-                                                           title="Guest"/>
-                                                    <AuthenticatedRoute path="/presets"
-                                                                        component={BinauralBeatsScreen}
-                                                                        title="BinauralBeats"/>
-                                                    <AuthenticatedRoute path="/preset_show/:preset_id"
-                                                                        component={BinauralBeatEditScreen}
-                                                                        title="Beat Edit"/>
-                                                    <AuthenticatedRoute path="/create"
-                                                                        component={BinauralBeatEditScreen}
-                                                                        title="Create a beat"/>
-                                                </Layout>
-                                            </Switch>
-                                        </BrowserRouter>
-                                    </BinauralBeatContext.Provider>
+                                    <BrowserRouter>
+                                        <Switch>
+                                            <Layout>
+                                                <Route exact path="/signup"
+                                                       component={SignupScreen}
+                                                       title="Signup"/>
+                                                <Route exact path="/signin"
+                                                       component={SigninScreen}
+                                                       title="Signin"/>
+                                                <Route exact path="/guest"
+                                                       component={GuestTokenScreen}
+                                                       title="Guest"/>
+                                                <AuthenticatedRoute path="/presets"
+                                                                    component={BinauralBeatsScreen}
+                                                                    title="BinauralBeats"/>
+                                                <AuthenticatedRoute path="/preset_show/:preset_id"
+                                                                    component={BinauralBeatEditScreen}
+                                                                    title="Beat Edit"/>
+                                                <AuthenticatedRoute path="/create"
+                                                                    component={BinauralBeatEditScreen}
+                                                                    title="Create a beat"/>
+                                            </Layout>
+                                        </Switch>
+                                    </BrowserRouter>
                                 </GradientContext.Provider>
                             </TitleContext.Provider>
                         </SettingsDrawerContext.Provider>
