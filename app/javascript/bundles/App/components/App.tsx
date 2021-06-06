@@ -12,7 +12,7 @@ import {ErrorContext} from "../../State/ErrorContext"
 import Gradient from '../../Models/Gradient'
 import {TitleContext} from "../../State/TitleContext"
 import BinauralBeat from "../../Models/BinauralBeat"
-import {BinauralBeatContext, defaultBinauralBeatState} from "../../State/BinauralBeatContext"
+import {BinauralBeatContext, defaultBinauralBeatState, useBinauralBeat} from "../../State/BinauralBeatContext"
 import {SettingsDrawerContext} from "../../State/SettingsDrawerContext"
 import NetworkService from "../../Network/NetworkService"
 import AuthenticatedRoute from "./AuthenticatedRoute"
@@ -27,19 +27,15 @@ const App: FunctionComponent = () => {
     const [theme, setTheme] = React.useState(Theme.Light)
     const [title, setTitle] = React.useState('Binaural Beats')
     const [gradient, setGradient] = React.useState(new Gradient('alpha'))
-    const [binauralBeatState, setBinauralBeatState] = React.useState(defaultBinauralBeatState())
+    const {binauralBeatState, setBinauralBeatState} = useBinauralBeat()
     const [error, setError] = React.useState(null)
 
     // TODO: we should use Anchor or remove it.
     const [drawerState, setDrawerState] = React.useState(new DrawerState(false, 'left' ))
 
-    // Pass Dispatches to Singletons
+    // TODO: no dispatches outside dom tree
     NetworkService.getInstance().setAuthenticated = setAuthenticated
     NetworkService.getInstance().setError = setError
-
-    BinauralBeat.getInstance().setBinauralBeatState = setBinauralBeatState
-    BinauralBeat.getInstance().setGradient = setGradient
-    BinauralBeat.getInstance().setTitle = setTitle
 
     const [loaded, setLoaded] = useState(false)
 

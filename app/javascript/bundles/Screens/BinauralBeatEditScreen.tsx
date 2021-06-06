@@ -16,12 +16,14 @@ import ExtrasForm from "../SharedComponents/ExtrasForm";
 import FrequencyRangeHelper from "../Helpers/FrequencyRangeHelper";
 import ProgressWheel from "../SharedComponents/ProgressWheel";
 import { useHistory } from 'react-router-dom'
+import {getDestination} from "tone";
 
 interface PresetShowScreenProps {
     location: any
 }
 
-const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props) => {
+const BinauralBeatEditScreen:FunctionComponent<PresetShowScreenProps> = (props) => {
+
     const {setTitle} = useTitle()
     const {gradient, setGradient} = useGradient()
     const {binauralBeatState, setBinauralBeatState} = useBinauralBeat()
@@ -32,7 +34,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
 
     const isCreate = props.location.pathname === '/create'
 
-    const computeAudioControlsState = () => {
+    function computeAudioControlsState() {
         if (binauralBeatState.playing) {
             return 'play'
         } else {
@@ -40,21 +42,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
         }
     }
 
-    const onNameChange = (event) => {
-        const el = event.target
-        const v = el.value
-        const md = v.match(/[^a-zA-Z0-9\s]/)
-        if (md) {
-            const ms = md[0]
-            el.value.replace(ms, '')
-            return setError('Please use letters and numbers only')
-        }
-        setError(null)
-        BinauralBeat.getInstance().onNameChange(v)
-    }
-
-
-    const saveBeat = () => {
+    function saveBeat() {
         const id = BinauralBeat.getInstance().id
         const beatBody = BinauralBeat.getInstance().toState()
 
@@ -68,7 +56,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
             })
     }
 
-    const createBeat = () => {
+    function createBeat() {
         const id = BinauralBeat.getInstance().id
         const beatBody = BinauralBeat.getInstance().toState()
 
@@ -85,6 +73,80 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
 
             })
 
+    }
+
+   function onVolumeChange(value: number){
+        getDestination().volume.value = value
+        BinauralBeat.getInstance().volume = value
+        setBinauralBeatState(BinauralBeat.getInstance().toState())
+    }
+
+    function onNameChange(event: any) {
+        const el = event.target
+        const v = el.value
+        const md = v.match(/[^a-zA-Z0-9\s]/)
+        if (md) {
+            const ms = md[0]
+            el.value.replace(ms, '')
+            return setError('Please use letters and numbers only')
+        }
+        setError(null)
+
+        BinauralBeat.getInstance().name = v
+        setTitle(BinauralBeat.getInstance().generateTitle())
+        setBinauralBeatState(BinauralBeat.getInstance().toState())
+    }
+
+    function pause() {
+        BinauralBeat.getInstance().playing = false
+        setBinauralBeatState(BinauralBeat.getInstance().toState())
+    }
+
+    function play() {
+        this.playing = true
+        setBinauralBeatState(BinauralBeat.getInstance().toState())
+    }
+
+    function onNoiseLevelChange(value: number) {
+        console.log(`Noise level: ${value}`)
+        this.noiseSource.toneNoise.volume.value = value
+        this.setBinauralBeatState(this.toState())
+    }
+
+    function onPitchSliderBlur(offset: number) {
+        setBinauralBeatState(BinauralBeat.getInstance().toState())
+        setTitle(BinauralBeat.getInstance().generateTitle())
+        setGradient(
+            FrequencyRangeHelper
+                .generateGradient(
+                    BinauralBeat.getInstance()
+                        .carrierOscillator
+                        .offset
+                )
+        )
+    }
+
+    function onBeatFreqChange(frequency: Number) {
+        BinauralBeat
+            .getInstance()
+            .beatOscillator
+            .setFrequency(BinauralBeat
+                .getInstance()
+                .carrierOscillator,
+                Number(frequency))
+    }
+
+    function onCarrierFreqChange(offset: Number) {
+        BinauralBeat
+            .getInstance()
+            .carrierOscillator
+            .offset = Number(offset)
+        BinauralBeat
+            .getInstance()
+            .beatOscillator
+            .setFrequency(
+                BinauralBeat.getInstance().carrierOscillator, null)
+        console.log(BinauralBeat.getInstance().beatOscillator.toneOscillator.frequency.value);
     }
 
     if (!isCreate) {
@@ -118,26 +180,26 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
             <Paper className={classes.presetFormCard} elevation={0}>
                 <div className={classes.pitchSliderContainer}>
                     <PitchSlider
-                        handleSliderBlurCallback={BinauralBeat.getInstance().onPitchSliderBlur}
+                        handleSliderBlurCallback={onPitchSliderBlur}
                         showTextInput
                         minMax={BinauralBeat.beatMinMax}
                         label={'Main tone'}
                         default={binauralBeatState.beatOscillator}
-                        handleSliderChangeCallback={BinauralBeat.getInstance().onBeatFreqChange}
+                        handleSliderChangeCallback={onBeatFreqChange}
                     />
                     <PitchSlider
-                        handleSliderBlurCallback={BinauralBeat.getInstance().onPitchSliderBlur}
+                        handleSliderBlurCallback={onPitchSliderBlur}
                         showTextInput
                         minMax={BinauralBeat.carrierMinMax}
                         label={'Carrier tone'}
                         default={binauralBeatState.carrierOscillator}
-                        handleSliderChangeCallback={BinauralBeat.getInstance().onCarrierFreqChange}
+                        handleSliderChangeCallback={onCarrierFreqChange}
                     />
                 </div>
                 <div className={classes.audioControlsContainer}>
                     <AudioControls
-                        handlePlayPress={BinauralBeat.getInstance().play}
-                        handlePausePress={BinauralBeat.getInstance().pause}
+                        handlePlayPress={play}
+                        handlePausePress={pause}
                         disabled={computeAudioControlsState()}/>
                     <div className={classes.saveButtonContainer}>
                         <Button variant="contained" onClick={isCreate ? createBeat : saveBeat}
