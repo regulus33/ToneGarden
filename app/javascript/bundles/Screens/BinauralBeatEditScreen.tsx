@@ -85,10 +85,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
                         .attributes
                     BinauralBeat.ins(binauralBeatState)
                     const params: BinauralBeatState = BinauralBeat.ins().toState()
-                    // TODO: navigating to a new route in same component may be an issue
-
                     history.push({pathname: Routes.BinauralBeatEditScreen(id), binauralBeatState: params})
-
                 }
             })
 
@@ -101,7 +98,9 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
     }
 
     function onNameChange(event: any) {
+        event.preventDefault()
         const el = event.target
+        debugger
         const v = el.value
         const md = v.match(/[^a-zA-Z0-9\s]/)
         if (md) {
@@ -110,7 +109,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
             return setError('Please use letters and numbers only')
         }
         setError(null)
-
+        setName(v)
         BinauralBeat.ins().name = v
         setTitle(BinauralBeat.ins().generateTitle())
     }
@@ -194,8 +193,6 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
     useEffect(() => {
         if (!isCreate) {
             const localBeatState: BinauralBeatState = props.location.binauralBeatState
-
-            debugger
             if (localBeatState) {
                 hydrateBeatState(localBeatState)
             } else {
@@ -262,6 +259,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
                     onNameChange={onNameChange}
                     name={isCreate ? null : name}
                     gradient={gradient}
+                    onVolumeChange={onVolumeChange}
                 />
             </Paper>
         )

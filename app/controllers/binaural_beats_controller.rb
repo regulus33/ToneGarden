@@ -14,18 +14,15 @@ class BinauralBeatsController < ApplicationController
   end
 
   def update
+    beat = BinauralBeat.find(params[:id])
+    saved = beat.update(beat_args)
+
+    logger.info(LoggerService.log_args('User saved beat', {user: logged_in_user.id, beat: beat.inspect})) if saved
+    logger.error(LoggerService.log_args('User could not saved beat', {user: logged_in_user.id, beat: beat.inspect})) unless saved
+    render json: BinauralBeatSerializer.new(beat)
   end
 
   def create
-    beat_args = {
-      user_id: logged_in_user.id,
-      noiseLevel: beat_params[:noiseLevel],
-      volume: beat_params[:volume],
-      editable: true,
-      name: beat_params[:name],
-      carrierOscillator: beat_params[:carrierOscillator],
-      beatOscillator: beat_params[:beatOscillator]
-    }
     beat = BinauralBeat.new(beat_args)
     beat.editable = true
     saved = beat.save
@@ -45,6 +42,18 @@ class BinauralBeatsController < ApplicationController
     beat
   end
 
+  private def beat_args
+    {
+      user_id: logged_in_user.id,
+      noiseLevel: beat_params[:noiseLevel],
+      volume: beat_params[:volume],
+      editable: true,
+      name: beat_params[:name],
+      carrierOscillator: beat_params[:carrierOscillator],
+      beatOscillator: beat_params[:beatOscillator]
+    }
+  end
+
   private def beat_params
     params.permit(
       :playing,
@@ -59,6 +68,12 @@ class BinauralBeatsController < ApplicationController
   end
 
   private def fetch_binaural_beats
-    BinauralBeat.where(user_id: nil)
+    BinauralBeat.where(
+      user_id: nil
+    ).or(
+      BinauralBeat.where(
+        user_id: logged_in_user.id
+      )
+    )
   end
 end
