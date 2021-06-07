@@ -4,7 +4,7 @@ import {
 } from 'tone';
 import BeatOscillator from './BeatOscillator';
 import CarrierOscillator from "./CarrierOscillator";
-import {BinauralBeatState, useBinauralBeat} from "../State/BinauralBeatContext";
+import BinauralBeatState from "../Types/BinauralBeatStateType";
 import NoiseSource from "./NoiseSource";
 import FrequencyRangeHelper from "../Helpers/FrequencyRangeHelper";
 
@@ -61,7 +61,7 @@ export default class BinauralBeat {
 
     }
 
-    public static getInstance(binauralBeatState?: BinauralBeatState): BinauralBeat {
+    public static ins(binauralBeatState?: BinauralBeatState): BinauralBeat {
         if (!BinauralBeat.instance) {
             BinauralBeat.instance = new BinauralBeat(binauralBeatState)
         } else if(binauralBeatState) {

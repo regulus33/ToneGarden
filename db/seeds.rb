@@ -9,7 +9,7 @@
 
 def nameee
   result = ''
-  letters = %w(a b c d e f g h i j k l m n o p q r s t u v w x y z)
+  letters = %w(a b c d e f g h ins j k l m n o p q r s t u v w x y z)
   rand(3...7).times do
     result << letters.sample
   end

@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   # API is namespaced bc react router can collide with some of our urls
   get '/api/binaural_beats', to: 'binaural_beats#index'
   get '/api/binaural_beats/:beat_id', to: 'binaural_beats#show'
-  post '/api/binaural_beats/:beat_id', to: 'binaural_beats#create'
+  post '/api/binaural_beats', to: 'binaural_beats#create'
   put '/api/binaural_beats/:beat_id', to: 'binaural_beats#update'
 
   resources :users, only: :create do

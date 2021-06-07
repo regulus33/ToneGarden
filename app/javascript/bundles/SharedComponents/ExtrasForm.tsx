@@ -48,8 +48,8 @@ const ExtrasForm: FunctionComponent<Props> = (props) => {
                     <PitchSlider
                         minMax={[-80, 0]}
                         label={'Volume'}
-                        default={BinauralBeat.getInstance().volume}
-                        handleSliderChangeCallback={BinauralBeat.getInstance().onVolumeChange}
+                        default={BinauralBeat.ins().volume}
+                        handleSliderChangeCallback={BinauralBeat.ins().onVolumeChange}
                     />
                 </div>
             </Accordion>

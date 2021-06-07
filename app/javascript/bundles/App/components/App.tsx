@@ -19,6 +19,7 @@ import ProgressWheel from "../../SharedComponents/ProgressWheel"
 import DrawerState from "../../Models/DrawerState";
 import SigninScreen from "../../Screens/SigninScreen";
 import GuestTokenScreen from "../../Screens/GuestTokenScreen";
+import Routes from "../../Network/Routes";
 
 const App: FunctionComponent = () => {
     const [authenticated, setAuthenticated] = React.useState(false)
@@ -52,22 +53,25 @@ const App: FunctionComponent = () => {
                                     <BrowserRouter>
                                         <Switch>
                                             <Layout>
-                                                <Route exact path="/signup"
+                                                <Route exact path={Routes.SignupScreen}
                                                        component={SignupScreen}
                                                        title="Signup"/>
-                                                <Route exact path="/signin"
+                                                <Route exact path={Routes.SigninScreen}
                                                        component={SigninScreen}
                                                        title="Signin"/>
-                                                <Route exact path="/guest"
+                                                <Route exact path={Routes.GuestTokenScreen}
                                                        component={GuestTokenScreen}
                                                        title="Guest"/>
-                                                <AuthenticatedRoute path="/presets"
+                                                <AuthenticatedRoute path={Routes.BinauralBeatsScreen}
                                                                     component={BinauralBeatsScreen}
-                                                                    title="BinauralBeats"/>
-                                                <AuthenticatedRoute path="/preset_show/:preset_id"
+                                                                    keyProp="presets"
+                                                                    title="Binaural Beats"/>
+                                                <AuthenticatedRoute path={Routes.BinauralBeatEditScreen(':preset_id')}
+                                                                    keyProp="preset_show"
                                                                     component={BinauralBeatEditScreen}
                                                                     title="Beat Edit"/>
-                                                <AuthenticatedRoute path="/create"
+                                                <AuthenticatedRoute path={Routes.BinauralBeatsCreateScreen}
+                                                                    keyProp="create"
                                                                     component={BinauralBeatEditScreen}
                                                                     title="Create a beat"/>
                                             </Layout>
