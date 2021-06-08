@@ -18,6 +18,7 @@ import ProgressWheel from "../SharedComponents/ProgressWheel";
 import {useHistory} from 'react-router-dom'
 import {getDestination} from "tone";
 import FastJson from "../Types/FastJsonType";
+import Slide from '@material-ui/core/Slide';
 
 interface PresetShowScreenProps {
     location: any
@@ -78,8 +79,8 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
             .post(Routes
                 .BinauralBeatCreate, beatBody)
             .then(function (fastJson: FastJson) {
-                if(fastJson) {
-                    const { id } = fastJson.data
+                if (fastJson) {
+                    const {id} = fastJson.data
                     const binauralBeatState: BinauralBeatState = fastJson
                         .data
                         .attributes
@@ -218,11 +219,15 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
                 noiseLevel: 0,
             })
         }
+        return function () {
+            debugger
+            setBeatObtained(false)
+        }
 
     }, [])
 
-    if (beatObtained) {
-        return (
+    return (
+        <Slide direction="right" in={beatObtained} mountOnEnter unmountOnExit>
             <Paper className={classes.presetFormCard} elevation={0}>
                 <div className={classes.pitchSliderContainer}>
                     <PitchSlider
@@ -262,12 +267,8 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
                     onVolumeChange={onVolumeChange}
                 />
             </Paper>
-        )
-    } else {
-        return (
-            <ProgressWheel/>
-        )
-    }
+        </Slide>
+    )
 }
 // @ts-ignore
 export default BinauralBeatEditScreen
