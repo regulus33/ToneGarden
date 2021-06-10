@@ -220,7 +220,6 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
             })
         }
         return function () {
-            debugger
             setBeatObtained(false)
         }
 
