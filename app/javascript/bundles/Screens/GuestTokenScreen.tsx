@@ -24,7 +24,7 @@ const GuestTokenScreen: FunctionComponent<Props> = (props) => {
                 }
             }))
 
-    })
+    }, [])
 
     return (
         <div className={classes.guestContainer}>

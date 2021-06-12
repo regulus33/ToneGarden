@@ -9,10 +9,7 @@
 
 def nameee
   result = ''
-  letters = %w(a b c d e f g h ins j k l m n o p q r s t u v w x y z)
-  rand(3...7).times do
-    result << letters.sample
-  end
+  result << %w[Energy Ultra Sleep Pain Focus Flow].sample
   result
 end
 
@@ -21,7 +18,6 @@ end
   carrier = rand(-40...40)
   BinauralBeat.create(
     name: nameee,
-    playing: [true, false].sample,
     beatOscillator: beat,
     carrierOscillator: carrier,
     volume: 0,

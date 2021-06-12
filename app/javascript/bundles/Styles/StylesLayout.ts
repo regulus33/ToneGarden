@@ -11,7 +11,8 @@ const useStyles = makeStyles({
     contentContainer: {
         display: 'flex',
         flexGrow: 1,
-        padding: '2.28rem'
+        padding: '2.28rem',
+        position: 'relative'
     }
 })
 

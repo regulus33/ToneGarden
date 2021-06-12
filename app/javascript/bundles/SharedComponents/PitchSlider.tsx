@@ -1,11 +1,19 @@
 import * as React from "react";
-import {ChangeEvent, Dispatch, FunctionComponent} from "react";
+import {ChangeEvent, FunctionComponent, useEffect, useState} from "react";
 import {withStyles} from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
 import TextField from '@material-ui/core/TextField';
 import styles, {useStyles} from '../Styles/StylesPitchSlider'
 import {useGradient} from "../State/GradientContext";
+import FunctionName from "../Utils/FunctionName";
 
+/**
+ * @remarks useEffect is necessary here as per: https://stackoverflow.com/questions/57845087/usestate-not-setting-initial-state
+ * We need to check the type of `value` because it can be a blank string as both slider and textinput share it
+ * @param label appears above input
+ * @param minMax an array of the upper and lower bounds of the slider
+ * @param defuault the initial value of the input (used by set state)
+ */
 const CustomSlider = withStyles(styles)(Slider);
 
 interface PitchSliderProps {
@@ -18,25 +26,20 @@ interface PitchSliderProps {
 }
 
 const PitchSlider: FunctionComponent<PitchSliderProps> = (props) => {
-    console.log('hi there, this is PitchSlider. default is: ' + props.default)
-
     const { gradient } = useGradient();
-
     const classes = useStyles({
         textInputDisplay: (props.showTextInput ? 'inherit' : 'none'),
         ...gradient.toProps()
     })
 
-    const [value, setValue] = React.useState<number | string | Array<number | string>>(props.default);
-
+    const [value, setValue] = useState<number|string>(props.default);
     const handleSliderChange = (event: ChangeEvent, newValue: number) => {
         setValue(Number(newValue))
-        console.log('handle slider change' + newValue)
         props.handleSliderChangeCallback(Number(newValue))
     }
 
-    // Changes display only handleBlur updates oscillators
     const handleTextChange = (event: ChangeEvent<HTMLInputElement>) => {
+        console.log(`[${FunctionName()}]: value of event.target.value: ${event.target.value}`)
         setValue(event.target.value === '' ? '' : Number(event.target.value));
     }
 
@@ -51,9 +54,17 @@ const PitchSlider: FunctionComponent<PitchSliderProps> = (props) => {
         if(props.handleSliderBlurCallback) {
             props.handleSliderBlurCallback(Number(value))
         }
-    };
+    }
 
-    console.log(props.default)
+    useEffect(()=>{
+        setValue(props.default)
+    },[props.default])
+
+    // TODO: remove logs
+    console.log(`[${FunctionName()}]: value of label: ${props.label}`)
+    console.log(`[${FunctionName()}]: value of props.default: ${props.default}`)
+    console.log(`[${FunctionName()}]: value of value: ${value}`)
+
     return (
         <form
             className={classes.root}
@@ -74,7 +85,7 @@ const PitchSlider: FunctionComponent<PitchSliderProps> = (props) => {
                     onChange={handleSliderChange}
                     min={props.minMax[0]}
                     max={props.minMax[1]}
-                    defaultValue={props.default}
+                    defaultValue={typeof value === 'number' ? value : 0}
                     valueLabelDisplay="on"/>
             </div>
         </form>

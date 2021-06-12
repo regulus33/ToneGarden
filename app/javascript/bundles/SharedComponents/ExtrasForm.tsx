@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {FormEvent, FunctionComponent} from 'react'
-import BinauralBeat from '../Models/BinauralBeat'
+import BinauralBeatSingleton from '../Models/BinauralBeatSingleton'
 import PitchSlider from "./PitchSlider"
 import Gradient from "../Models/Gradient";
 import {Accordion, AccordionSummary, Typography} from "@material-ui/core"
@@ -20,7 +20,6 @@ interface Props {
 const ExtrasForm: FunctionComponent<Props> = (props) => {
     const classes = useStyles(props.gradient.toProps())
     const classesAuth = useStylesAuth(props.gradient.toProps())
-
     return (
         <div className={classes.root}>
             <Accordion className={classes.accordian}>
@@ -49,7 +48,7 @@ const ExtrasForm: FunctionComponent<Props> = (props) => {
                     <PitchSlider
                         minMax={[-80, 0]}
                         label={'Volume'}
-                        default={BinauralBeat.ins().volume}
+                        default={BinauralBeatSingleton.ins().volume}
                         handleSliderChangeCallback={props.onVolumeChange}
                     />
                 </div>
