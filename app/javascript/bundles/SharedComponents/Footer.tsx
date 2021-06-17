@@ -12,8 +12,20 @@ interface Props {
 
 const Footer: FunctionComponent<Props> = (props) => {
     const classes = useStyles();
-    const [value, setValue] = React.useState('settings')
+    const [value, setValue] = React.useState('presets')
     const history = useHistory()
+
+    history.listen((location, action) => {
+        switch(location.pathname) {
+            case '/create':
+                setValue('create')
+                break
+            case '/presets':
+                setValue('presets')
+            default:
+                setValue(null)
+        }
+    })
 
     const handleChange = (event, newValue) => {
         setValue(newValue);

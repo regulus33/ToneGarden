@@ -6,7 +6,7 @@ import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import * as React from "react";
 import {Link} from "react-router-dom";
 import useStyles from '../Styles/StylesPresetCard'
-import BinauralBeatState from "../Types/BinauralBeatStateType";
+import BinauralBeatState from "../Types/BinauralBeatTypes";
 import {FunctionComponent} from "react";
 import FrequencyRangeHelper from "../Helpers/FrequencyRangeHelper";
 import Zoom from '@material-ui/core/Zoom';

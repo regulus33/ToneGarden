@@ -7,8 +7,9 @@ import BinauralBeatsList from '../Models/BinauralBeatsList'
 import BinauralBeatStateCard from "../SharedComponents/BinauralBeatStateCard"
 import {useTitle} from "../State/TitleContext"
 import ProgressWheel from "../SharedComponents/ProgressWheel"
-import BinauralBeatState from "../Types/BinauralBeatStateType";
+import BinauralBeatState from "../Types/BinauralBeatTypes";
 import {Slide} from "@material-ui/core";
+import useStyles from "../Styles/StylesBinarualBeatsScreen";
 
 interface PresetsScreenProps {
 }
@@ -16,7 +17,7 @@ interface PresetsScreenProps {
 const BinauralBeatsScreen: FunctionComponent<PresetsScreenProps> = (props) => {
     const {setTitle} = useTitle()
     const [binauralBeatStates, setBinauralBeatStates] = useState([])
-
+    const classes = useStyles()
 
     useEffect(() => {
         setTitle('Select A Beat')
@@ -32,7 +33,7 @@ const BinauralBeatsScreen: FunctionComponent<PresetsScreenProps> = (props) => {
 
         return (
             <Slide direction="right" in={binauralBeatStates.length > 0} mountOnEnter unmountOnExit>
-                <Grid container spacing={2}> {
+                <Grid className={classes.root} container spacing={2}> {
                     binauralBeatStates.map((binauralBeatState: BinauralBeatState, index) => {
                         return (
                             <Grid

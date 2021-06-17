@@ -1,5 +1,6 @@
 enum Breakpoints {
-    mobile ='500px',
+    xsMobile = '410px',
+    mobile ='650px',
     tablet = '800px',
     smallDesktop = '1220px'
 }

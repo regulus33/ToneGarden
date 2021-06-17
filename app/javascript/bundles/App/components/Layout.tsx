@@ -9,6 +9,8 @@ import {useGradient} from "../../State/GradientContext"
 import {useSettingsDrawer} from "../../State/SettingsDrawerContext"
 import DrawerState from "../../Models/DrawerState"
 import SettingsDrawer from "../../SharedComponents/SettingsDrawer"
+import Flash from "../../SharedComponents/Flash";
+import {useFlashMessage} from "../../State/FlashMessageContext";
 
 export interface Props {
 }
@@ -20,11 +22,12 @@ interface ContentProps {
 
 // Private
 const Content: FunctionComponent<ContentProps> = (props) => {
-    const { theme, setTheme } = useTheme();
-    const { title } = useTitle();
-    const { gradient } = useGradient();
-    const classes = useStyles();
-    const { drawerState, setDrawerState } = useSettingsDrawer();
+    const { theme, setTheme } = useTheme()
+    const { title } = useTitle()
+    const { gradient } = useGradient()
+    const classes = useStyles()
+    const { drawerState, setDrawerState } = useSettingsDrawer()
+    const { flashMessage } = useFlashMessage()
 
     const handleInputKeyUp = (event: any) => {
         if (event.code == 'Digit0') {
@@ -48,13 +51,12 @@ const Content: FunctionComponent<ContentProps> = (props) => {
 
     return (
         <div onKeyPress={handleInputKeyUp} tabIndex={0} className={classes.mainContainer}>
-           <Header toggleSettingsDrawer={toggleSettingsDrawer} screen={title} gradient={gradient}/>
-           <div className={classes.contentContainer}>
+           <Header  toggleSettingsDrawer={toggleSettingsDrawer} screen={title} gradient={gradient}/>
             {
                 props.children
             }
             <SettingsDrawer toggleSettingsDrawer={toggleSettingsDrawer}/>
-           </div>
+                <Flash flashMessage={flashMessage} />
             <Footer/>
         </div>
     )
