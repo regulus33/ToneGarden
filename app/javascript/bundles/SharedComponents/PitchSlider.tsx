@@ -5,7 +5,6 @@ import Slider from '@material-ui/core/Slider';
 import TextField from '@material-ui/core/TextField';
 import styles, {useStyles} from '../Styles/StylesPitchSlider'
 import {useGradient} from "../State/GradientContext";
-import FunctionName from "../Utils/FunctionName";
 
 /**
  * @remarks useEffect is necessary here as per: https://stackoverflow.com/questions/57845087/usestate-not-setting-initial-state
@@ -27,43 +26,48 @@ interface PitchSliderProps {
 
 const PitchSlider: FunctionComponent<PitchSliderProps> = (props) => {
     const { gradient } = useGradient();
+    const [ errorText, setErrorText] = useState(null)
     const classes = useStyles({
         textInputDisplay: (props.showTextInput ? 'inherit' : 'none'),
         ...gradient.toProps()
     })
 
     const [value, setValue] = useState<number|string>(props.default);
+
     const handleSliderChange = (event: ChangeEvent, newValue: number) => {
         setValue(Number(newValue))
         props.handleSliderChangeCallback(Number(newValue))
     }
 
     const handleTextChange = (event: ChangeEvent<HTMLInputElement>) => {
-        console.log(`[${FunctionName()}]: value of event.target.value: ${event.target.value}`)
-        setValue(event.target.value === '' ? '' : Number(event.target.value));
+        setValue(event.target.value)
     }
 
     // Make sure text input value is within boundary then update osc
     const handleBlur = () => {
-        if(value > props.minMax[1]) {
-            setValue(props.minMax[1])
-        } else if(value < props.minMax[0]) {
-            setValue(props.minMax[0])
+       let adjustedValue: number
+        // if its not - or 0-9
+        if(!String(value).match(/[\d^-]/)) {
+            adjustedValue = 0
+             setValue(adjustedValue)
         }
-        props.handleSliderChangeCallback(Number(value))
+        if(value > props.minMax[1]) {
+            adjustedValue = props.minMax[1]
+            setValue(adjustedValue)
+        } else if(value < props.minMax[0]) {
+            adjustedValue = props.minMax[0]
+            setValue(adjustedValue)
+        }
+        debugger
+        props.handleSliderChangeCallback(Number(adjustedValue || value))
         if(props.handleSliderBlurCallback) {
-            props.handleSliderBlurCallback(Number(value))
+            props.handleSliderBlurCallback(Number(adjustedValue || value))
         }
     }
 
     useEffect(()=>{
         setValue(props.default)
     },[props.default])
-
-    // TODO: remove logs
-    console.log(`[${FunctionName()}]: value of label: ${props.label}`)
-    console.log(`[${FunctionName()}]: value of props.default: ${props.default}`)
-    console.log(`[${FunctionName()}]: value of value: ${value}`)
 
     return (
         <form
@@ -72,9 +76,10 @@ const PitchSlider: FunctionComponent<PitchSliderProps> = (props) => {
             autoComplete="off">
             <TextField
                 className={classes.textField}
+                error={errorText != null}
                 onBlur={handleBlur}
                 onChange={handleTextChange}
-                label={props.label}
+                label={errorText != null ? errorText : props.label}
                 variant="standard"
                 value={value}/>
             <div className={classes.root}>

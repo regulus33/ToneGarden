@@ -21,6 +21,7 @@ const SignupScreen: FunctionComponent<SignupScreenProps> = (props) => {
 
     const onEmailChange = (event) => {
         let emailText = event.target.value
+        debugger
         setEmail(emailText)
     }
     const onPasswordChange = (event) => {
