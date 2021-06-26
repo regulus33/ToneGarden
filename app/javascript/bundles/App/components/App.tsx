@@ -22,6 +22,8 @@ import GuestTokenScreen from "../../Screens/GuestTokenScreen";
 import Routes from "../../Network/Routes";
 import FlashMessage, {FlashEnum} from "../../Models/FlashMessage";
 import {FlashMessageContext} from '../../State/FlashMessageContext'
+import { useHistory } from 'react-router-dom'
+import ErrorScreen from "../../Screens/ErrorScreen";
 
 const App: FunctionComponent = () => {
     const [authenticated, setAuthenticated] = React.useState(false)
@@ -30,6 +32,7 @@ const App: FunctionComponent = () => {
     const [gradient, setGradient] = React.useState(new Gradient('alpha'))
     const [error, setError] = React.useState(null)
     const [flashMessage, setFlashMessage] = React.useState(new FlashMessage('default', false, FlashEnum.success))
+    const history = useHistory()
 
     // TODO: we should use Anchor or remove it.
     const [drawerState, setDrawerState] = React.useState(new DrawerState(false, 'left'))
@@ -37,6 +40,7 @@ const App: FunctionComponent = () => {
     // TODO: no dispatches outside dom tree
     NetworkService.getInstance().setAuthenticated = setAuthenticated
     NetworkService.getInstance().setError = setError
+    NetworkService.getInstance().history = history
 
     const [loaded, setLoaded] = useState(false)
 
@@ -57,6 +61,7 @@ const App: FunctionComponent = () => {
                                         <BrowserRouter>
                                             <Switch>
                                                 <Layout>
+                                                    <Route exact path={Routes.ErrorScreen} component={ErrorScreen} />
                                                     <Route exact path={Routes.SignupScreen}
                                                            component={SignupScreen}
                                                            title="Signup"/>

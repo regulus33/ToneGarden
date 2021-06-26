@@ -12,6 +12,7 @@ enum ReactRoutesMap {
     GuestTokenScreen = '/guest',
     BinauralBeatsScreen = '/presets',
     BinauralBeatsCreateScreen = '/create',
+    ErrorScreen = '/whoops'
 }
 
 class Routes {
@@ -68,6 +69,10 @@ class Routes {
 
     public static get BinauralBeatsCreateScreen() {
         return ReactRoutesMap.BinauralBeatsCreateScreen
+    }
+
+    public static get ErrorScreen() {
+        return ReactRoutesMap.ErrorScreen
     }
 }
 
