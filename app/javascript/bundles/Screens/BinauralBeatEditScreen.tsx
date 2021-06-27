@@ -69,41 +69,41 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
                         id.toString()), beatBody)
 
             // @ts-ignore https://stackoverflow.com/questions/40097820/property-does-not-exist-on-type-object-observable-subscribe
-            const { name } = b.data.binauralBeatState.data.attributes
+            const {name} = b.data.binauralBeatState.data.attributes
 
             const displayName = name || 'Binaural beat'
             setFlashMessage(new FlashMessage(`${displayName} is now saved.`, true, FlashEnum.success))
         })()
     }
 
-    // TODO FIX FOR AXIOS
     function createBeat() {
-        const beatBody = BinauralBeatSingleton.ins().toState()
+        (async() => {
+            const beatBody = BinauralBeatSingleton.ins().toState()
+            const b = await NetworkService
+                .getInstance()
+                .post(Routes
+                    .BinauralBeatCreate, beatBody)
 
-        NetworkService
-            .getInstance()
-            .post(Routes
-                .BinauralBeatCreate, beatBody)
-            .then(function (b: BinauralBeatJson) {
-                if (b) {
-                    const binauralBeatState: BinauralBeatState = b
-                        .binauralBeatState
-                        .data
-                        .attributes
-                    const {id} = binauralBeatState
-                    BinauralBeatSingleton.ins(binauralBeatState)
-                    const params: BinauralBeatState = BinauralBeatSingleton.ins().toState()
-                    history.push({pathname: Routes.BinauralBeatEditScreen(String(id)), binauralBeatState: params})
-                    const {name} = params
-                    const displayName = name || 'beat'
-                    setFlashMessage(
-                        new FlashMessage(
-                            `${displayName} was successfully created`,
-                            true,
-                            FlashEnum.success)
-                    )
-                }
-            })
+            // @ts-ignore
+            const binauralBeatState: BinauralBeatState = b.data
+                .binauralBeatState
+                .data
+                .attributes
+
+            const {id} = binauralBeatState
+            BinauralBeatSingleton.ins(binauralBeatState)
+            const params: BinauralBeatState = BinauralBeatSingleton.ins().toState()
+            history.push({pathname: Routes.BinauralBeatEditScreen(String(id)), binauralBeatState: params})
+            const {name} = params
+            const displayName = name || 'beat'
+            setFlashMessage(
+                new FlashMessage(
+                    `${displayName} was successfully created`,
+                    true,
+                    FlashEnum.success)
+            )
+
+        })()
 
     }
 
@@ -213,16 +213,20 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
         if (localBeatState) {
             hydrateBeatState(localBeatState)
         } else {
-            NetworkService
-                .getInstance()
-                .get(Routes.BinauralBeatShow(preset_id))
-                .then(function (b: BinauralBeatJson) {
-                    const beatState = b
-                        .binauralBeatState
-                        .data
-                        .attributes
-                    hydrateBeatState(beatState)
-                })
+            (async () => {
+                NetworkService
+                    .getInstance()
+                    .get(Routes.BinauralBeatShow(preset_id))
+                    .then((b: any) => {
+                        const beatState =
+                            b
+                                .data
+                                .binauralBeatState
+                                .data
+                                .attributes
+                        hydrateBeatState(beatState)
+                    })
+            })()
         }
     }, [])
 
