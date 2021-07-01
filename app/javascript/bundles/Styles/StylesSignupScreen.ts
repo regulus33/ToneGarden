@@ -5,5 +5,12 @@ export const useStyles = makeStyles({
         display: 'flex',
         justifyContent: 'center',
         width: '100%',
+        marginBottom: '7rem'
+    },
+
+    authFormContainerWrapper:{
+        display: 'flex',
+        alignItems: 'center',
+        height: '100vh'
     }
 })

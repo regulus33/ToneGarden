@@ -40,13 +40,13 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({
                     <TextField error={(error != null)}
                                label={(error != null) ? error.message : 'Email'}
                                onInput={onEmailChange}
-                               variant='standard'
+                               variant='outlined'
                                type={'email'}
                                className={classes.textField}
                                placeholder='example@example.com'/>
                     <TextField label='Password'
                                onInput={onPasswordChange}
-                               variant='standard'
+                               variant='outlined'
                                className={classes.textField}
                                type={'password'}/>
                     <Button onClick={onSubmit} className={classes.submitButton} variant="contained"
@@ -54,9 +54,9 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({
                 </form>
             </div>
             <div className={classes.noAccountContainer}>
-                <Typography>No account yet?</Typography>
+                <Typography>Not interested in signing up?</Typography>
                 <div className={classes.noAccountButtonsContainer}>
-                    <Link to={'/guest'}>Continue as a guest</Link>
+                    <Link className={classes.continueAsGuest} to={'/guest'}>Listen without account</Link>
                 </div>
             </div>
         </Paper>

@@ -11,6 +11,8 @@ export const useStyles = makeStyles({
     submitButton: (props: Props) => ({
         backgroundColor: props.dominantColor,
         color: 'white',
+        maxWidth: '7rem',
+        alignSelf: 'flex-end',
         '&:hover': {
             background: props.secondaryColor,
         }
@@ -37,7 +39,8 @@ export const useStyles = makeStyles({
 
     },
     heading: {
-        marginBottom: '.9rem'
+        marginBottom: '.9rem',
+        fontWeight: 'bold'
     },
     paper: {
         height: 'fit-content',
@@ -56,11 +59,13 @@ export const useStyles = makeStyles({
     noAccountContainer: {
         display: 'flex',
         flexDirection: 'column',
-        paddingTop: '2rem',
         maxWidth: '50%'
     },
     noAccountButtonsContainer: {
         display: 'flex',
         justifyContent: 'space-between'
+    },
+    continueAsGuest: {
+        fontSize: '1.9rem'
     }
 })

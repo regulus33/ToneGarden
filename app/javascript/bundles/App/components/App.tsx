@@ -34,7 +34,6 @@ const App: FunctionComponent = () => {
     const [flashMessage, setFlashMessage] = React.useState(new FlashMessage('default', false, FlashEnum.success))
     const history = useHistory()
 
-    // TODO: we should use Anchor or remove it.
     const [drawerState, setDrawerState] = React.useState(new DrawerState(false, 'left'))
 
     // TODO: no dispatches outside dom tree
@@ -61,7 +60,8 @@ const App: FunctionComponent = () => {
                                         <BrowserRouter>
                                             <Switch>
                                                 <Layout>
-                                                    <Route exact path={Routes.ErrorScreen} component={ErrorScreen} />
+                                                    <Route exact path={Routes.ErrorScreen}
+                                                           component={ErrorScreen} />
                                                     <Route exact path={Routes.SignupScreen}
                                                            component={SignupScreen}
                                                            title="Signup"/>

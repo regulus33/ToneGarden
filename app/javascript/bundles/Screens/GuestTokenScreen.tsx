@@ -3,7 +3,7 @@ import {FunctionComponent, useContext, useEffect} from 'react'
 import NetworkService from "../Network/NetworkService"
 import Routes from "../Network/Routes"
 import ProgressWheel from "../SharedComponents/ProgressWheel"
-import { useHistory } from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
 import SecureStorageService from "../Network/SecureStorageService";
 import useStyles from "../Styles/StylesGuestTokenScreen";
 
@@ -15,15 +15,13 @@ const GuestTokenScreen: FunctionComponent<Props> = (props) => {
     const classes = useStyles()
 
     useEffect(() => {
-        NetworkService.getInstance()
-            .get(Routes.Guest)
-            .then((function (json){
-                if(json.token) {
-                    SecureStorageService.setToken(json.token)
-                    history.replace('/presets')
-                }
-            }))
-
+        (async () => {
+            const resp = await NetworkService.getInstance()
+                .get(Routes.Guest)
+            // @ts-ignore
+            SecureStorageService.setToken(resp.data.token)
+            history.replace('/presets')
+        })()
     }, [])
 
     return (

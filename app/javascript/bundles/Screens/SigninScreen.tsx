@@ -5,15 +5,15 @@ import AuthForm from "../SharedComponents/AuthForm";
 import NetworkService from "../Network/NetworkService";
 import SecureStorageService from "../Network/SecureStorageService";
 import Routes from "../Network/Routes";
-import { useHistory } from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
 import {useStyles} from "../Styles/StylesSignupScreen";
 import {useGradient} from "../State/GradientContext";
 import {useError} from "../State/ErrorContext";
 
 const SignupScreen: FunctionComponent<SignupScreenProps> = (props) => {
-    const [ email, setEmail ] = useState('')
-    const [ password, setPassword ] = useState('')
-    const { error } = useError()
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const {error} = useError()
     const classes = useStyles()
     const history = useHistory()
 
@@ -21,7 +21,6 @@ const SignupScreen: FunctionComponent<SignupScreenProps> = (props) => {
 
     const onEmailChange = (event) => {
         let emailText = event.target.value
-        debugger
         setEmail(emailText)
     }
     const onPasswordChange = (event) => {
@@ -32,21 +31,22 @@ const SignupScreen: FunctionComponent<SignupScreenProps> = (props) => {
     const onSubmit = async (event: any) => {
         const response = await NetworkService.getInstance().post(
             Routes.Login,
-            { user: { email, password } }
+            {user: {email, password}}
         );
-        if(response.ok) {
-            await SecureStorageService.setToken(response.token)
-            history.push('/presets')
-        }
+        // @ts-ignore
+        SecureStorageService.setToken(response.data.token)
+        history.push('/presets')
     }
 
     return (
-        <div className={classes.authFormContainer}>
-            <AuthForm buttonText={'Continue'} heading={'Signin'} gradient={gradient} error={error} onSubmit={onSubmit} onEmailChange={onEmailChange} onPasswordChange={onPasswordChange}/>
+        <div className={classes.authFormContainerWrapper}>
+            <div className={classes.authFormContainer}>
+                <AuthForm buttonText={'Sign in'} heading={'Signin'} gradient={gradient} error={error}
+                          onSubmit={onSubmit} onEmailChange={onEmailChange} onPasswordChange={onPasswordChange}/>
+            </div>
         </div>
     );
 }
-
 
 
 interface SignupScreenProps {
