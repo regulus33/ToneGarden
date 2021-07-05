@@ -41,7 +41,7 @@ const SignupScreen: FunctionComponent<SignupScreenProps> = (props) => {
     return (
         <div className={classes.authFormContainerWrapper}>
             <div className={classes.authFormContainer}>
-                <AuthForm buttonText={'Sign in'} heading={'Signin'} gradient={gradient} error={error}
+                <AuthForm guestText={'Skip sign in'} optionalLink={Routes.SignupScreen} optionalLinkText={'Create a new account'} buttonText={'Sign in'} heading={'Signin'} gradient={gradient} error={error}
                           onSubmit={onSubmit} onEmailChange={onEmailChange} onPasswordChange={onPasswordChange}/>
             </div>
         </div>

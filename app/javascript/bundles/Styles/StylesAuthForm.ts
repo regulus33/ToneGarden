@@ -17,6 +17,7 @@ export const useStyles = makeStyles({
             background: props.secondaryColor,
         }
     }),
+
     authform: {
         display: 'flex',
         flexDirection: 'column',
@@ -27,45 +28,68 @@ export const useStyles = makeStyles({
             maxWidth: '3rem',
             alignSelf: 'flex-end'
         },
-            [`@media (max-width: ${Breakpoints.smallDesktop})`]: {
+        [`@media (max-width: ${Breakpoints.smallDesktop})`]: {
             minWidth: 'calc(100vw - 5rem)',
         },
         [`@media (max-width: ${Breakpoints.tablet})`]: {
-            minWidth: 'calc(100vw - 2rem)',
+            minWidth: 'calc(90vw - 2rem)',
         },
         [`@media (max-width: ${Breakpoints.mobile})`]: {
             minWidth: 'calc(100vw - 2rem)',
         },
-
+        [`@media (max-width: ${Breakpoints.xsMobile})`]: {
+            minWidth: 'calc(100vw - 2rem)',
+        },
     },
+
     heading: {
         marginBottom: '.9rem',
         fontWeight: 'bold'
     },
+
     paper: {
         height: 'fit-content',
         padding: '2.5rem 2rem'
     },
+
     textField: (props: Props) => ({
         '& div': {
             '&:before': {
-                borderBottom: `.1rem solid ${Colors.deepGrey}`
+                // borderBottom: `.1rem solid ${Colors.deepGrey}`
             },
             '&:after': {
-                borderBottom: `.1rem solid ${props.dominantColor}`
+                // borderBottom: `.1rem solid ${props.dominantColor}`
             }
+        },
+        [`@media(max-width: ${Breakpoints.mobile})`]: {
+            marginBottom: '1rem',
         }
+
     }),
+
     noAccountContainer: {
         display: 'flex',
         flexDirection: 'column',
         maxWidth: '50%'
     },
+
     noAccountButtonsContainer: {
         display: 'flex',
         justifyContent: 'space-between'
     },
+
     continueAsGuest: {
-        fontSize: '1.9rem'
+        fontSize: '1.9rem',
+        [`@media(max-width: ${Breakpoints.xsMobile})`]: {
+            fontSize: '1rem'
+        }
+    },
+
+    guestLabel: {
+        marginBottom: '1rem'
+    },
+
+    or: {
+        margin: '1rem 0'
     }
 })
