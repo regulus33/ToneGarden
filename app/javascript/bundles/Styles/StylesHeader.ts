@@ -12,7 +12,6 @@ const useStyles = makeStyles((theme) => ({
         console.log(`[${FunctionName()}]: value of props:`)
        return  {
             flexGrow: 1,
-                boxShadow: `5px -1px 15px ${props.dominantColor};`,
         }
     },
     menuButton: {

@@ -1,8 +1,8 @@
 const rangeToColorsMap = {
-    'alpha': ['#6D5959', '#a03a3a'],
-    'beta': ['#00a6a6', '#a2fffc'],
+    'alpha': ['#4891ff', '#4e0b55'],
+    'beta': ['#ff1e00', '#200ec6'],
     'theta': ['#2605ff', '#a600ff'],
-    'gamma': ['#983628', '#e2aedd'],
+    'gamma': ['#585bff', '#e2aedd'],
     'delta': ['#8800ff', '#0593ff'],
 }
 
@@ -23,6 +23,7 @@ export default class Gradient {
     }
 
     secondaryColor(){
+        // Sliders sometimes return out of bounds numbers
         return rangeToColorsMap[this.rangeString][1]
     }
 

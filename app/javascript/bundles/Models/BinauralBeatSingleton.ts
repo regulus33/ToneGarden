@@ -24,8 +24,8 @@ export default class BinauralBeatSingleton {
     private static instance: BinauralBeatSingleton;
 
     private constructor(binauralBeatState?: BinauralBeatState) {
-        if(binauralBeatState) {
-          this.hydrateBeatState(binauralBeatState)
+        if (binauralBeatState) {
+            this.hydrateBeatState(binauralBeatState)
         }
 
         this.toState = this.toState.bind(this)
@@ -47,7 +47,9 @@ export default class BinauralBeatSingleton {
         this.name = name
         this.volume = volume
         // this.noiseSource = new NoiseSource(noiseLevel)
-        this.beatOscillator = new BeatOscillator(beatOscillator)
+        this.beatOscillator = new BeatOscillator(
+            beatOscillator
+        )
         this.carrierOscillator = new CarrierOscillator(
             carrierOscillator,
             this.beatOscillator
@@ -56,36 +58,70 @@ export default class BinauralBeatSingleton {
     }
 
     set playing(playing: boolean) {
-        if(playing) {
+        if (playing) {
             const pannerCarrier = new Panner(1).toDestination();
             this.carrierOscillator
-                .toneOscillator =  new Oscillator(
-                    this.carrierOscillator
-                        .frequency, 'sine')
+                .toneOscillator = new Oscillator({
+                frequency: this.carrierOscillator.frequency,
+                type: 'sine',
+                volume: -Infinity
+            })
                 .connect(pannerCarrier)
                 .start()
 
+            this.carrierOscillator
+                .toneOscillator
+                .volume
+                .linearRampTo(
+                    -20,
+                    1
+                )
+
             const pannerBeat = new Panner(-1).toDestination();
             this.beatOscillator
-                .toneOscillator =  new Oscillator(
-                    this.beatOscillator.frequency, 'sine')
+                .toneOscillator = new Oscillator({
+                frequency: this.beatOscillator.frequency,
+                type: 'sine',
+                volume: -Infinity
+            })
                 .connect(pannerBeat)
                 .start()
 
+            this.beatOscillator
+                .toneOscillator
+                .volume
+                .linearRampTo(
+                    -20,
+                    1
+                )
+
         } else {
-            this.carrierOscillator.toneOscillator.mute = true
-            this.beatOscillator.toneOscillator.mute = true
+            this.carrierOscillator
+                .toneOscillator
+                .volume
+                .linearRampTo(
+                    -Infinity,
+                    1
+                )
+
+            this.beatOscillator
+                .toneOscillator
+                .volume
+                .linearRampTo(
+                    -Infinity,
+                    1
+                )
         }
     }
 
     public static ins(binauralBeatState?: BinauralBeatState): BinauralBeatSingleton {
         if (!BinauralBeatSingleton.instance) {
-            if(binauralBeatState) {
+            if (binauralBeatState) {
                 BinauralBeatSingleton.instance = new BinauralBeatSingleton(binauralBeatState)
             } else {
                 BinauralBeatSingleton.instance = new BinauralBeatSingleton()
             }
-        } else if(binauralBeatState) {
+        } else if (binauralBeatState) {
             BinauralBeatSingleton.instance.hydrateBeatState(binauralBeatState)
         }
 
@@ -99,7 +135,7 @@ export default class BinauralBeatSingleton {
         const freqName = FrequencyRangeHelper.rangeString(
             this.carrierOscillator.offset
         )
-       return `${symbol} ${freqName} ${this.name} `
+        return `${symbol} ${freqName} ${this.name} `
     }
 
     toState(): BinauralBeatState {
