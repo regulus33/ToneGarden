@@ -20,7 +20,6 @@ interface PitchSliderProps {
     minMax: Array<number>,
     default: number,
     handleSliderChangeCallback: (sliderValue: number) => void,
-    handleSliderBlurCallback?: (sliderValue: number) => void,
     showTextInput?: boolean,
 }
 
@@ -58,11 +57,7 @@ const PitchSlider: FunctionComponent<PitchSliderProps> = (props) => {
             adjustedValue = props.minMax[0]
             setValue(adjustedValue)
         }
-        debugger
         props.handleSliderChangeCallback(Number(adjustedValue || value))
-        if(props.handleSliderBlurCallback) {
-            props.handleSliderBlurCallback(Number(adjustedValue || value))
-        }
     }
 
     useEffect(()=>{
