@@ -1,5 +1,5 @@
 import Routes from './Routes';
-import SecureStorageService from "./SecureStorageService";
+import LocalStorageService from "./LocalStorageService";
 class Headerz {
     private static base = {
         'Accept': 'application/json',
@@ -10,10 +10,9 @@ class Headerz {
 
     private headerz: HeadersInit = Headerz.base;
 
-     constructor(route:string) {
-        if(!Headerz.notPasswordProtected.includes(route)) {
-           this.headerz['Authorization'] = 'Bearer ' + SecureStorageService.getToken();
-        }
+     constructor() {
+       //Bearer token will be null that should be ok for unprotected routes
+       this.headerz['Authorization'] = 'Bearer ' + LocalStorageService.getToken();
     }
 
     public build(){

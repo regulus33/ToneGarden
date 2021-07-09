@@ -1,26 +1,22 @@
 import Headerz from './Headerz'
 import {Dispatch} from "react";
 import GlobalError from "../Models/GlobalError";
-import SecureStorageService from "./SecureStorageService";
+import LocalStorageService from "./LocalStorageService";
 import FunctionName from "../Utils/FunctionName";
-import axios from "axios";
-import { cacheAdapterEnhancer } from 'axios-extensions';
+import axios, {AxiosInstance} from "axios";
+import {cacheAdapterEnhancer} from 'axios-extensions';
 
 export default class NetworkService {
     private static baseUrl: string = 'http://localhost:3000';
-
     private static instance: NetworkService;
-
-    // TODO: types for axios instance?
-    private http: any
-
+    private http: AxiosInstance
     public setAuthenticated: Dispatch<boolean>
     public setError: Dispatch<GlobalError>
     public onError: Function
 
     private constructor() {
         this.http = axios.create({
-            headers: { 'Cache-Control': 'no-cache' },
+            // headers: { 'Cache-Control': 'no-cache' },
             // cache will be enabled by default
             adapter: cacheAdapterEnhancer(axios.defaults.adapter)
         });
@@ -47,30 +43,44 @@ export default class NetworkService {
         return this.makeRequest(route, 'get')
     }
 
-    // NOTE error will make RESPONSE null
-    private async makeRequest(route: string, method: string, data?: object): Promise<object | null> {
-        let response
+    private async makeRequest(url: string, method: string, body?: object): Promise<object | null> {
+        if(!['get', 'post', 'put', 'patch', 'delete'].includes(method)) {
+            throw `invalid http method ${method}`
+        }
         const options = {
-            // url: NetworkService.buildUrl(route),
-            method: method,
-            headers: new Headerz(route).build(),
+            headers: new Headerz().build(),
             withCredentials: true
         }
 
-        data && (options['data'] = data)
-
+        let response
         try {
-            response = await this.http[method](NetworkService.buildUrl(route), options)
-            this.handleResponse(response.status)
-        } catch(error) {
-            console.log(`[${FunctionName()}]: value of error: ${error}`)
-            this.handleResponse(500)
+            switch (method) {
+                case 'get':
+                    response = await this.http.get(url, options)
+                    break
+                case 'delete':
+                    response = await this.http.delete(url, options)
+                    break
+                default:
+                    response = await this.http[method](url, body, options)
+                    break
+            }
+        } catch(errorMessage) {
+            console.log(`[${FunctionName()}]: value of errorMessage: ${errorMessage}`)
+            console.log(errorMessage)
+            let statusCode
+            if(errorMessage.response) {
+                statusCode = errorMessage.response.status
+            }
+            this.processResponse(statusCode, errorMessage)
+            return
         }
-        return response || null
+        this.processResponse(response.status)
+        return response
     }
 
-    private handleResponse(statusCode: number) {
-        if (statusCode >= 500) {
+    private processResponse(statusCode?: number, errorMessage?: string) {
+        if (errorMessage) {
             this.onError()
         }
         switch (statusCode) {
@@ -79,7 +89,7 @@ export default class NetworkService {
                 this.setError(new GlobalError(null, statusCode, null))
                 break
             case 400:
-                this.setError(new GlobalError('Email alrready taken.', statusCode, null))
+                this.setError(new GlobalError('Email already taken.', statusCode, null))
                 break
             case 200:
                 this.setAuthenticatedAndStore(true)
@@ -98,6 +108,6 @@ export default class NetworkService {
 
     setAuthenticatedAndStore(value: boolean) {
         this.setAuthenticated(value)
-        SecureStorageService.setIsAuth(value)
+        LocalStorageService.setIsAuth(value)
     }
 }

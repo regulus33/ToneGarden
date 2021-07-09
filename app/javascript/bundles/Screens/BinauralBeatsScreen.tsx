@@ -23,7 +23,6 @@ const BinauralBeatsScreen: FunctionComponent = () => {
             const { data } = await NetworkService
                 .getInstance()
                 .get(Routes.BinauralBeats)
-
             const binauralBeatStates = new BinauralBeatsList(
                 data.binauralBeatStates).binauralBeatStates
             setBinauralBeatStates(binauralBeatStates)

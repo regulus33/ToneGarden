@@ -17,6 +17,7 @@ import FrequencyRangeHelper from "../Helpers/FrequencyRangeHelper";
 import {getDestination} from "tone";
 import {useFlashMessage} from "../State/FlashMessageContext";
 import FlashMessage, {FlashEnum} from "../Models/FlashMessage";
+import {func} from "prop-types";
 
 interface PresetShowScreenProps {
     location: any
@@ -77,7 +78,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
     }
 
     function createBeat() {
-        (async() => {
+        (async () => {
             const beatBody = BinauralBeatSingleton.ins().toState()
             const b = await NetworkService
                 .getInstance()
@@ -205,14 +206,19 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
         setBeatObtained(true)
     }
 
+    // On EDIT screen
     useEffect(() => {
         // TODO: clean this
         if (isNewBeat) {
             return
         }
+
         const localBeatState: BinauralBeatState = props.location.binauralBeatState
         if (localBeatState) {
             hydrateBeatState(localBeatState)
+            if (props.location.playBeat) {
+                play()
+            }
         } else {
             (async () => {
                 NetworkService
@@ -229,8 +235,10 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
                     })
             })()
         }
+        return pause
     }, [])
 
+    // On NEW screen
     useEffect(() => {
         // TODO: clean this
         if (!isNewBeat) {
@@ -246,6 +254,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
             editable: true,
             noiseLevel: 0,
         })
+        return pause
     }, [])
 
 

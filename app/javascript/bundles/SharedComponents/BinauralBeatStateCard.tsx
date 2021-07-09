@@ -38,7 +38,8 @@ const BinauralBeatStateCard: FunctionComponent<Props> = (props) => {
             <div className={classes.controls}>
                 <Link to={{
                     pathname: `/preset_show/${binauralBeatState.id}`,
-                    binauralBeatState
+                    binauralBeatState,
+                    playBeat: true,
                 }}>
                     <IconButton aria-label="play/pause">
                         <PlayArrowIcon className={classes.playArrowIcon}/>

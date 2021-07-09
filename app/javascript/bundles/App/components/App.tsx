@@ -14,7 +14,7 @@ import {TitleContext} from "../../State/TitleContext"
 import {SettingsDrawerContext} from "../../State/SettingsDrawerContext"
 import NetworkService from "../../Network/NetworkService"
 import AuthenticatedRoute from "./AuthenticatedRoute"
-import SecureStorageService from "../../Network/SecureStorageService"
+import LocalStorageService from "../../Network/LocalStorageService"
 import ProgressWheel from "../../SharedComponents/ProgressWheel"
 import DrawerState from "../../Models/DrawerState";
 import SigninScreen from "../../Screens/SigninScreen";
@@ -22,7 +22,6 @@ import GuestTokenScreen from "../../Screens/GuestTokenScreen";
 import Routes from "../../Network/Routes";
 import FlashMessage, {FlashEnum} from "../../Models/FlashMessage";
 import {FlashMessageContext} from '../../State/FlashMessageContext'
-import { useHistory } from 'react-router-dom'
 import ErrorScreen from "../../Screens/ErrorScreen";
 
 const App: FunctionComponent = () => {
@@ -32,19 +31,17 @@ const App: FunctionComponent = () => {
     const [gradient, setGradient] = React.useState(new Gradient('alpha'))
     const [error, setError] = React.useState(null)
     const [flashMessage, setFlashMessage] = React.useState(new FlashMessage('default', false, FlashEnum.success))
-    const history = useHistory()
 
     const [drawerState, setDrawerState] = React.useState(new DrawerState(false, 'left'))
 
-    // TODO: no dispatches outside dom tree
+    // TODO: move these to Layout
     NetworkService.getInstance().setAuthenticated = setAuthenticated
     NetworkService.getInstance().setError = setError
-    NetworkService.getInstance().onError = () => history.replace(Routes.ErrorScreen)
 
-    const [loaded, setLoaded] = useState(false)
+    const [ loaded, setLoaded ] = useState(false)
 
     useEffect(() => {
-        setAuthenticated(SecureStorageService.getIsAuth())
+        setAuthenticated(LocalStorageService.getIsAuth())
         setLoaded(true)
     }, [])
 

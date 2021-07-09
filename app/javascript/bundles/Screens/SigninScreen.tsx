@@ -3,7 +3,7 @@ import {FunctionComponent, useState} from 'react'
 import ContentWrapper from "../App/components/ContentWrapper";
 import AuthForm from "../SharedComponents/AuthForm";
 import NetworkService from "../Network/NetworkService";
-import SecureStorageService from "../Network/SecureStorageService";
+import LocalStorageService from "../Network/LocalStorageService";
 import Routes from "../Network/Routes";
 import {useHistory} from 'react-router-dom'
 import {useStyles} from "../Styles/StylesSignupScreen";
@@ -34,7 +34,7 @@ const SignupScreen: FunctionComponent<SignupScreenProps> = (props) => {
             {user: {email, password}}
         );
         // @ts-ignore
-        SecureStorageService.setToken(response.data.token)
+        LocalStorageService.setToken(response.data.token)
         history.push('/presets')
     }
 
