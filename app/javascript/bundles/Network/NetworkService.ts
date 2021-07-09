@@ -7,17 +7,14 @@ import axios, {AxiosInstance} from "axios";
 import {cacheAdapterEnhancer} from 'axios-extensions';
 
 export default class NetworkService {
-    private static baseUrl: string = 'http://localhost:3000';
     private static instance: NetworkService;
-    private http: AxiosInstance
+    private readonly http: AxiosInstance
     public setAuthenticated: Dispatch<boolean>
     public setError: Dispatch<GlobalError>
     public onError: Function
 
     private constructor() {
         this.http = axios.create({
-            // headers: { 'Cache-Control': 'no-cache' },
-            // cache will be enabled by default
             adapter: cacheAdapterEnhancer(axios.defaults.adapter)
         });
     }
@@ -43,19 +40,36 @@ export default class NetworkService {
         return this.makeRequest(route, 'get')
     }
 
-    private async makeRequest(url: string, method: string, body?: object): Promise<object | null> {
+    private static get useCache(): boolean{
+        return LocalStorageService.getBustCache() === 'false'
+    }
+
+    private static handleCacheInvalidation(method: 'get'|'put'|'post'|'patch'|'delete'){
+        if(method != 'get') {
+            LocalStorageService.setBustCache(true)
+        } else {
+            LocalStorageService.setBustCache(false)
+        }
+    }
+
+    private async makeRequest(url: string, method: 'get'|'put'|'post'|'patch'|'delete', body?: object): Promise<object | null> {
         if(!['get', 'post', 'put', 'patch', 'delete'].includes(method)) {
             throw `invalid http method ${method}`
         }
+
+        NetworkService.handleCacheInvalidation(method)
+
         const options = {
             headers: new Headerz().build(),
-            withCredentials: true
+            withCredentials: true,
+            cache: NetworkService.useCache
         }
 
         let response
         try {
             switch (method) {
                 case 'get':
+
                     response = await this.http.get(url, options)
                     break
                 case 'delete':
@@ -100,10 +114,6 @@ export default class NetworkService {
                 this.setError(null)
                 break
         }
-    }
-
-    private static buildUrl(route: string): string {
-        return `${NetworkService.baseUrl}/${route}`
     }
 
     setAuthenticatedAndStore(value: boolean) {

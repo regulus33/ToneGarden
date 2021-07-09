@@ -1,4 +1,4 @@
-import {Component, FunctionComponent} from "react";
+import { Component, FunctionComponent } from "react";
 import {Route, Redirect} from 'react-router-dom';
 import * as React from "react";
 import {useAuthenticated} from "../../State/AuthContext";
