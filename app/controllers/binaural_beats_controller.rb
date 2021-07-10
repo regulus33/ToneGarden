@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Simple crud controller
 class BinauralBeatsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
@@ -15,11 +18,18 @@ class BinauralBeatsController < ApplicationController
 
   def update
     beat = BinauralBeat.find(params[:id])
-    saved = beat.update(beat_args)
+    saved = if beat.editable?
+              beat.update(beat_args)
+            else
+              new_beat = BinauralBeat.new(beat_args)
+              new_beat.name = beat.copy_name
+              new_beat.save
+              binding.pry
+            end
 
-    logger.info(LoggerService.log_args('User saved beat', {user: logged_in_user.id, beat: beat.inspect})) if saved
-    logger.error(LoggerService.log_args('User could not saved beat', {user: logged_in_user.id, beat: beat.inspect})) unless saved
-    render json: { binauralBeatState:  BinauralBeatSerializer.new(beat) }
+    logger.info(LoggerService.log_args('User saved beat', { user: logged_in_user.id, beat: beat.inspect })) if saved
+    logger.error(LoggerService.log_args('User could not saved beat', { user: logged_in_user.id, beat: beat.inspect })) unless saved
+    render json: { binauralBeatState: BinauralBeatSerializer.new(beat) }
   end
 
   def create
@@ -27,13 +37,15 @@ class BinauralBeatsController < ApplicationController
     beat.editable = true
     saved = beat.save
 
-    logger.info(LoggerService.log_args('User saved beat', {user: logged_in_user.id, beat: beat.inspect})) if saved
-    logger.error(LoggerService.log_args('User could not saved beat', {user: logged_in_user.id, beat: beat.inspect})) unless saved
-    render json: { binauralBeatState:  BinauralBeatSerializer.new(beat) }
+    logger.info(LoggerService.log_args('User saved beat', { user: logged_in_user.id, beat: beat.inspect })) if saved
+    logger.error(LoggerService.log_args('User could not saved beat', { user: logged_in_user.id, beat: beat.inspect })) unless saved
+    render json: { binauralBeatState: BinauralBeatSerializer.new(beat) }
   end
 
-  # Make sure users can't see eachother's beats
-  private def fetch_only_allowed_beat(beat_id)
+  private
+
+  # Make sure users can't see each other's beats
+  def fetch_only_allowed_beat(beat_id)
     beat = BinauralBeat.find(beat_id)
 
     return nil if beat.user_id && beat.user_id != logged_in_user.id
@@ -41,7 +53,7 @@ class BinauralBeatsController < ApplicationController
     BinauralBeatSerializer.new(beat)
   end
 
-  private def beat_args
+  def beat_args
     {
       user_id: logged_in_user.id,
       noiseLevel: beat_params[:noiseLevel],
@@ -53,7 +65,7 @@ class BinauralBeatsController < ApplicationController
     }
   end
 
-  private def beat_params
+  def beat_params
     params.permit(
       :beatOscillator,
       :carrierOscillator,
@@ -65,9 +77,10 @@ class BinauralBeatsController < ApplicationController
     )
   end
 
-  private def fetch_binaural_beats
+  def fetch_binaural_beats
     BinauralBeat.where(
-      user_id: nil
+      user_id: nil,
+      editable: false
     ).or(
       BinauralBeat.where(
         user_id: logged_in_user.id

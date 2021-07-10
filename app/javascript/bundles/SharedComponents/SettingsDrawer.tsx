@@ -55,12 +55,12 @@ const SettingsDrawer: FunctionComponent<Props> = (props) => {
                 </ListItem>
             </List>
             <Divider/>
-            <List>
-                <ListItem button key={1}>
-                    <ListItemIcon><InfoRounded/></ListItemIcon>
-                    <ListItemText primary={'About binaural beats'}/>
-                </ListItem>
-            </List>
+            {/*<List>*/}
+            {/*    <ListItem button key={1}>*/}
+            {/*        <ListItemIcon><InfoRounded/></ListItemIcon>*/}
+            {/*        <ListItemText primary={'About binaural beats'}/>*/}
+            {/*    </ListItem>*/}
+            {/*</List>*/}
         </div>
     )
 
