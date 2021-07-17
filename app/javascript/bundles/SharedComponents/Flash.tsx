@@ -27,11 +27,11 @@ const Flash: FunctionComponent<Props> = (props) => {
         if (reason === 'clickaway') {
             return
         }
-        setFlashMessage(new FlashMessage('', false, FlashEnum.success))
+        setFlashMessage(new FlashMessage(flashMessage.text, false, flashMessage.type))
     }
 
         return(
-            <Snackbar className={classes.root} open={ flashMessage.visible } onClose={ handleClose } autoHideDuration={ 600000 }>
+            <Snackbar className={classes.root} open={ flashMessage.visible } onClose={ handleClose } autoHideDuration={ 3000 }>
                 <MuiAlert elevation={6} variant='filled' onClose={ handleClose } severity={ flashMessage.type }>
                     { flashMessage.text }
                 </MuiAlert>
