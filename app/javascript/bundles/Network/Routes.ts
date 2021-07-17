@@ -33,8 +33,11 @@ class Routes {
     }
 
     public static BinauralBeatUpdate(id: string): string {
+        return Routes.BinauralBeatShow(id)
+    }
 
-        return RoutesMap.BinauralBeats + '/' + id
+    public static BinauralBeatDelete(id: string): string {
+        return Routes.BinauralBeatShow(id)
     }
 
     public static get BinauralBeatCreate(): string {

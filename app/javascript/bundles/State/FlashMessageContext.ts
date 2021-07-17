@@ -1,5 +1,5 @@
-import {createContext, useContext} from 'react';
-import FlashMessage, {FlashEnum} from "../Models/FlashMessage";
+import {createContext, useContext} from 'react'
+import FlashMessage, {FlashEnum} from "../Models/FlashMessage"
 
 export type FlashContextType = {
     flashMessage: FlashMessage,

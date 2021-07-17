@@ -6,6 +6,7 @@ type BinauralBeatState = {
     volume: number,
     noiseLevel: number,
     editable: boolean,
+    description: string,
 }
 
 export type BinauralBeatAttributes = {

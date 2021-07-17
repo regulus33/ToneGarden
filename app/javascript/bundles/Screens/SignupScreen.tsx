@@ -26,21 +26,23 @@ const SignupScreen: FunctionComponent<SignupScreenProps> = (props) => {
         setPassword(passwordText)
     }
 
-    const onSubmit = async (event: any) => {
+    const onSubmit = async () => {
         const response = await NetworkService.getInstance().post(
             Routes.NewUser,
             {user: {email, password}}
-        );
-        // TODO: put this in a conditional
-        // @ts-ignore
-        LocalStorageService.setToken(response.data.token)
-        history.push('/presets')
+        )
+
+        if(response) {
+            // @ts-ignore
+            LocalStorageService.setToken(response.data.token)
+            history.push('/presets')
+        }
     }
 
     return (
         <div className={classes.authFormContainerWrapper}>
             <div className={classes.authFormContainer}>
-                <AuthForm guestText={'Skip signup'} optionalLinkText={'Sign in'} optionalLink={Routes.SigninScreen} buttonText={'Continue'} heading={'Signup'} gradient={gradient} error={error}
+                <AuthForm guestText={'Continue as guest'} optionalLinkText={'Sign in'} optionalLink={Routes.SigninScreen} buttonText={'Signup'} heading={'Signup'} gradient={gradient} error={error}
                           onSubmit={onSubmit} onEmailChange={onEmailChange} onPasswordChange={onPasswordChange}/>
             </div>
         </div>

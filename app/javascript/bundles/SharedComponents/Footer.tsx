@@ -3,15 +3,12 @@ import {FunctionComponent, useEffect} from 'react'
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import useStyles from "../Styles/StylesFooter";
-import CreateIcon from "@material-ui/icons/Create";
 import MusicNoteIcon from "@material-ui/icons/MusicNote";
+import AddIcon from "@material-ui/icons/Add";
 import {useHistory} from 'react-router-dom'
 import FunctionName from "../Utils/FunctionName";
 
-interface Props {
-}
-
-const Footer: FunctionComponent<Props> = (props) => {
+const Footer: FunctionComponent = () => {
     const classes = useStyles();
     const [value, setValue] = React.useState(null)
     const history = useHistory()
@@ -30,8 +27,8 @@ const Footer: FunctionComponent<Props> = (props) => {
 
     return (
         <BottomNavigation value={ value } onChange={handleChange} className={classes.root}>
-            <BottomNavigationAction label="Binaural beats" value="presets" icon={<MusicNoteIcon/>}/>
-            <BottomNavigationAction label="Create" value="create" icon={<CreateIcon/>}/>
+            <BottomNavigationAction label="Sounds" value="presets" icon={<MusicNoteIcon/>}/>
+            <BottomNavigationAction label="New  " value="create" icon={ <AddIcon />}/>
         </BottomNavigation>
     );
 }

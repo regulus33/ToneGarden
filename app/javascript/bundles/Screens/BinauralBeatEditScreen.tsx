@@ -11,13 +11,12 @@ import PitchSlider from "../SharedComponents/PitchSlider"
 import AudioControls from "../SharedComponents/AudioControls"
 import Button from "@material-ui/core/Button"
 import {useTitle} from '../State/TitleContext'
-import BinauralBeatState, {BinauralBeatJson} from "../Types/BinauralBeatTypes";
+import BinauralBeatState from "../Types/BinauralBeatTypes";
 import ExtrasForm from "../SharedComponents/ExtrasForm";
 import FrequencyRangeHelper from "../Helpers/FrequencyRangeHelper";
 import {getDestination} from "tone";
 import {useFlashMessage} from "../State/FlashMessageContext";
 import FlashMessage, {FlashEnum} from "../Models/FlashMessage";
-import {func} from "prop-types";
 
 interface PresetShowScreenProps {
     location: any
@@ -27,7 +26,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
     // Global hooks
     const {setTitle} = useTitle()
     const {gradient, setGradient} = useGradient()
-    const {flashMessage, setFlashMessage} = useFlashMessage()
+    const {setFlashMessage} = useFlashMessage()
 
     // Router
     const history = useHistory()
@@ -44,9 +43,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
     const [carrierOscillator, setCarrierOscillator] = useState(0)
     const [volume, setVolume] = useState(0)
     const [noiseLevel, setNoiseLevel] = useState(0)
-    const [editable, setEditable] = useState(false)
     // Hook called when a succesful fetch of a beat was completed
-    const [beatObtained, setBeatObtained] = useState(false)
 
     const isNewBeat = props.location.pathname === '/create'
 
@@ -148,14 +145,15 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
     // }
 
     function updateUIFreqInfo(offset: number) {
+        let singletonValue = BinauralBeatSingleton.ins()
+            .carrierOscillator
+            .offset
+        if(singletonValue != offset) {
+            throw `Error! offset from updateUIFreqInfo is ${offset} and BinauralBeatSingleton.carrierOscillator has ${singletonValue}`
+        }
         setTitle(BinauralBeatSingleton.ins().generateTitle())
         setGradient(
-            FrequencyRangeHelper
-                .generateGradient(
-                    BinauralBeatSingleton.ins()
-                        .carrierOscillator
-                        .offset
-                )
+            FrequencyRangeHelper.generateGradient(offset)
         )
     }
 
@@ -201,12 +199,9 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
         setBeatOscillator(beatInstance.beatOscillator.frequency)
         setCarrierOscillator(beatInstance.carrierOscillator.offset)
         setVolume(beatInstance.volume)
-        // setNoiseLevel(beat.noiseLevel)
-        setEditable(beatInstance.editable)
-        setBeatObtained(true)
     }
 
-    // On EDIT screen
+    // On EDIT title
     useEffect(() => {
         // TODO: clean this
         if (isNewBeat) {
@@ -238,12 +233,13 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
         return pause
     }, [])
 
-    // On NEW screen
+    // On NEW title
     useEffect(() => {
-        // TODO: clean this
         if (!isNewBeat) {
             return
         }
+
+        pause()
 
         hydrateBeatState({
             name: '',
@@ -253,6 +249,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
             volume: 0,
             editable: true,
             noiseLevel: 0,
+            description: ''
         })
         return pause
     }, [])
@@ -294,6 +291,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
                 onNameChange={onNameChange}
                 name={isNewBeat ? null : name}
                 gradient={gradient}
+                volume={volume}
                 onVolumeChange={onVolumeChange}
             />
         </Paper>

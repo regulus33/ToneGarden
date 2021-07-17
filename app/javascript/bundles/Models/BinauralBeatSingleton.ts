@@ -20,6 +20,7 @@ export default class BinauralBeatSingleton {
     id: number
     name: string
     editable: boolean
+    description: string
 
     private static instance: BinauralBeatSingleton;
 
@@ -40,12 +41,14 @@ export default class BinauralBeatSingleton {
             carrierOscillator,
             editable,
             name,
+            description,
         } = binauralBeatState
 
         this.id = id
         this.editable = editable
         this.name = name
         this.volume = volume
+        this.description = description
         // this.noiseSource = new NoiseSource(noiseLevel)
         this.beatOscillator = new BeatOscillator(
             beatOscillator
@@ -73,7 +76,7 @@ export default class BinauralBeatSingleton {
                 .toneOscillator
                 .volume
                 .linearRampTo(
-                    -20,
+                    this.initialVolume,
                     1
                 )
 
@@ -91,7 +94,7 @@ export default class BinauralBeatSingleton {
                 .toneOscillator
                 .volume
                 .linearRampTo(
-                    -20,
+                    this.initialVolume,
                     1
                 )
 
@@ -135,7 +138,7 @@ export default class BinauralBeatSingleton {
         const freqName = FrequencyRangeHelper.rangeString(
             this.carrierOscillator.offset
         )
-        return `${symbol} ${freqName} ${this.name} `
+        return `${symbol} ${freqName} ${this.name}`
     }
 
     toState(): BinauralBeatState {
@@ -146,7 +149,16 @@ export default class BinauralBeatSingleton {
             name: this.name,
             noiseLevel: 0,
             id: this.id,
-            editable: this.editable
+            editable: this.editable,
+            description: this.description,
+        }
+    }
+
+    get initialVolume(): number {
+        if(this.volume <= -20) {
+            return this.volume
+        } else {
+            return -20
         }
     }
 }
