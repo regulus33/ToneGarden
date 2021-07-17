@@ -20,6 +20,7 @@ import FlashMessage, {FlashEnum} from "../Models/FlashMessage";
 import BinauralBeatsList from "../Models/BinauralBeatsList";
 import {CreateSharp} from "@material-ui/icons";
 import {useHistory} from 'react-router-dom'
+import {chompString} from "../Helpers/ViewHelper";
 
 interface BinauralBeatStateCardProps {
     binauralBeatStates: Array<BinauralBeatState>,
@@ -88,7 +89,7 @@ const BinauralBeatStateCard: FunctionComponent<BinauralBeatStateCardProps> = (pr
                     }
                     title={
                         <Typography component="h5" variant="h5">
-                            {binauralBeatState.name}
+                            {chompString(10, binauralBeatState.name)}
                         </Typography>
                     }
                     subheader={

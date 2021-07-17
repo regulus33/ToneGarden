@@ -12,10 +12,10 @@ export default class BinauralBeatSingleton {
     public static carrierMinMax = [-40, 40]
     public static beatMinMax = [0, 1500]
 
+
     beatOscillator: BeatOscillator
     carrierOscillator: CarrierOscillator
     // noiseSource: NoiseSource
-
     volume: number = 0
     id: number
     name: string
@@ -23,6 +23,10 @@ export default class BinauralBeatSingleton {
     description: string
 
     private static instance: BinauralBeatSingleton;
+
+    public static get inMemory() {
+        return BinauralBeatSingleton.instance != null
+    }
 
     private constructor(binauralBeatState?: BinauralBeatState) {
         if (binauralBeatState) {

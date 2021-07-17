@@ -1,6 +1,5 @@
 import * as React from 'react'
 import {FormEvent, FunctionComponent} from 'react'
-import BinauralBeatSingleton from '../Models/BinauralBeatSingleton'
 import PitchSlider from "./PitchSlider"
 import Gradient from "../Models/Gradient";
 import {Accordion, AccordionSummary, Typography} from "@material-ui/core"
@@ -15,6 +14,7 @@ interface Props {
     error: string,
     name?: string,
     onVolumeChange: (value: number) => void,
+    volume: number,
 }
 
 const ExtrasForm: FunctionComponent<Props> = (props) => {
@@ -48,7 +48,7 @@ const ExtrasForm: FunctionComponent<Props> = (props) => {
                     <PitchSlider
                         minMax={[-80, 0]}
                         label={'Volume'}
-                        default={BinauralBeatSingleton.ins().volume}
+                        default={props.volume}
                         handleSliderChangeCallback={props.onVolumeChange}
                     />
                 </div>
