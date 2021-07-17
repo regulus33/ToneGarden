@@ -2,6 +2,7 @@
 
 # Binaural beat data model
 class BinauralBeat < ApplicationRecord
+
   def editable?
     editable.positive?
   end

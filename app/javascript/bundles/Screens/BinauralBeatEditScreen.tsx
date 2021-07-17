@@ -186,7 +186,8 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
             .setFrequency(
                 BinauralBeatSingleton.ins().carrierOscillator, null)
         updateUIFreqInfo(offset)
-        console.log(BinauralBeatSingleton.ins().beatOscillator.toneOscillator.frequency.value);
+        BinauralBeatSingleton.ins().description = FrequencyRangeHelper
+            .rangeString(offset)
     }
 
     function hydrateBeatState(beat: BinauralBeatState) {
@@ -266,7 +267,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
             volume: 0,
             editable: true,
             noiseLevel: 0,
-            description: ''
+            description: 'alpha'
         })
 
         BinauralBeatSingleton.ins().playing = false
