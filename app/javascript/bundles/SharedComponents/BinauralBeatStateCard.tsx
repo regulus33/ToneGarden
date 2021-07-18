@@ -74,7 +74,7 @@ const BinauralBeatStateCard: FunctionComponent<BinauralBeatStateCardProps> = (pr
             in={props.loaded}
             style={{transitionDelay: props.loaded ? `${50 * props.index}ms` : '0ms'}}>
             <Card className={classes.presetCard}>
-                <CardHeader
+                <CardHeader className={classes.cardHeader}
                     avatar={
                         <div
                             className={classes[`avatarContainer${FrequencyRangeHelper.rangeString(carrierOscillator)}`]}>
@@ -89,7 +89,7 @@ const BinauralBeatStateCard: FunctionComponent<BinauralBeatStateCardProps> = (pr
                     }
                     title={
                         <Typography component="h5" variant="h5">
-                            {chompString(10, binauralBeatState.name)}
+                            {chompString(20, binauralBeatState.name)}
                         </Typography>
                     }
                     subheader={

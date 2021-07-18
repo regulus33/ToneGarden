@@ -23,6 +23,11 @@ const circle = {
 }
 
 const styleOptions = {
+    cardHeader: {
+        '&:first-child': {
+            alignItems: 'baseline',
+        }
+    },
     avatar: {
         position: 'relative',
         left: '8px'
@@ -39,6 +44,7 @@ const styleOptions = {
             maxWidth: '100%',
         },
         maxWidth: '18rem',
+        minHeight: '225px'
     },
     controls: {
         display: 'flex',
@@ -74,7 +80,7 @@ Gradient.rangeStrings.forEach(function (name) {
         width: '50px',
         height: '50px',
         position: 'relative',
-        top: '-5px',
+        top: '7px',
         ...circle
     }
 })

@@ -260,14 +260,14 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
         }
 
         hydrateBeatState({
-            name: '',
+            name: 'Custom Beat',
             id: 0,
             beatOscillator: 432,
             carrierOscillator: 4,
             volume: 0,
             editable: true,
             noiseLevel: 0,
-            description: 'alpha'
+            description: 'theta',
         })
 
         BinauralBeatSingleton.ins().playing = false
