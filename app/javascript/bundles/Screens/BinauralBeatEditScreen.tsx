@@ -86,13 +86,12 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
                     .BinauralBeatCreate, beatBody)
 
             if(b) {
-
+                if (playing) { pause() }
                 // @ts-ignore
                 const binauralBeatState: BinauralBeatState = b.data
                     .binauralBeatState
                     .data
                     .attributes
-
                 const {id} = binauralBeatState
                 BinauralBeatSingleton.ins(binauralBeatState)
                 const params: BinauralBeatState = BinauralBeatSingleton.ins().toState()
@@ -105,9 +104,6 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
                         true,
                         FlashEnum.success)
                 )
-                if (playing) {
-                    pause()
-                }
             }
         })()
 
