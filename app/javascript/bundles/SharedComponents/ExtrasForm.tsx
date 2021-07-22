@@ -7,19 +7,23 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import useStyles from "../Styles/StylesExtrasForm"
 import {useStyles as useStylesAuth} from "../Styles/StylesAuthForm"
 import TextField from "@material-ui/core/TextField";
+import FunctionName from "../Utils/FunctionName";
 
 interface Props {
     gradient: Gradient,
     onNameChange: (event: FormEvent<HTMLDivElement>) => void,
+    onVolumeChange: (value: number) => void,
+    onNoiseLevelChange: (value: number) => void,
+    noiseLevel: number,
     error: string,
     name?: string,
-    onVolumeChange: (value: number) => void,
     volume: number,
 }
 
 const ExtrasForm: FunctionComponent<Props> = (props) => {
     const classes = useStyles(props.gradient.toProps())
     const classesAuth = useStylesAuth(props.gradient.toProps())
+    console.log(`[${FunctionName()}]: value of ${'noiseLevel'}: ${props.noiseLevel}`)
     return (
         <div className={classes.root}>
             <Accordion className={classes.accordian}>
@@ -50,6 +54,15 @@ const ExtrasForm: FunctionComponent<Props> = (props) => {
                         label={'Volume'}
                         default={props.volume}
                         handleSliderChangeCallback={props.onVolumeChange}
+                    />
+                </div>
+                <div className={classes.largeSlider}>
+                    <PitchSlider
+                        minMax={[0, 0.1]}
+                        step={0.001}
+                        label={'Noise'}
+                        default={props.noiseLevel}
+                        handleSliderChangeCallback={props.onNoiseLevelChange}
                     />
                 </div>
             </Accordion>

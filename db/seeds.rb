@@ -14,6 +14,7 @@ BinauralBeat.create(
   carrierOscillator: -11,
   noiseLevel: 0,
   editable: false,
+  volume: 0,
   description: 'Stimulating low alpha tones.'
 )
 
@@ -23,6 +24,7 @@ BinauralBeat.create(
   carrierOscillator: -7,
   noiseLevel: 0,
   editable: false,
+  volume: 0,
   description: 'Theta waves at 432 hertz'
 )
 
@@ -30,8 +32,9 @@ BinauralBeat.create(
   name: 'Peak alertness',
   beatOscillator:  209,
   carrierOscillator: 13,
-  noiseLevel: 0,
+  noiseLevel: 0.04,
   editable: false,
+  volume: 0,
   description: 'Beta waves at a low, calming pitch'
 )
 
@@ -39,8 +42,9 @@ BinauralBeat.create(
   name: 'Study source',
     beatOscillator: 555,
   carrierOscillator: -8,
-  noiseLevel: 0,
+  noiseLevel: 0.01,
   editable: false,
+  volume: 0,
   description: 'Alpha waves for analytical thinking.'
 )
 
@@ -50,7 +54,8 @@ BinauralBeat.create(
   carrierOscillator: -33.7,
   noiseLevel: 0,
   editable: false,
-  description: 'Deep gamma waves'
+  description: 'Deep gamma waves',
+  volume: 0
 )
 
 BinauralBeat.create(
@@ -59,16 +64,18 @@ BinauralBeat.create(
   carrierOscillator: -33.7,
   noiseLevel: 0,
   editable: false,
-  description: 'Beta tones for ideation'
+  description: 'Beta tones for ideation',
+  volume: 0
 )
 
 BinauralBeat.create(
   name: 'Super sleep',
   beatOscillator: 136,
   carrierOscillator: 6,
-  noiseLevel: 0,
+  noiseLevel: 0.1,
   editable: false,
-  description: 'Theta relaxation'
+  description: 'Theta relaxation',
+  volume: 0,
 )
 
 BinauralBeat.create(
@@ -77,7 +84,8 @@ BinauralBeat.create(
   carrierOscillator: -1,
   noiseLevel: 0,
   editable: false,
-  description: 'Delta tones for dreaming'
+  description: 'Delta tones for dreaming',
+  volume: 0,
 )
 
 

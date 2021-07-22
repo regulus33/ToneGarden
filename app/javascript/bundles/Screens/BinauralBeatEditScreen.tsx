@@ -28,7 +28,6 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
     const {setTitle} = useTitle()
     const {gradient, setGradient} = useGradient()
     const {setFlashMessage} = useFlashMessage()
-    const { error } = useError()
 
     // Router
     const history = useHistory()
@@ -141,12 +140,14 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
         setPlaying(true)
     }
 
-    // NOISE
-    // function onNoiseLevelChange(value: number) {
-    //     console.log(`Noise level: ${value}`)
-    //     BinauralBeatSingleton.ins().noiseSource.toneNoise.volume.value = value
-    //     setNoiseLevel(value)
-    // }
+    function onNoiseLevelChange(value: number) {
+        console.log(`Noise level: ${value}`)
+        if(playing) {
+            BinauralBeatSingleton.ins().noiseGain.gain.rampTo(value, 1)
+        }
+        BinauralBeatSingleton.ins().noiseLevel = value
+        setNoiseLevel(value)
+    }
 
     function updateUIFreqInfo(offset: number) {
         let singletonValue = BinauralBeatSingleton.ins()
@@ -198,12 +199,18 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
                 beatInstance.carrierOscillator.offset
             )
         )
-
         setName(beatInstance.name)
         setPlaying(beatInstance.playing)
         setBeatOscillator(beatInstance.beatOscillator.frequency)
         setCarrierOscillator(beatInstance.carrierOscillator.offset)
-        setVolume(beatInstance.volume)
+
+        // setVolume(beatInstance.volume)
+        // setNoiseLevel(beatInstance.noiseLevel)
+        // This is required instead of a simple set state
+        // setVolume(beatInstance.volume)
+        onVolumeChange(beatInstance.volume)
+        onNoiseLevelChange(beatInstance.noiseLevel)
+
     }
 
     // On EDIT title
@@ -309,10 +316,11 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
                 name={isNewBeat ? null : name}
                 gradient={gradient}
                 volume={volume}
+                noiseLevel={noiseLevel}
                 onVolumeChange={onVolumeChange}
+                onNoiseLevelChange={onNoiseLevelChange}
             />
         </Paper>
-
     )
 }
 // @ts-ignore
