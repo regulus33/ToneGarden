@@ -34,7 +34,7 @@ export default class Gradient {
 
     rangeSymbolBackground() {
         const pair = this.gradientPair()
-        return `linear-gradient(to right, ${pair[0]}, ${pair[1]} 40%)`
+        return `linear-gradient(to right, ${pair[0]}, ${pair[1]} 90%)`
     }
 
     toProps() {

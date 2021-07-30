@@ -41,6 +41,11 @@ const useStyles = makeStyles({
         display: 'flex',
         justifyContent: 'space-around',
         padding: '1.7rem .6rem',
+        [`@media (min-width: ${Breakpoints.mobile})`]: {
+            '& form': {
+                // maxWidth: 'calc(100% - 19.7rem)'
+            }
+        }
     },
     audioControlsContainer: {
         marginTop: '2.28rem',

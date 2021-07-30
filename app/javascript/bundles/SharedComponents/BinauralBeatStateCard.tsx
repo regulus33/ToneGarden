@@ -76,16 +76,11 @@ const BinauralBeatStateCard: FunctionComponent<BinauralBeatStateCardProps> = (pr
             <Card className={classes.presetCard}>
                 <CardHeader className={classes.cardHeader}
                     avatar={
-                        <div
-                            className={classes[`avatarContainer${FrequencyRangeHelper.rangeString(carrierOscillator)}`]}>
-                            <div className={classes.avatarFill}>
-                                <Typography className={classes.avatar} component="h5" variant="h5">
+                        <Typography className={classes.avatar} component="h5" variant="h5">
                             <span className={classes[FrequencyRangeHelper.rangeString(carrierOscillator)]}>
                                 <span>{FrequencyRangeHelper.rangeSymbol(carrierOscillator)} &nbsp;</span>
                             </span>
-                                </Typography>
-                            </div>
-                        </div>
+                        </Typography>
                     }
                     title={
                         <Typography component="h5" variant="h5">
