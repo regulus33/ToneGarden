@@ -25,6 +25,8 @@ export default class BinauralBeatSingleton {
     // noiseFilter: AutoFilter // Someday...
     noiseGain: Gain
     volume: number = 0
+    pannerCarrier: Panner
+    pannerBeat: Panner
     id: number
     name: string
     editable: boolean
@@ -77,9 +79,9 @@ export default class BinauralBeatSingleton {
         // set this context as the global Context
         // the global context is gettable with Tone.getContext()
         if (playing) {
-            getContext().latencyHint = 'playback'
+            getContext().lookAhead = 0.5
 
-            const pannerCarrier = new Panner(1).toDestination();
+            this.pannerCarrier = new Panner(1).toDestination();
 
             this.carrierOscillator
                 .toneOscillator = new Oscillator({
@@ -87,7 +89,7 @@ export default class BinauralBeatSingleton {
                 type: 'sine',
                 volume: -Infinity
             })
-                .connect(pannerCarrier)
+                .connect(this.pannerCarrier)
                 .start()
 
             this.carrierOscillator
@@ -97,7 +99,7 @@ export default class BinauralBeatSingleton {
                     this.initialVolume,
                     1
                 )
-            const pannerBeat = new Panner(-1).toDestination();
+            this.pannerBeat = new Panner(-1).toDestination();
 
             this.beatOscillator
                 .toneOscillator = new Oscillator({
@@ -105,7 +107,7 @@ export default class BinauralBeatSingleton {
                 type: 'sine',
                 volume: -Infinity
             })
-                .connect(pannerBeat)
+                .connect(this.pannerBeat)
                 .start()
 
             this.beatOscillator
@@ -116,9 +118,8 @@ export default class BinauralBeatSingleton {
                     1
                 )
 
-            console.log(getContext().latencyHint)
 
-            // this.noiseGain = new Gain(0).toDestination()
+            this.noiseGain = new Gain(0).toDestination()
 
             // this.noiseFilter = new AutoFilter({
             //     frequency: "0",
@@ -126,17 +127,17 @@ export default class BinauralBeatSingleton {
             //     octaves: 2
             // }).toDestination()
 
-            // this.noiseSource = new Noise(
-            //     'pink'
-            // ).connect(
-            //     this.noiseGain
-            // ).start()
-            //
-            // // this.noiseFilter.connect(this.noiseGain)
-            //
-            // this.noiseGain
-            //     .gain
-            //     .rampTo(this.noiseLevel,9)
+            this.noiseSource = new Noise(
+                'pink'
+            ).connect(
+                this.noiseGain
+            ).start()
+
+            // this.noiseFilter.connect(this.noiseGain)
+
+            this.noiseGain
+                .gain
+                .rampTo(this.noiseLevel,9)
 
         } else {
             this.carrierOscillator
@@ -156,6 +157,10 @@ export default class BinauralBeatSingleton {
                 )
 
             this.noiseGain.gain.rampTo(0, 1)
+            this.carrierOscillator.toneOscillator.stop()
+            this.beatOscillator.toneOscillator.stop()
+
+            getContext().dispose()
         }
     }
 
