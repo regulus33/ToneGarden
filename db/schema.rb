@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_12_034203) do
+ActiveRecord::Schema.define(version: 2021_08_01_191006) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 2021_07_12_034203) do
     t.float "beatOscillator"
     t.float "carrierOscillator"
     t.float "volume"
-    t.float "noiseLevel"
+    t.string "noiseLevel"
     t.float "editable"
     t.string "name"
     t.bigint "user_id"
