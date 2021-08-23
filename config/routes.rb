@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get '/service-worker.js' => 'service_worker#service_worker'
+  get '/offline.html' => 'initializers#index' #serve the same old react application shell in offline mode
+
   # React Router
   # NOTE: They should all match verbatim every React Router Route you have in play
   # initializers#index is the source of React and all front end code for this app,
