@@ -6,16 +6,19 @@ enum RoutesMap {
 }
 
 enum ReactRoutesMap {
+    Root = '/',
     BinauralBeatEditScreen = "/preset_show",
     SignupScreen = "/signup",
     SigninScreen = "/signin",
     GuestTokenScreen = '/guest',
     BinauralBeatsScreen = '/presets',
     BinauralBeatsCreateScreen = '/create',
-    ErrorScreen = '/whoops'
+    ErrorScreen = '/whoops',
 }
 
 class Routes {
+
+    // Api routes
     public static get NewUser(): string {
         return RoutesMap.NewUser
     }
@@ -50,6 +53,10 @@ class Routes {
 
     //  React router routes
 
+    public static get Root(): string {
+        return ReactRoutesMap.Root
+    }
+
     public static BinauralBeatEditScreen(id: string) {
         return ReactRoutesMap.BinauralBeatEditScreen + '/' + id
     }
@@ -66,8 +73,8 @@ class Routes {
         return ReactRoutesMap.GuestTokenScreen
     }
 
-    public static get  BinauralBeatsScreen() {
-    return ReactRoutesMap.BinauralBeatsScreen
+    public static get BinauralBeatsScreen() {
+        return ReactRoutesMap.BinauralBeatsScreen
     }
 
     public static get BinauralBeatsCreateScreen() {
