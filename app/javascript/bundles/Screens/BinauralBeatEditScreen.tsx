@@ -17,6 +17,8 @@ import FrequencyRangeHelper from "../Helpers/FrequencyRangeHelper";
 import {getDestination} from "tone";
 import {useFlashMessage} from "../State/FlashMessageContext";
 import FlashMessage, {FlashEnum} from "../Models/FlashMessage";
+import {useWhiteNoiseCtx} from "../State/UseWhiteNoiseContext";
+import {useAudioWorkletCtx} from "../State/UseAudioWorkletContext";
 
 interface PresetShowScreenProps {
     location: any
@@ -27,6 +29,8 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
     const {setTitle} = useTitle()
     const {gradient, setGradient} = useGradient()
     const {setFlashMessage} = useFlashMessage()
+    const {useWhiteNoise} = useWhiteNoiseCtx()
+    const {useAudioWorklet} = useAudioWorkletCtx()
 
     // Router
     const history = useHistory()
@@ -43,6 +47,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
     const [carrierOscillator, setCarrierOscillator] = useState(0)
     const [volume, setVolume] = useState(0)
     const [noiseLevel, setNoiseLevel] = useState(0)
+
     // Hook called when a succesful fetch of a beat was completed
 
     const isNewBeat = props.location.pathname === '/create'
@@ -130,19 +135,19 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
     }
 
     function pause() {
-        BinauralBeatSingleton.ins().playing = false
+        BinauralBeatSingleton.ins().playing(false, useWhiteNoise, useAudioWorklet)
         setPlaying(false)
     }
 
     function play() {
-        BinauralBeatSingleton.ins().playing = true
+        BinauralBeatSingleton.ins().playing(true, useWhiteNoise, useAudioWorklet)
         setPlaying(true)
     }
 
     function onNoiseLevelChange(value: number) {
         console.log(`Noise level: ${value}`)
         if(playing) {
-            BinauralBeatSingleton.ins().noiseGain.gain.rampTo(value, 1)
+            BinauralBeatSingleton.ins().noiseSource.volume.rampTo(value, 0.1)
         }
         BinauralBeatSingleton.ins().noiseLevel = value
         setNoiseLevel(value)
@@ -199,7 +204,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
             )
         )
         setName(beatInstance.name)
-        setPlaying(beatInstance.playing)
+        setPlaying(false)
         setBeatOscillator(beatInstance.beatOscillator.frequency)
         setCarrierOscillator(beatInstance.carrierOscillator.offset)
 
@@ -258,7 +263,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
         // Hydrate:
 
         if (BinauralBeatSingleton.inMemory) {
-            BinauralBeatSingleton.ins().playing = false
+            BinauralBeatSingleton.ins().playing(false, useWhiteNoise, useAudioWorklet)
         }
 
         hydrateBeatState({
@@ -272,7 +277,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
             description: 'theta',
         })
 
-        BinauralBeatSingleton.ins().playing = false
+        BinauralBeatSingleton.ins().playing(false, useWhiteNoise, useAudioWorklet)
 
         return pause
     }, [])

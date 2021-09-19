@@ -8,6 +8,7 @@ import useStyles from "../Styles/StylesExtrasForm"
 import {useStyles as useStylesAuth} from "../Styles/StylesAuthForm"
 import TextField from "@material-ui/core/TextField";
 import FunctionName from "../Utils/FunctionName";
+import {useWhiteNoiseCtx} from "../State/UseWhiteNoiseContext";
 
 interface Props {
     gradient: Gradient,
@@ -23,7 +24,23 @@ interface Props {
 const ExtrasForm: FunctionComponent<Props> = (props) => {
     const classes = useStyles(props.gradient.toProps())
     const classesAuth = useStylesAuth(props.gradient.toProps())
+    const { useWhiteNoise } = useWhiteNoiseCtx()
     console.log(`[${FunctionName()}]: value of ${'noiseLevel'}: ${props.noiseLevel}`)
+
+    const noiseSlider = () => {
+        if (useWhiteNoise) return(
+            <div className={classes.largeSlider}>
+                <PitchSlider
+                    minMax={[-33, 0]}
+                    step={0.001}
+                    label={'Noise'}
+                    default={props.noiseLevel}
+                    handleSliderChangeCallback={props.onNoiseLevelChange}/>
+            </div>
+        )
+    }
+
+
     return (
         <div className={classes.root}>
             <Accordion className={classes.accordian}>
@@ -56,15 +73,7 @@ const ExtrasForm: FunctionComponent<Props> = (props) => {
                         handleSliderChangeCallback={props.onVolumeChange}
                     />
                 </div>
-                <div className={classes.largeSlider}>
-                    <PitchSlider
-                        minMax={[0, 0.1]}
-                        step={0.001}
-                        label={'Noise'}
-                        default={props.noiseLevel}
-                        handleSliderChangeCallback={props.onNoiseLevelChange}
-                    />
-                </div>
+                {noiseSlider()}
             </Accordion>
         </div>
     )

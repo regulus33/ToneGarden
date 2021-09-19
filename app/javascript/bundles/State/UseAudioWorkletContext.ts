@@ -9,4 +9,4 @@ export const UseAudioWorkletContext = createContext<UseAudioWorkletContextType>(
     useAudioWorklet: true,
     setUseAudioWorklet: (useAudioWorklet) => {},
 });
-export const useCurrentUser = () => useContext(UseAudioWorkletContext)
+export const useAudioWorkletCtx = () => useContext(UseAudioWorkletContext)

@@ -29,6 +29,7 @@ const useStyles = makeStyles({
         margin: '0 auto',
         width: `660px`,
         marginTop: '175px',
+        marginBottom: '5rem',
         [`@media (max-width: ${Breakpoints.mobile})`]: {
             minWidth: '100%',
             width: '100vw',

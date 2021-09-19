@@ -1,15 +1,15 @@
 import {Oscillator} from "tone";
 import BeatOscillator from "./BeatOscillator";
+import OscillatorProxy from "./OscillatorProxy";
 
 class CarrierOscillator {
     offset: number
-    toneOscillator: Oscillator
+    oscillatorSource: OscillatorProxy | Oscillator
     beatOscillator: BeatOscillator
 
     constructor(offset: number, beatOscillator: BeatOscillator) {
         this.offset = offset;
         this.beatOscillator = beatOscillator;
-        this.toneOscillator = new Oscillator(this.frequency, "sine");
     }
 
     get frequency(): number {
@@ -19,7 +19,7 @@ class CarrierOscillator {
     setFrequencyFromBase(newValue: number) {
         const newValueSet = newValue + this.offset
         console.log(newValueSet)
-        this.toneOscillator
+        this.oscillatorSource
             .frequency
             .rampTo(
                 newValueSet,

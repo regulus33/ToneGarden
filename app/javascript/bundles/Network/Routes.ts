@@ -23,6 +23,14 @@ class Routes {
         return RoutesMap.NewUser
     }
 
+    public static get ShowUser(): string {
+        return  RoutesMap.NewUser
+    }
+
+    public static get UpdateUser(): string {
+        return RoutesMap.NewUser
+    }
+
     public static get Login(): string {
         return RoutesMap.Login
     }

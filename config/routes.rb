@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
-  get '/service-worker.js' => 'service_worker#service_worker'
-  get '/offline.html' => 'initializers#index' #serve the same old react application shell in offline mode
+  get '/better-oscillator.js', to: 'audio_worklet#better_oscillator'
+  get '/service-worker.js', to: 'service_worker#service_worker'
+  get '/offline.html', to:  'initializers#index' #serve the same old react application shell in offline mode
+
+  # Actual classic mvc pages
+  get '/welcome', to: 'seo#welcome'
 
   # React Router
   # NOTE: They should all match verbatim every React Router Route you have in play
@@ -28,6 +32,8 @@ Rails.application.routes.draw do
       get 'guest'
     end
   end
+  put 'users', to: 'users#update'
+  get 'users', to: 'users#show'
   # TODO: standardize route names
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

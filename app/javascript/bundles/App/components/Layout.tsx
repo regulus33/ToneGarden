@@ -61,7 +61,22 @@ const Content: FunctionComponent<ContentProps> = (props) => {
         }
     }
 
-    const toggleSettingsDrawer = () => {
+    const toggleSettingsDrawer = (event) => {
+        // Only toggle if user is clicking a button that goes somewhere
+        // TODO: fixme :(
+        const { tagName } = event.target
+        switch (tagName) {
+            case "INPUT":
+                return
+            case "LABEL":
+                return
+            default:
+                const { parentElement } = event.target
+                if(parentElement.tagName === "LABEL") {
+                    return
+                }
+        }
+
         const open = !drawerState.open
         setDrawerState(new DrawerState(open, drawerState.anchor))
     }

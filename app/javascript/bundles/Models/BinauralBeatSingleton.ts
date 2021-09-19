@@ -5,7 +5,7 @@ import {
     Merge,
     Context,
     setContext,
-    getContext
+    getContext, BaseContext
     // AutoFilter
 } from 'tone';
 import BeatOscillator from './BeatOscillator';
@@ -13,6 +13,9 @@ import CarrierOscillator from "./CarrierOscillator";
 import BinauralBeatState from "../Types/BinauralBeatTypes";
 import FrequencyRangeHelper from "../Helpers/FrequencyRangeHelper";
 import FunctionName from "../Utils/FunctionName";
+import BetterOscillatorNode from "./BetterOscillatorNode";
+import OscillatorProxy from "./OscillatorProxy";
+import MergerProxy from "./MergerProxy";
 
 export default class BinauralBeatSingleton {
 
@@ -22,7 +25,7 @@ export default class BinauralBeatSingleton {
     beatOscillator: BeatOscillator
     carrierOscillator: CarrierOscillator
     noiseSource: Noise
-    merge: Merge
+    merge: Merge | ChannelMergerNode
     noiseGain: Gain
     volume: number = 0
     id: number
@@ -30,6 +33,10 @@ export default class BinauralBeatSingleton {
     editable: boolean
     description: string
     noiseLevel: number
+    audioWorkletContext: AudioContext
+    savedWorkletProcessorUrl: string
+    // FIXME!
+    audioWorkletOscillator: any
 
     private static instance: BinauralBeatSingleton;
 
@@ -66,7 +73,7 @@ export default class BinauralBeatSingleton {
         this.description = description
         this.noiseLevel = noiseLevel
         this.beatOscillator = new BeatOscillator(
-            beatOscillator
+            beatOscillator,
         )
         this.carrierOscillator = new CarrierOscillator(
             carrierOscillator,
@@ -75,61 +82,51 @@ export default class BinauralBeatSingleton {
 
     }
 
-    set playing(playing: boolean) {
+    playAudioWorklet = () => {
+        // this.audioWorkletContext = new AudioContext()
+        // this.audioWorkletContext.audioWorklet.addModule('/better-oscillator.js').then(() => {
+        //     this.audioWorkletOscillator = new BetterOscillator(this.audioWorkletContext)
+        // });
+        // const audioContext = new AudioContext();
+        // audioContext.audioWorklet.addModule('/better-oscillator.js').then(() => {
+        //     const osc = new BetterOscillatorNode(audioContext);
+        //     osc.connect(audioContext.destination)
+        //     const freq = osc.parameters.get('frequency')
+        //     const time = audioContext.currentTime
+        //     freq.setValueAtTime(440, time + 1)
+        //     freq.linearRampToValueAtTime(660, time + 1.5)
+        //     setTimeout(()=>audioContext.close(), 5000)
+        // });
+    }
+
+    getBetterOscillator(context) {
+         return new BetterOscillatorNode(context);
+
+        // osc.connect(audioContext.destination)
+        // const freq = osc.parameters.get('frequency')
+        // const time = audioContext.currentTime
+        // freq.setValueAtTime(440, time + 1)
+        // freq.linearRampToValueAtTime(660, time + 1.5)
+        // setTimeout(()=>audioContext.close(), 5000)
+
+    }
+
+     playing(playing: boolean, useWhiteNoise: boolean, useAudioWorklet: boolean) {
+        const context = getContext()
         if (playing) {
-            getContext().lookAhead = 0.1
-            this.merge = new Merge(2).toDestination()
-
-            this.carrierOscillator
-                .toneOscillator = new Oscillator({
-                frequency: this.carrierOscillator.frequency,
-                type: 'sine',
-                volume: -999
-            })
-                .connect(this.merge, 0, 0)
-                .start()
-
-            this.carrierOscillator
-                .toneOscillator
-                .volume
-                .linearRampTo(
-                    this.initialVolume,
-                    BinauralBeatSingleton.RAMPTIME
-                )
-
-            this.beatOscillator
-                .toneOscillator = new Oscillator({
-                frequency: this.beatOscillator.frequency,
-                type: 'sine',
-                volume: -999
-            })
-                .connect(this.merge, 0, 1)
-                .start()
-
-            this.beatOscillator
-                .toneOscillator
-                .volume
-                .linearRampTo(
-                    this.initialVolume,
-                    BinauralBeatSingleton.RAMPTIME
-                )
-            // Too much complexity for now. we leave it out until we have beats perfect
-            // this.noiseSource = new Noise({
-            //     type: 'pink',
-            //     volume: -Infinity
-            // }).toDestination().start()
-            //
-            // console.log(`[${FunctionName()}]: value of noiseLevel: ${Number(this.noiseLevel)}`)
-            //
-            // this.noiseSource.volume.linearRampTo(
-            //     this.noiseLevel,
-            //     BinauralBeatSingleton.RAMPTIME
-            // )
+            if(useAudioWorklet) {
+                context.rawContext.audioWorklet.addModule('/better-oscillator.js').then(() => {
+                    const oscillator = this.getBetterOscillator(context.rawContext)
+                    this.setupAndPlayAudio(context, useWhiteNoise, useAudioWorklet)
+                });
+            } else {
+                this.setupAndPlayAudio(context, useWhiteNoise, useAudioWorklet)
+            }
 
 
         } else {
             this.carrierOscillator
-                .toneOscillator
+                .oscillatorSource
                 .volume
                 .linearRampTo(
                     -Infinity,
@@ -137,7 +134,7 @@ export default class BinauralBeatSingleton {
                 )
 
             this.beatOscillator
-                .toneOscillator
+                .oscillatorProxy
                 .volume
                 .linearRampTo(
                     -Infinity,
@@ -146,10 +143,65 @@ export default class BinauralBeatSingleton {
 
             // Wait for fade out of audio then dispose
             setTimeout(() =>{
-                this.carrierOscillator.toneOscillator.stop()
-                this.beatOscillator.toneOscillator.stop()
-                getContext().dispose()
+                this.carrierOscillator.oscillatorSource.stop()
+                this.beatOscillator.oscillatorProxy.stop()
+                context.dispose()
             }, BinauralBeatSingleton.RAMPTIME * 1000)
+        }
+    }
+
+    setupAndPlayAudio(context: BaseContext, useWhiteNoise: boolean, useAudioWorklet: boolean) {
+        // audioContext.lookAhead = 0.1 #
+        this.merge = new MergerProxy(context, useAudioWorklet).sourceMerger
+
+        this.carrierOscillator
+            .oscillatorSource = new OscillatorProxy({
+            useAudioWorklet: useAudioWorklet,
+            frequency: this.carrierOscillator.frequency,
+            volume: -999,
+            context: context.rawContext
+        })
+            .connect(this.merge, 0, 0)
+            .start()
+
+        this.carrierOscillator
+            .oscillatorSource
+            .volume
+            .linearRampTo(
+                this.initialVolume,
+                BinauralBeatSingleton.RAMPTIME
+            )
+
+        this.beatOscillator
+            .oscillatorProxy = new OscillatorProxy({
+            useAudioWorklet: useAudioWorklet,
+            frequency: this.carrierOscillator.frequency,
+            volume: -999,
+            context: context.rawContext
+        })
+            .connect(this.merge, 0, 1)
+            .start()
+
+        this.beatOscillator
+            .oscillatorProxy
+            .volume
+            .linearRampTo(
+                this.initialVolume,
+                BinauralBeatSingleton.RAMPTIME
+            )
+
+        if(useWhiteNoise) {
+            this.noiseSource = new Noise({
+                type: 'pink',
+                volume: -Infinity
+            }).toDestination().start()
+
+            console.log(`[${FunctionName()}]: value of noiseLevel: ${Number(this.noiseLevel)}`)
+
+            this.noiseSource.volume.linearRampTo(
+                this.noiseLevel,
+                BinauralBeatSingleton.RAMPTIME
+            )
         }
     }
 
