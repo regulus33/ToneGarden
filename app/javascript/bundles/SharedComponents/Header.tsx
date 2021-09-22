@@ -10,7 +10,7 @@ import Gradient from "../Models/Gradient";
 import {useGradient} from "../State/GradientContext";
 
 interface HeaderProps {
-    title: string|object,
+    title: string,
     gradient: Gradient,
     toggleSettingsDrawer: (event: SyntheticEvent)=>void
 }
@@ -31,7 +31,7 @@ const Header: FunctionComponent<HeaderProps> = (props) => {
                     <MenuIcon />
                 </IconButton>
                 <Typography variant="h6" className={classes.title}>
-                    {props.title}
+                    <div dangerouslySetInnerHTML={{__html: props.title}}/>
                 </Typography>
                 <img style={{maxWidth: '120px'}} src={'/logo_white.svg'}/>
             </Toolbar>
