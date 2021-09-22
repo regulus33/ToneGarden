@@ -44,6 +44,11 @@ const PitchSlider: FunctionComponent<PitchSliderProps> = (props) => {
         setValue(event.target.value)
     }
 
+    const numerize = (test: number|string): number => {
+        if(Number(test) === NaN) return 0
+        return Number(test)
+    }
+
     // Make sure text input value is within boundary then update osc
     const handleBlur = () => {
        let adjustedValue: number
@@ -83,12 +88,12 @@ const PitchSlider: FunctionComponent<PitchSliderProps> = (props) => {
                 <CustomSlider
                     step={props.step || 1}
                     className={classes.customSlider}
-                    value={typeof value === 'number' ? value : 0}
+                    value={numerize(value)}
                     onMouseUp={handleBlur}
                     onChange={handleSliderChange}
                     min={props.minMax[0]}
                     max={props.minMax[1]}
-                    defaultValue={typeof value === 'number' ? value : 0}
+                    defaultValue={numerize(value)}
                     valueLabelDisplay="on"/>
             </div>
         </form>

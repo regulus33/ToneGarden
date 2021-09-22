@@ -73,7 +73,7 @@ const BinauralBeatStateCard: FunctionComponent<BinauralBeatStateCardProps> = (pr
         <Zoom
             in={props.loaded}
             style={{transitionDelay: props.loaded ? `${50 * props.index}ms` : '0ms'}}>
-            <Card className={classes.presetCard}>
+            <Card className={classes.presetCard} elevation={0}>
                 <CardHeader className={classes.cardHeader}
                     avatar={
                         <Typography className={classes.avatar} component="h5" variant="h5">
