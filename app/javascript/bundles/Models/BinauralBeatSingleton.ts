@@ -26,17 +26,12 @@ export default class BinauralBeatSingleton {
     carrierOscillator: CarrierOscillator
     noiseSource: Noise
     merge: Merge | ChannelMergerNode
-    noiseGain: Gain
     volume: number = 0
     id: number
     name: string
     editable: boolean
     description: string
     noiseLevel: number
-    audioWorkletContext: AudioContext
-    savedWorkletProcessorUrl: string
-    // FIXME!
-    audioWorkletOscillator: any
 
     private static instance: BinauralBeatSingleton;
 
@@ -101,14 +96,6 @@ export default class BinauralBeatSingleton {
 
     getBetterOscillator(context) {
          return new BetterOscillatorNode(context);
-
-        // osc.connect(audioContext.destination)
-        // const freq = osc.parameters.get('frequency')
-        // const time = audioContext.currentTime
-        // freq.setValueAtTime(440, time + 1)
-        // freq.linearRampToValueAtTime(660, time + 1.5)
-        // setTimeout(()=>audioContext.close(), 5000)
-
     }
 
      playing(playing: boolean, useWhiteNoise: boolean, useAudioWorklet: boolean) {
@@ -116,7 +103,6 @@ export default class BinauralBeatSingleton {
         if (playing) {
             if(useAudioWorklet) {
                 context.rawContext.audioWorklet.addModule('/better-oscillator.js').then(() => {
-                    const oscillator = this.getBetterOscillator(context.rawContext)
                     this.setupAndPlayAudio(context, useWhiteNoise, useAudioWorklet)
                 });
             } else {
@@ -126,7 +112,7 @@ export default class BinauralBeatSingleton {
 
         } else {
             this.carrierOscillator
-                .oscillatorSource
+                .oscillatorProxy
                 .volume
                 .linearRampTo(
                     -Infinity,
@@ -143,7 +129,7 @@ export default class BinauralBeatSingleton {
 
             // Wait for fade out of audio then dispose
             setTimeout(() =>{
-                this.carrierOscillator.oscillatorSource.stop()
+                this.carrierOscillator.oscillatorProxy.stop()
                 this.beatOscillator.oscillatorProxy.stop()
                 context.dispose()
             }, BinauralBeatSingleton.RAMPTIME * 1000)
@@ -155,7 +141,7 @@ export default class BinauralBeatSingleton {
         this.merge = new MergerProxy(context, useAudioWorklet).sourceMerger
 
         this.carrierOscillator
-            .oscillatorSource = new OscillatorProxy({
+            .oscillatorProxy = new OscillatorProxy({
             useAudioWorklet: useAudioWorklet,
             frequency: this.carrierOscillator.frequency,
             volume: -999,
@@ -165,7 +151,7 @@ export default class BinauralBeatSingleton {
             .start()
 
         this.carrierOscillator
-            .oscillatorSource
+            .oscillatorProxy
             .volume
             .linearRampTo(
                 this.initialVolume,

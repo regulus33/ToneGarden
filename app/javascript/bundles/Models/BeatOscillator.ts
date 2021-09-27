@@ -10,7 +10,9 @@ class BeatOscillator {
     source: 'worklet'
 
     constructor(frequency: number) {
-      this.frequency = frequency;
+      this.frequency = frequency
+        // this is just a placeholder, needed for /create beat
+        this.oscillatorProxy = new OscillatorProxy()
     }
 
     setFrequency(carrierOscillator: CarrierOscillator, newValue?: number) {
