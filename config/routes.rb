@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   post '/api/binaural_beats', to: 'binaural_beats#create'
   put '/api/binaural_beats/:beat_id', to: 'binaural_beats#update'
   delete '/api/binaural_beats/:beat_id', to: 'binaural_beats#delete'
+  get '/manifest', to: 'service_worker#manifest'
 
   resources :users, only: :create do
     collection do
