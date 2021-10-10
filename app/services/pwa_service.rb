@@ -12,7 +12,7 @@ class PwaService
           "purpose" => "any"
         },
       ],
-      "start_url" => "/?source=pwa",
+      "start_url" => "/",
       "background_color" => "#8126FF",
       "display" => "standalone",
       "scope" => "/",
@@ -31,5 +31,13 @@ class PwaService
         }
       ]
     }
+  end
+
+  def self.assetlinks
+      [{
+         "relation" => ["delegate_permission/common.handle_all_urls"],
+         "target" => { "namespace": "android_app", "package_name": "com.tonegarden",
+         "sha256_cert_fingerprints" => ["93:33:7D:0F:F2:55:E1:08:EC:52:9D:D9:FB:81:6C:B8:63:EE:2E:AD:9E:04:A7:82:37:E2:8E:9A:5A:75:06:B7"] }
+      }]
   end
 end
