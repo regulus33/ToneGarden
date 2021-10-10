@@ -19,13 +19,18 @@ Rails.application.routes.draw do
   get '/create', to: 'initializers#index'
   get '/whoops', to: 'initializers#index'
 
-  # API is namespaced bc react router can collide with some of our urls
+  # API urls must be prefixed api
+  # TODO: DRY
   get '/api/binaural_beats', to: 'binaural_beats#index'
   get '/api/binaural_beats/:beat_id', to: 'binaural_beats#show'
   post '/api/binaural_beats', to: 'binaural_beats#create'
   put '/api/binaural_beats/:beat_id', to: 'binaural_beats#update'
   delete '/api/binaural_beats/:beat_id', to: 'binaural_beats#delete'
-  get '/manifest', to: 'service_worker#manifest'
+
+  # PWA
+  # TODO: DRY
+  get '/manifest', to: 'service_worker#manifest.json', defaults: { format: 'json' }
+  get '.well-known/assetlinks.json', to: 'service_worker#assetlinks', defaults: { format: 'json' }
 
   resources :users, only: :create do
     collection do
