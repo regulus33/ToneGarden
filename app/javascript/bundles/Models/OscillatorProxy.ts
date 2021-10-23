@@ -31,7 +31,7 @@ class OscillatorProxy {
 
 
         if (this.useAudioWorklet) {
-            this.wOsc = new BetterOscillatorNode(this.audioContext)
+            this.wOsc = new OscillatorNode(this.audioContext)
         } else {
             this.osc = new Oscillator({
                 frequency: options.frequency,

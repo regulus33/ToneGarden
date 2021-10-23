@@ -77,27 +77,6 @@ export default class BinauralBeatSingleton {
 
     }
 
-    playAudioWorklet = () => {
-        // this.audioWorkletContext = new AudioContext()
-        // this.audioWorkletContext.audioWorklet.addModule('/better-oscillator.js').then(() => {
-        //     this.audioWorkletOscillator = new BetterOscillator(this.audioWorkletContext)
-        // });
-        // const audioContext = new AudioContext();
-        // audioContext.audioWorklet.addModule('/better-oscillator.js').then(() => {
-        //     const osc = new BetterOscillatorNode(audioContext);
-        //     osc.connect(audioContext.destination)
-        //     const freq = osc.parameters.get('frequency')
-        //     const time = audioContext.currentTime
-        //     freq.setValueAtTime(440, time + 1)
-        //     freq.linearRampToValueAtTime(660, time + 1.5)
-        //     setTimeout(()=>audioContext.close(), 5000)
-        // });
-    }
-
-    getBetterOscillator(context) {
-         return new BetterOscillatorNode(context);
-    }
-
      playing(playing: boolean, useWhiteNoise: boolean, useAudioWorklet: boolean) {
         const context = getContext()
         if (playing) {
@@ -137,7 +116,6 @@ export default class BinauralBeatSingleton {
     }
 
     setupAndPlayAudio(context: BaseContext, useWhiteNoise: boolean, useAudioWorklet: boolean) {
-        // audioContext.lookAhead = 0.1 #
         this.merge = new MergerProxy(context, useAudioWorklet).sourceMerger
 
         this.carrierOscillator
@@ -161,7 +139,7 @@ export default class BinauralBeatSingleton {
         this.beatOscillator
             .oscillatorProxy = new OscillatorProxy({
             useAudioWorklet: useAudioWorklet,
-            frequency: this.carrierOscillator.frequency,
+            frequency: this.beatOscillator.frequency,
             volume: -999,
             context: context.rawContext
         })
@@ -209,7 +187,7 @@ export default class BinauralBeatSingleton {
         const symbol = FrequencyRangeHelper.rangeSymbol(
             this.carrierOscillator.offset
         )
-        const freqName = FrequencyRangeHelper.rangeString(
+        const freqName = FrequencyRangeHelper.displayRangeString(
             this.carrierOscillator.offset
         )
         return `<span style="color:#ffad00">${symbol} ${freqName}</span> ${this.name}`

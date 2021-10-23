@@ -22,6 +22,7 @@ interface PitchSliderProps {
     handleSliderChangeCallback: (sliderValue: number) => void,
     showTextInput?: boolean,
     step?: number,
+    handleBlur?: (sliderValue: number) => void,
 }
 
 const PitchSlider: FunctionComponent<PitchSliderProps> = (props) => {
@@ -64,7 +65,13 @@ const PitchSlider: FunctionComponent<PitchSliderProps> = (props) => {
             adjustedValue = props.minMax[0]
             setValue(adjustedValue)
         }
-        props.handleSliderChangeCallback(Number(adjustedValue || value))
+
+        const processedValue = Number(adjustedValue || value)
+
+        props.handleSliderChangeCallback(processedValue)
+        if(!!props.handleBlur) {
+            props.handleBlur(processedValue)
+        }
     }
 
     useEffect(()=>{
