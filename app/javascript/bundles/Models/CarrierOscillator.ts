@@ -2,6 +2,7 @@ import {getContext, Oscillator} from "tone";
 import BeatOscillator from "./BeatOscillator";
 import OscillatorProxy from "./OscillatorProxy";
 import {AnyAudioContext} from "tone/build/esm/core/context/AudioContext";
+import BinauralBeat from "./BinauralBeat";
 
 class CarrierOscillator {
     offset: number
@@ -22,12 +23,14 @@ class CarrierOscillator {
     setFrequencyFromBase(newValue: number) {
         const newValueSet = newValue + this.offset
         console.log(newValueSet)
-        this.oscillatorProxy
-            .frequency
-            .rampTo(
-                newValueSet,
-                0.5
-            )
+        if(BinauralBeat.ins().isPlaying) {
+            this.oscillatorProxy
+                .frequency
+                .rampTo(
+                    newValueSet,
+                    0.5
+                )
+        }
     }
 
 }

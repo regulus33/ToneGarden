@@ -12,7 +12,8 @@ import {useGradient} from "../State/GradientContext";
 interface HeaderProps {
     title: string,
     gradient: Gradient,
-    toggleSettingsDrawer: (event: SyntheticEvent)=>void
+    toggleSettingsDrawer: (event: SyntheticEvent)=>void,
+    authenticated: boolean
 }
 
 const Header: FunctionComponent<HeaderProps> = (props) => {
@@ -22,13 +23,8 @@ const Header: FunctionComponent<HeaderProps> = (props) => {
     return (
         <AppBar elevation={0} position="fixed" className={classes.root} style={{background: props.gradient.backGround()}}>
             <Toolbar>
-                <IconButton
-                    color="inherit"
-                    aria-label="open drawer"
-                    onClick={props.toggleSettingsDrawer}
-                    edge="start"
-                >
-                    <MenuIcon />
+                <IconButton color="inherit" aria-label="open drawer" onClick={props.toggleSettingsDrawer} edge="start">
+                    { props.authenticated ? <MenuIcon /> : null }
                 </IconButton>
                 <Typography variant="h6" className={classes.title}>
                     <div dangerouslySetInnerHTML={{__html: props.title}}/>

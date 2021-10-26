@@ -8,26 +8,30 @@ import useStyles from "../Styles/StylesAudioControls";
 interface AudioControlsProps {
     handlePlayPress: ()=> void,
     handlePausePress: ()=> void,
-    disabled: 'play'| 'pause' | 'none'
+    disabledButton: 'play'| 'pause' | 'both' | 'none'
 }
 
 const AudioControls: FunctionComponent<AudioControlsProps> = (props) => {
     const classes = useStyles();
 
+    const bothDisabled = () => {
+        return props.disabledButton === 'both'
+    }
+
     const playDisabled = () => {
-        return props.disabled === 'play'
+        return props.disabledButton === 'play' || bothDisabled()
     }
 
     const pauseDisabled = () => {
-        return props.disabled === 'pause'
+        return props.disabledButton === 'pause' || bothDisabled()
     }
 
     return (
         <div className={classes.controlsContainer}>
-            <IconButton disabled={playDisabled()} aria-label="play/pause" onClick={props.handlePlayPress}>
+            <IconButton disabled={playDisabled()} aria-label="play" onClick={props.handlePlayPress}>
                 <PlayArrowIcon/>
             </IconButton>
-            <IconButton disabled={pauseDisabled()} aria-label="play/pause" onClick={props.handlePausePress}>
+            <IconButton disabled={pauseDisabled()} aria-label="pause" onClick={props.handlePausePress}>
                 <Pause/>
             </IconButton>
         </div>

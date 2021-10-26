@@ -3,7 +3,7 @@ import {FunctionComponent, useEffect, useState} from 'react'
 import NetworkService from "../Network/NetworkService"
 import Routes from "../Network/Routes"
 import {useHistory, useParams} from 'react-router-dom'
-import BinauralBeatSingleton from '../Models/BinauralBeatSingleton'
+import BinauralBeat from '../Models/BinauralBeat'
 import useStyles from '../Styles/StylesPresetShowScreen'
 import {useGradient} from "../State/GradientContext"
 import Paper from '@material-ui/core/Paper'
@@ -47,24 +47,29 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
     const [carrierOscillator, setCarrierOscillator] = useState(0)
     const [volume, setVolume] = useState(0)
     const [noiseLevel, setNoiseLevel] = useState(0)
+    const [ changingState, setChangingState ] = useState(false)
 
     // Hook called when a succesful fetch of a beat was completed
 
     const isNewBeat = props.location.pathname === '/create'
 
     // For material ui audio controls
-    function computeAudioControlsState() {
-        if (playing) {
-            return 'play'
+    function disabledButton() {
+        let state
+        if(changingState) {
+            state = 'both'
+        } else if (playing) {
+            state = 'play'
         } else {
-            return 'pause'
+            state = 'pause'
         }
+        return state
     }
 
     function saveBeat() {
         (async () => {
-            const id = BinauralBeatSingleton.ins().id
-            const beatBody = BinauralBeatSingleton.ins().toState()
+            const id = BinauralBeat.ins().id
+            const beatBody = BinauralBeat.ins().toState()
             const b = await NetworkService
                 .getInstance()
                 .put(Routes
@@ -82,22 +87,24 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
 
     function createBeat() {
         (async () => {
-            const beatBody = BinauralBeatSingleton.ins().toState()
+            const beatBody = BinauralBeat.ins().toState()
             const b = await NetworkService
                 .getInstance()
                 .post(Routes
                     .BinauralBeatCreate, beatBody)
 
-            if(b) {
-                if (playing) { pause() }
+            if (b) {
+                if (playing) {
+                    pause()
+                }
                 // @ts-ignore
                 const binauralBeatState: BinauralBeatState = b.data
                     .binauralBeatState
                     .data
                     .attributes
                 const {id} = binauralBeatState
-                BinauralBeatSingleton.ins(binauralBeatState)
-                const params: BinauralBeatState = BinauralBeatSingleton.ins().toState()
+                BinauralBeat.ins(binauralBeatState)
+                const params: BinauralBeatState = BinauralBeat.ins().toState()
                 history.push({pathname: Routes.BinauralBeatEditScreen(String(id)), binauralBeatState: params})
                 const {name} = params
                 const displayName = name || 'beat'
@@ -114,7 +121,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
 
     function onVolumeChange(value: number) {
         getDestination().volume.rampTo(value)
-        BinauralBeatSingleton.ins().volume = value
+        BinauralBeat.ins().volume = value
         setVolume(value)
     }
 
@@ -130,66 +137,70 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
         }
         setNameError(null)
         setName(v)
-        BinauralBeatSingleton.ins().name = v
-        setTitle(BinauralBeatSingleton.ins().generateTitle())
+        BinauralBeat.ins().name = v
+        setTitle(BinauralBeat.ins().generateTitle())
     }
 
     function pause() {
-        BinauralBeatSingleton.ins().playing(false, useWhiteNoise, useAudioWorklet)
+        BinauralBeat.ins().playing(false, useWhiteNoise, useAudioWorklet)
         setPlaying(false)
+        delayButtonDisable()
     }
 
     function play() {
-        BinauralBeatSingleton.ins().playing(true, useWhiteNoise, useAudioWorklet)
+        BinauralBeat.ins().playing(true, useWhiteNoise, useAudioWorklet)
         setPlaying(true)
+        delayButtonDisable()
+    }
+
+    function delayButtonDisable() {
+        setChangingState(true)
+        setTimeout(function () {
+                setChangingState(false)
+            }, BinauralBeat.RAMPTIME * 1000
+        )
     }
 
     function onNoiseLevelChange(value: number) {
         console.log(`Noise level: ${value}`)
-        if(playing) {
-            BinauralBeatSingleton.ins().noiseSource.volume.rampTo(value, 0.1)
+        if (playing) {
+            BinauralBeat.ins().noiseSource.volume.rampTo(value, 0.1)
         }
-        BinauralBeatSingleton.ins().noiseLevel = value
+        BinauralBeat.ins().noiseLevel = value
         setNoiseLevel(value)
     }
 
     function updateUIFreqInfo(offset: number) {
-        let singletonValue = BinauralBeatSingleton.ins()
+        let singletonValue = BinauralBeat.ins()
             .carrierOscillator
             .offset
         if (singletonValue != offset) {
             throw `Error! offset from updateUIFreqInfo is ${offset} and BinauralBeatSingleton.carrierOscillator has ${singletonValue}`
         }
-        setTitle(BinauralBeatSingleton.ins().generateTitle())
+        setTitle(BinauralBeat.ins().generateTitle())
     }
 
     function onBeatFreqChange(frequency: number) {
-        BinauralBeatSingleton
-            .ins()
-            .beatOscillator
-            .setFrequency(BinauralBeatSingleton
-                    .ins()
-                    .carrierOscillator,
-                Number(frequency))
+        BinauralBeat.ins().beatOscillator.setFrequency(
+                    BinauralBeat.ins().carrierOscillator,
+                    Number(frequency)
+            )
     }
 
     function onCarrierFreqChange(offset: number) {
-        BinauralBeatSingleton
-            .ins()
-            .carrierOscillator
-            .offset = Number(offset)
-        BinauralBeatSingleton
-            .ins()
-            .beatOscillator
-            .setFrequency(
-                BinauralBeatSingleton.ins().carrierOscillator, null)
+        BinauralBeat.ins().carrierOscillator.offset = Number(
+            offset
+        )
+        BinauralBeat.ins().beatOscillator.setFrequency(
+            BinauralBeat.ins().carrierOscillator, null
+        )
         updateUIFreqInfo(offset)
-        BinauralBeatSingleton.ins().description = FrequencyRangeHelper
+        BinauralBeat.ins().description = FrequencyRangeHelper
             .rangeString(offset)
     }
 
     function hydrateBeatState(beat: BinauralBeatState) {
-        const beatInstance = BinauralBeatSingleton.ins(beat)
+        const beatInstance = BinauralBeat.ins(beat)
 
         setTitle(
             beatInstance.generateTitle()
@@ -258,8 +269,8 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
         // Orphaned but left playing.
         // Tell instance to pause before we
         // Hydrate:
-        if (BinauralBeatSingleton.inMemory) {
-            BinauralBeatSingleton.ins().playing(false, useWhiteNoise, useAudioWorklet)
+        if (BinauralBeat.inMemory) {
+            BinauralBeat.ins().playing(false, useWhiteNoise, useAudioWorklet)
         }
 
         hydrateBeatState({
@@ -273,7 +284,11 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
             description: 'theta',
         })
 
-        BinauralBeatSingleton.ins().playing(false, useWhiteNoise, useAudioWorklet)
+        BinauralBeat.ins().playing(
+            false,
+            useWhiteNoise,
+            useAudioWorklet
+        )
 
         return pause
     }, [])
@@ -289,14 +304,14 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
             <div className={classes.pitchSliderContainer}>
                 <PitchSlider
                     showTextInput
-                    minMax={BinauralBeatSingleton.beatMinMax}
+                    minMax={BinauralBeat.beatMinMax}
                     label={'Main tone'}
                     default={beatOscillator}
                     handleSliderChangeCallback={onBeatFreqChange}
                 />
                 <PitchSlider
                     showTextInput
-                    minMax={BinauralBeatSingleton.carrierMinMax}
+                    minMax={BinauralBeat.carrierMinMax}
                     label={'Carrier tone'}
                     default={carrierOscillator}
                     handleSliderChangeCallback={onCarrierFreqChange}
@@ -307,7 +322,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
                 <AudioControls
                     handlePlayPress={play}
                     handlePausePress={pause}
-                    disabled={computeAudioControlsState()}/>
+                    disabledButton={disabledButton()}/>
                 <div className={classes.saveButtonContainer}>
                     <Button variant="contained"
                             onClick={isNewBeat ? createBeat : saveBeat}

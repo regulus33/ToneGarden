@@ -124,8 +124,8 @@ export default class NetworkService {
     }
 
     // Looks at status code and broadcasts a global error ( we never show multiple errors simultaneously)
-    // Also unsets error when status is successful;
-    // Also maes user signed in or not locally
+    // Unsets error when status is successful
+    // Sets authenticated when status is 201 (not particularly elegant but gets the job done)
     private processResponse(statusCode?: number, errorMessage?: string) {
         switch (statusCode) {
             case 401:
@@ -133,7 +133,6 @@ export default class NetworkService {
                 this.setError(new GlobalError(null, statusCode, null))
                 break
             case 200:
-                this.setAuthenticatedAndStore(true)
                 this.setError(null)
                 break
             case 201:
