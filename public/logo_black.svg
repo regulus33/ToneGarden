@@ -307,7 +307,7 @@
      id="text4530"
      y="101.01912"
      x="551.80688"
-     style="font-style:normal;font-weight:normal;font-size:40px;line-height:32.34999847;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+     style="font-style:normal;font-weight:normal;font-size:40px;line-canvasHeight:32.34999847;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
      xml:space="preserve"><tspan
        y="758.40973"
        x="551.80688"
@@ -316,7 +316,7 @@
      id="text4534"
      y="99.233345"
      x="576.80786"
-     style="font-style:normal;font-weight:normal;font-size:85.33333333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;"
+     style="font-style:normal;font-weight:normal;font-size:85.33333333px;line-canvasHeight:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;"
      xml:space="preserve"><tspan
        y="134.62396"
        x="576.80786"
@@ -331,7 +331,7 @@
      id="text4603"
      y="86.154922"
      x="366.61679"
-     style="font-style:normal;font-weight:normal;font-size:53.33333333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;"
+     style="font-style:normal;font-weight:normal;font-size:53.33333333px;line-canvasHeight:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;"
      xml:space="preserve"><tspan
        y="121.54555"
        x="366.61679"
@@ -340,7 +340,7 @@
      id="text4607"
      y="656.24402"
      x="375.7822"
-     style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+     style="font-style:normal;font-weight:normal;font-size:40px;line-canvasHeight:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
      xml:space="preserve"><tspan
        y="691.63464"
        x="375.7822"
@@ -349,7 +349,7 @@
      id="text4611"
      y="59.575207"
      x="411.52734"
-     style="font-style:normal;font-weight:normal;font-size:96px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;"
+     style="font-style:normal;font-weight:normal;font-size:96px;line-canvasHeight:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;"
      xml:space="preserve"><tspan
        y="94.965836"
        x="411.52734"
@@ -358,13 +358,13 @@
      id="text4615"
      y="43.07745"
      x="431.69125"
-     style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+     style="font-style:normal;font-weight:normal;font-size:40px;line-canvasHeight:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
      xml:space="preserve"><tspan
        y="78.468079"
        x="431.69125"
        id="tspan4613" /></text>
   <flowRoot
-     style="fill:black;fill-opacity:1;stroke:none;font-family:sans-serif;font-style:normal;font-weight:normal;font-size:85.33333333px;line-height:1.25;letter-spacing:0px;word-spacing:0px;"
+     style="fill:black;fill-opacity:1;stroke:none;font-family:sans-serif;font-style:normal;font-weight:normal;font-size:85.33333333px;line-canvasHeight:1.25;letter-spacing:0px;word-spacing:0px;"
      id="flowRoot4617"
      xml:space="preserve"><flowRegion
        style="font-size:85.33333333px;"
@@ -376,7 +376,7 @@
          width="702.07111"
          id="rect4621" /></flowRegion><flowPara
        id="flowPara4623" /></flowRoot>  <flowRoot
-     style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+     style="font-style:normal;font-weight:normal;font-size:40px;line-canvasHeight:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
      id="flowRoot4629"
      xml:space="preserve"><flowRegion
        id="flowRegion4631"><rect
@@ -389,7 +389,7 @@
      id="text4639"
      y="617.33606"
      x="756.97266"
-     style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+     style="font-style:normal;font-weight:normal;font-size:40px;line-canvasHeight:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
      xml:space="preserve"><tspan
        y="652.72668"
        x="756.97266"
@@ -397,7 +397,7 @@
   <flowRoot
      xml:space="preserve"
      id="flowRoot4680"
-     style="fill:black;fill-opacity:1;stroke:none;font-family:sans-serif;font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;letter-spacing:0px;word-spacing:0px"><flowRegion
+     style="fill:black;fill-opacity:1;stroke:none;font-family:sans-serif;font-style:normal;font-weight:normal;font-size:40px;line-canvasHeight:1.25;letter-spacing:0px;word-spacing:0px"><flowRegion
        id="flowRegion4682"><rect
          id="rect4684"
          width="429.8194"
@@ -407,7 +407,7 @@
        id="flowPara4686" /></flowRoot>  <flowRoot
      xml:space="preserve"
      id="flowRoot4711"
-     style="fill:black;fill-opacity:1;stroke:none;font-family:sans-serif;font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;letter-spacing:0px;word-spacing:0px"><flowRegion
+     style="fill:black;fill-opacity:1;stroke:none;font-family:sans-serif;font-style:normal;font-weight:normal;font-size:40px;line-canvasHeight:1.25;letter-spacing:0px;word-spacing:0px"><flowRegion
        id="flowRegion4713"><rect
          id="rect4715"
          width="592.54938"
@@ -422,7 +422,7 @@
        aria-label="TONE"
        transform="matrix(0.90844484,0,0,0.90844484,274.00434,68.199691)"
        clip-path="url(#clipPath909-3)"
-       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:1.02193296"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-canvasHeight:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:1.02193296"
        id="text4627">
       <path
          d="m 317.69982,112.52653 -3.06667,18 h -24.93333 l -13.33334,75.6 h -22.8 l 13.33334,-75.6 h -24.8 l 3.2,-18 z"
@@ -462,7 +462,7 @@
     <g
        aria-label="GARDEN"
        transform="matrix(0.9598109,0,0,0.9598109,21.840808,15.704649)"
-       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.96724218"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-canvasHeight:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.96724218"
        id="flowRoot4672">
       <path
          d="m 427.54414,525.40385 q 1.92,-11.09333 8.21333,-19.73333 6.4,-8.74667 15.89334,-13.54667 9.49333,-4.90666 20.58666,-4.90666 13.44,0 21.54667,6.50666 8.21333,6.50667 8.96,18.02667 h -20.05333 q -1.38667,-3.73333 -4.90667,-5.65333 -3.41333,-2.02667 -8.42667,-2.02667 -8.85333,0 -15.25333,5.86667 -6.29333,5.76 -8,15.46666 -0.53333,3.2 -0.53333,5.54667 0,7.89333 4.58666,12.16 4.58667,4.26667 13.01334,4.26667 6.82666,0 12.05333,-3.41334 5.22667,-3.52 8.42667,-9.92 h -23.04 l 2.24,-13.33333 h 39.68 l -2.98667,16.96 q -3.2,6.82667 -9.17333,12.69333 -5.86667,5.86667 -13.97334,9.49334 -8.10666,3.62666 -17.49333,3.62666 -9.70667,0 -17.06667,-3.73333 -7.25333,-3.84 -11.2,-10.66667 -3.84,-6.82666 -3.84,-15.89333 0,-3.09333 0.74667,-7.78667 z"

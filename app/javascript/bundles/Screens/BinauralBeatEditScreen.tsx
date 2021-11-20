@@ -1,6 +1,6 @@
-import * as React from 'react'
-import {FunctionComponent, useEffect, useState} from 'react'
 import NetworkService from "../Network/NetworkService"
+import * as React from 'react'
+import {useEffect, useState} from 'react'
 import Routes from "../Network/Routes"
 import {useHistory, useParams} from 'react-router-dom'
 import BinauralBeat from '../Models/BinauralBeat'
@@ -9,36 +9,38 @@ import {useGradient} from "../State/GradientContext"
 import Paper from '@material-ui/core/Paper'
 import PitchSlider from "../SharedComponents/PitchSlider"
 import AudioControls from "../SharedComponents/AudioControls"
+import Canvas from '../App/components/Canvas'
 import Button from "@material-ui/core/Button"
 import {useTitle} from '../State/TitleContext'
 import BinauralBeatState from "../Types/BinauralBeatTypes";
 import ExtrasForm from "../SharedComponents/ExtrasForm";
 import FrequencyRangeHelper from "../Helpers/FrequencyRangeHelper";
-import {getDestination} from "tone";
 import {useFlashMessage} from "../State/FlashMessageContext";
 import FlashMessage, {FlashEnum} from "../Models/FlashMessage";
 import {useWhiteNoiseCtx} from "../State/UseWhiteNoiseContext";
 import {useAudioWorkletCtx} from "../State/UseAudioWorkletContext";
+import {Location} from 'history'
+import CanvasColorHelper from "../Helpers/CanvasColorHellper";
+import {BEAT_CANVAS_ID, CARRIER_CANVAS_ID} from "../Models/Constants";
 
 interface PresetShowScreenProps {
-    location: any
+    location: Location
 }
 
-const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props) => {
+function BinauralBeatEditScreen(props: PresetShowScreenProps):JSX.Element {
     // Global hooks
     const {setTitle} = useTitle()
     const {gradient, setGradient} = useGradient()
     const {setFlashMessage} = useFlashMessage()
     const {useWhiteNoise} = useWhiteNoiseCtx()
     const {useAudioWorklet} = useAudioWorkletCtx()
-
+    //
     // Router
     const history = useHistory()
     const {preset_id} = useParams()
-
+    //
     // Styles
     const classes = useStyles(gradient.toProps())
-
     // Beat state
     const [nameError, setNameError] = useState(null)
     const [name, setName] = useState('Name')
@@ -48,13 +50,12 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
     const [volume, setVolume] = useState(0)
     const [noiseLevel, setNoiseLevel] = useState(0)
     const [ changingState, setChangingState ] = useState(false)
-
-    // Hook called when a succesful fetch of a beat was completed
-
+    //
+    // Render edit screen or create screen?
     const isNewBeat = props.location.pathname === '/create'
-
+    //
     // For material ui audio controls
-    function disabledButton() {
+    function disabledButton(): 'play'| 'pause' | 'both' | 'none' {
         let state
         if(changingState) {
             state = 'both'
@@ -66,26 +67,21 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
         return state
     }
 
-    function saveBeat() {
+    function saveBeat(): void {
         (async () => {
             const id = BinauralBeat.ins().id
             const beatBody = BinauralBeat.ins().toState()
-            const b = await NetworkService
-                .getInstance()
-                .put(Routes
-                    .BinauralBeatUpdate(
-                        id.toString()), beatBody)
-
+            const url = Routes.BinauralBeatUpdate(id.toString())
+            const b = await NetworkService.getInstance().put(url, beatBody)
             // @ts-ignore https://stackoverflow.com/questions/40097820/property-does-not-exist-on-type-object-observable-subscribe
             const {name} = b.data.binauralBeatState.data.attributes
 
             const displayName = name || 'Binaural beat'
             setFlashMessage(new FlashMessage(`${displayName} is now saved.`, true, FlashEnum.success))
-
         })()
     }
 
-    function createBeat() {
+    function createBeat(): void {
         (async () => {
             const beatBody = BinauralBeat.ins().toState()
             const b = await NetworkService
@@ -94,9 +90,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
                     .BinauralBeatCreate, beatBody)
 
             if (b) {
-                if (playing) {
-                    pause()
-                }
+                if (playing) pause()
                 // @ts-ignore
                 const binauralBeatState: BinauralBeatState = b.data
                     .binauralBeatState
@@ -119,13 +113,19 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
 
     }
 
-    function onVolumeChange(value: number) {
-        getDestination().volume.rampTo(value)
-        BinauralBeat.ins().volume = value
-        setVolume(value)
+    function onVolumeChange(newVolume: number): void {
+        setVolume(newVolume)
+        BinauralBeat.ins().volume = newVolume
+        if(BinauralBeat.ins().playing) {
+            BinauralBeat.ins().gain.gain.setValueAtTime(newVolume, 0)
+        }
     }
 
-    function onNameChange(event: any) {
+    function beat() {
+        return BinauralBeat.ins()
+    }
+
+    function onNameChange(event: any): void {
         event.preventDefault()
         const el = event.target
         const v = el.value
@@ -141,19 +141,19 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
         setTitle(BinauralBeat.ins().generateTitle())
     }
 
-    function pause() {
-        BinauralBeat.ins().playing(false, useWhiteNoise, useAudioWorklet)
+    function pause(): void {
+        BinauralBeat.ins().setPlayingState(false, useWhiteNoise, useAudioWorklet)
         setPlaying(false)
         delayButtonDisable()
     }
 
-    function play() {
-        BinauralBeat.ins().playing(true, useWhiteNoise, useAudioWorklet)
+    function play(): void {
+        BinauralBeat.ins().setPlayingState(true, useWhiteNoise, useAudioWorklet)
         setPlaying(true)
         delayButtonDisable()
     }
 
-    function delayButtonDisable() {
+    function delayButtonDisable(): void {
         setChangingState(true)
         setTimeout(function () {
                 setChangingState(false)
@@ -161,7 +161,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
         )
     }
 
-    function onNoiseLevelChange(value: number) {
+    function onNoiseLevelChange(value: number): void {
         console.log(`Noise level: ${value}`)
         if (playing) {
             BinauralBeat.ins().noiseSource.volume.rampTo(value, 0.1)
@@ -170,7 +170,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
         setNoiseLevel(value)
     }
 
-    function updateUIFreqInfo(offset: number) {
+    function updateUIFreqInfo(offset: number): void {
         let singletonValue = BinauralBeat.ins()
             .carrierOscillator
             .offset
@@ -180,26 +180,20 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
         setTitle(BinauralBeat.ins().generateTitle())
     }
 
-    function onBeatFreqChange(frequency: number) {
-        BinauralBeat.ins().beatOscillator.setFrequency(
-                    BinauralBeat.ins().carrierOscillator,
-                    Number(frequency)
-            )
+    function onBeatFreqChange(frequency: number): void {
+        BinauralBeat.ins().beatOscillator.setFrequencyToPlay(frequency)
     }
 
-    function onCarrierFreqChange(offset: number) {
-        BinauralBeat.ins().carrierOscillator.offset = Number(
-            offset
-        )
-        BinauralBeat.ins().beatOscillator.setFrequency(
-            BinauralBeat.ins().carrierOscillator, null
-        )
+    function onCarrierFreqChange(offset: number): void {
+        BinauralBeat.ins().carrierOscillator.setOffsetToPlay(offset)
+
+
         updateUIFreqInfo(offset)
         BinauralBeat.ins().description = FrequencyRangeHelper
             .rangeString(offset)
     }
 
-    function hydrateBeatState(beat: BinauralBeatState) {
+    function hydrateBeatState(beat: BinauralBeatState): void {
         const beatInstance = BinauralBeat.ins(beat)
 
         setTitle(
@@ -216,17 +210,15 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
         setBeatOscillator(beatInstance.beatOscillator.frequency)
         setCarrierOscillator(beatInstance.carrierOscillator.offset)
 
-        // setVolume(beatInstance.volume)
-        // setNoiseLevel(beatInstance.noiseLevel)
-        // This is required instead of a simple set state
-        // setVolume(beatInstance.volume)
+        // Set form inputs and models to the same value
+        // TODO this MAY be getting called more than once (had some issue with it in rubymine)
         onVolumeChange(beatInstance.volume)
         onNoiseLevelChange(beatInstance.noiseLevel)
-
     }
 
     // On EDIT title
-    useEffect(() => {
+    useEffect(function() {
+        //
         // TODO: clean this
         if (isNewBeat) {
             return
@@ -258,19 +250,17 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
     }, [])
 
     // On NEW title
-    useEffect(() => {
-        if (!isNewBeat) {
-            return
-        }
+    useEffect(function() {
+        if (!isNewBeat) return
 
         // Before we populate the singleton
         // We need to pause previous sound
         // Otherwise the oscillators will be
-        // Orphaned but left playing.
+        // Orphaned but left setPlayingState.
         // Tell instance to pause before we
         // Hydrate:
         if (BinauralBeat.inMemory) {
-            BinauralBeat.ins().playing(false, useWhiteNoise, useAudioWorklet)
+            BinauralBeat.ins().setPlayingState(false, useWhiteNoise, useAudioWorklet)
         }
 
         hydrateBeatState({
@@ -284,7 +274,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
             description: 'theta',
         })
 
-        BinauralBeat.ins().playing(
+        BinauralBeat.ins().setPlayingState(
             false,
             useWhiteNoise,
             useAudioWorklet
@@ -297,6 +287,9 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
         setGradient(
             FrequencyRangeHelper.generateGradient(offset)
         )
+        const pair = CanvasColorHelper.generateColorPair(offset)
+        // TODO if visual enabled!
+        CanvasColorHelper.setCanvasColorForBeats(pair.beatColor, pair.carrierColor)
     }
 
     return (
@@ -317,6 +310,10 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
                     handleSliderChangeCallback={onCarrierFreqChange}
                     handleBlur={handleCarrierBlur}
                 />
+            </div>
+            <div className={classes.canvasContainer}>
+                <Canvas id={CARRIER_CANVAS_ID} />
+                <Canvas id={BEAT_CANVAS_ID} />
             </div>
             <div className={classes.audioControlsContainer}>
                 <AudioControls
