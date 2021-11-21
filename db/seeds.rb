@@ -14,7 +14,7 @@ BinauralBeat.create(
   carrierOscillator: -11,
   noiseLevel: -999,
   editable: false,
-  volume: 0,
+  volume: 1,
   description: 'Stimulating low alpha tones.'
 )
 
@@ -24,7 +24,7 @@ BinauralBeat.create(
   carrierOscillator: -7,
   noiseLevel: -999,
   editable: false,
-  volume: 0,
+  volume: 1,
   description: 'Theta waves at 432 hertz'
 )
 
@@ -34,7 +34,7 @@ BinauralBeat.create(
   carrierOscillator: 13,
   noiseLevel: -999,
   editable: false,
-  volume: 0,
+  volume: 1,
   description: 'Beta waves at a low, calming pitch'
 )
 
@@ -44,7 +44,7 @@ BinauralBeat.create(
   carrierOscillator: -8,
   noiseLevel: -999,
   editable: false,
-  volume: 0,
+  volume: 1,
   description: 'Alpha waves for analytical thinking.'
 )
 
@@ -55,7 +55,7 @@ BinauralBeat.create(
   noiseLevel: -999,
   editable: false,
   description: 'Deep gamma waves',
-  volume: 0
+  volume: 1
 )
 
 BinauralBeat.create(
@@ -65,7 +65,7 @@ BinauralBeat.create(
   noiseLevel: -999,
   editable: false,
   description: 'Beta tones for ideation',
-  volume: 0
+  volume: 1
 )
 
 BinauralBeat.create(
@@ -75,7 +75,7 @@ BinauralBeat.create(
   noiseLevel: -999,
   editable: false,
   description: 'Theta relaxation',
-  volume: 0,
+  volume: 1
 )
 
 BinauralBeat.create(
@@ -85,7 +85,7 @@ BinauralBeat.create(
   noiseLevel: -999,
   editable: false,
   description: 'Delta tones for dreaming',
-  volume: 0,
+  volume: 1
 )
 
 
