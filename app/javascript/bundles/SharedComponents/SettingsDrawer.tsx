@@ -16,12 +16,13 @@ import LocalStorageService from "../Network/LocalStorageService"
 import {useAuthenticated} from "../State/AuthContext"
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import {useWhiteNoiseCtx} from "../State/UseWhiteNoiseContext"
-import NetworkService from "../Network/NetworkService";
-import Routes from "../Network/Routes";
-import CamelToSnake from "../Utils/CamelToSnake";
-import {useAudioWorkletCtx} from "../State/UseAudioWorkletContext";
-import CurrentUser from "../Utils/CurrentUser";
-import WelcomeUrl from "../Helpers/WelcomeUrl";
+import NetworkService from "../Network/NetworkService"
+import Routes from "../Network/Routes"
+import CamelToSnake from "../Utils/CamelToSnake"
+import {useAudioWorkletCtx} from "../State/UseAudioWorkletContext"
+import CurrentUser from "../Utils/CurrentUser"
+import Build from "../Helpers/Urls"
+import GotToUrl from "../Utils/GoToUrl"
 
 const useStyles = makeStyles({
     list: {
@@ -74,7 +75,6 @@ const SettingsDrawer: FunctionComponent<Props> = (props) => {
         setAuthenticated(false)
     }
 
-
     const list = (anchor: Anchor) => (
         <div
             className={clsx(classes.list, {
@@ -92,12 +92,15 @@ const SettingsDrawer: FunctionComponent<Props> = (props) => {
             </List>
             <Divider/>
             <List>
-                <ListItem button onClick={ ()=> {
-                    window.location.href = WelcomeUrl()
-                }} key={2}>
+                <ListItem button onClick={() => GotToUrl(Build('welcome'))} key={3}>
                     <ListItemIcon><InfoRounded/></ListItemIcon>
                     <ListItemText primary={'About'}/>
                 </ListItem>
+                <ListItem button onClick={() => GotToUrl(Build('privacy-policy'))} key={2}>
+                    <ListItemIcon><ExitToApp/></ListItemIcon>
+                    <ListItemText primary={'Privacy policy'}/>
+                </ListItem>
+                <Divider/>
                 <ListItem style={{position: 'relative'}}>
                     <FormControlLabel
                         control={
@@ -112,20 +115,21 @@ const SettingsDrawer: FunctionComponent<Props> = (props) => {
                         label="Whitenoise enabled"
                     />
                 </ListItem>
-                <ListItem style={{position: 'relative'}}>
-                    <FormControlLabel
-                        control={
-                            <Switch
-                                color="secondary"
-                                inputProps={{'aria-label': 'checkbox with default color'}}
-                                onChange={handlePreferencesToggle}
-                                checked={PreferencesHandler.useAudioWorklet}
-                                name="useAudioWorklet:setUseAudioWorklet"
-                            />
-                        }
-                        label="Use audio worklet"
-                    />
-                </ListItem>
+                {/*TODO: remove this whole feature, we are happy with the current web audio api */}
+                {/*<ListItem style={{position: 'relative'}}>*/}
+                {/*    <FormControlLabel*/}
+                {/*        control={*/}
+                {/*            <Switch*/}
+                {/*                color="secondary"*/}
+                {/*                inputProps={{'aria-label': 'checkbox with default color'}}*/}
+                {/*                onChange={handlePreferencesToggle}*/}
+                {/*                checked={PreferencesHandler.useAudioWorklet}*/}
+                {/*                name="useAudioWorklet:setUseAudioWorklet"*/}
+                {/*            />*/}
+                {/*        }*/}
+                {/*        label="Use audio worklet"*/}
+                {/*    />*/}
+                {/*</ListItem>*/}
             </List>
         </div>
     )
