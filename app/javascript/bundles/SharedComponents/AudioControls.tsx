@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {FunctionComponent} from "react";
-import IconButton from "@material-ui/core/IconButton";
-import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import Pause from "@material-ui/icons/Pause";
+import IconButton from "@mui/material/IconButton";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import Pause from "@mui/icons-material/Pause";
 import useStyles from "../Styles/StylesAudioControls";
 
 interface AudioControlsProps {

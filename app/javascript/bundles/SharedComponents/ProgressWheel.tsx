@@ -1,4 +1,4 @@
-import CircularProgress from "@material-ui/core/CircularProgress";
+import CircularProgress from "@mui/material/CircularProgress";
 import * as React from "react";
 import useStyles from "../Styles/StylesProgressWheel"
 import {FunctionComponent} from "react";

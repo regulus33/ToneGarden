@@ -1,4 +1,4 @@
-import {makeStyles} from "@material-ui/core/styles";
+import {makeStyles} from "@mui/styles";
 import FunctionName from "../Utils/FunctionName";
 // TODO: where is this theme spacing coming from?
 
@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     menuButton: {
-        marginRight: theme.spacing(2),
+        marginRight: '2rem',
     },
     title: {
         flexGrow: 1,

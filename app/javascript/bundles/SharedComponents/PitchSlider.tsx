@@ -1,9 +1,9 @@
 import * as React from "react";
 import {ChangeEvent, FunctionComponent, useEffect, useState} from "react";
-import {withStyles} from '@material-ui/core/styles';
-import Slider from '@material-ui/core/Slider';
-import TextField from '@material-ui/core/TextField';
-import styles, {useStyles} from '../Styles/StylesPitchSlider'
+import {withStyles} from "@mui/styles";
+import Slider from "@mui/material/Slider";
+import TextField from "@mui/material/TextField";
+import styles, {useStyles} from "../Styles/StylesPitchSlider"
 import {useGradient} from "../State/GradientContext";
 
 /**

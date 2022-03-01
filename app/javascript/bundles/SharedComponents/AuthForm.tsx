@@ -1,15 +1,15 @@
 import * as React from 'react';
 import {FormEvent, FunctionComponent} from 'react'
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 import {useStyles} from "../Styles/StylesAuthForm";
-import {Paper, Typography} from "@material-ui/core";
+import {Paper, Typography} from "@mui/material";
 import Gradient from "../Models/Gradient";
 import GlobalError from "../Models/GlobalError";
 import {useHistory} from "react-router-dom"
 import Routes from "../Network/Routes";
 import {Link} from "react-router-dom";
-import Divider from "@material-ui/core/Divider";
+import Divider from "@mui/material/Divider";
 
 interface AuthFormProps {
     onEmailChange(event: FormEvent<HTMLInputElement>): void,

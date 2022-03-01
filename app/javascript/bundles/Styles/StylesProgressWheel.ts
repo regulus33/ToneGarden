@@ -1,5 +1,5 @@
-import {makeStyles} from "@material-ui/styles";
-import {createStyles} from "@material-ui/core";
+import {makeStyles} from "@mui/styles";
+import {createStyles} from "@mui/styles";
 
 interface Props {
     dominantColor: string

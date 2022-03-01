@@ -1,4 +1,4 @@
-import {makeStyles, createStyles} from "@material-ui/styles";
+import {makeStyles, createStyles} from "@mui/styles";
 import Colors from "./Colors";
 import Breakpoints from "./Breakpoints";
 

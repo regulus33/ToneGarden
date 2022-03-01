@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {FunctionComponent} from "react"
-import {Button} from "@material-ui/core"
+import {Button} from "@mui/material"
 import useStyles from "../Styles/StylesErrorScreen"
 import {useHistory} from 'react-router-dom'
 
