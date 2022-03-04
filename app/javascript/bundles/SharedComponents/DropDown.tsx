@@ -34,7 +34,7 @@ const DropDown: FunctionComponent<Props> = forwardRef((props: Props, ref) => {
     return (
         <div>
             <div>
-                <IconButton aria-label="settings" onClick={handleClick}>
+                <IconButton aria-label="settings" onClick={handleClick} size="large">
                     <MoreVertIcon/>
                 </IconButton>
             </div>
@@ -62,7 +62,7 @@ const DropDown: FunctionComponent<Props> = forwardRef((props: Props, ref) => {
                 )}
             </Menu>
         </div>
-    )
+    );
 })
 
 export default DropDown

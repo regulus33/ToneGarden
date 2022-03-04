@@ -6,9 +6,9 @@ import Switch from '@mui/material/Switch'
 import Divider from '@mui/material/Divider'
 import ListItem from '@mui/material/ListItem'
 import * as React from 'react'
+import {ChangeEvent, FunctionComponent, SyntheticEvent, useEffect} from 'react'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
-import {ChangeEvent, FunctionComponent, SyntheticEvent, useEffect, useState} from "react"
 import {Anchor} from "../Models/DrawerState"
 import {useSettingsDrawer} from "../State/SettingsDrawerContext"
 import {ExitToApp, InfoRounded} from "@mui/icons-material"
@@ -23,6 +23,7 @@ import {useAudioWorkletCtx} from "../State/UseAudioWorkletContext"
 import CurrentUser from "../Utils/CurrentUser"
 import Build from "../Helpers/Urls"
 import GotToUrl from "../Utils/GoToUrl"
+import {Theme, useTheme} from "../State/ThemeContext";
 
 const useStyles = makeStyles({
     list: {
@@ -44,9 +45,14 @@ const SettingsDrawer: FunctionComponent<Props> = (props) => {
     const {drawerState} = useSettingsDrawer()
     const {setAuthenticated} = useAuthenticated()
     const PreferencesHandler = {...useAudioWorkletCtx(), ...useWhiteNoiseCtx()}
+    const { theme, setTheme } = useTheme()
 
     const handlePreferencesToggle = (event: ChangeEvent<HTMLInputElement>) => {
         const checked = event.target.checked
+
+        if(event.target.name === 'darkMode') {
+          checked ? setTheme(Theme.Dark) : setTheme(Theme.Light)
+        }
         const name = event.target.name.split(':').shift()
         const methodToCall = event.target.name.split(':').pop()
 
@@ -115,21 +121,20 @@ const SettingsDrawer: FunctionComponent<Props> = (props) => {
                         label="Whitenoise enabled"
                     />
                 </ListItem>
-                {/*TODO: remove this whole feature, we are happy with the current web audio api */}
-                {/*<ListItem style={{position: 'relative'}}>*/}
-                {/*    <FormControlLabel*/}
-                {/*        control={*/}
-                {/*            <Switch*/}
-                {/*                color="secondary"*/}
-                {/*                inputProps={{'aria-label': 'checkbox with default color'}}*/}
-                {/*                onChange={handlePreferencesToggle}*/}
-                {/*                checked={PreferencesHandler.useAudioWorklet}*/}
-                {/*                name="useAudioWorklet:setUseAudioWorklet"*/}
-                {/*            />*/}
-                {/*        }*/}
-                {/*        label="Use audio worklet"*/}
-                {/*    />*/}
-                {/*</ListItem>*/}
+                <ListItem style={{position: 'relative'}}>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                color="secondary"
+                                inputProps={{'aria-label': 'checkbox with default color'}}
+                                onChange={handlePreferencesToggle}
+                                checked={theme === Theme.Dark}
+                                name="darkMode"
+                            />
+                        }
+                        label="Dark mode"
+                    />
+                </ListItem>
             </List>
         </div>
     )

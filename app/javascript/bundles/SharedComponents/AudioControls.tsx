@@ -28,14 +28,22 @@ const AudioControls: FunctionComponent<AudioControlsProps> = (props) => {
 
     return (
         <div className={classes.controlsContainer}>
-            <IconButton disabled={playDisabled()} aria-label="play" onClick={props.handlePlayPress}>
+            <IconButton
+                disabled={playDisabled()}
+                aria-label="play"
+                onClick={props.handlePlayPress}
+                size="large">
                 <PlayArrowIcon/>
             </IconButton>
-            <IconButton disabled={pauseDisabled()} aria-label="pause" onClick={props.handlePausePress}>
+            <IconButton
+                disabled={pauseDisabled()}
+                aria-label="pause"
+                onClick={props.handlePausePress}
+                size="large">
                 <Pause/>
             </IconButton>
         </div>
-    )
+    );
 }
 
 export default AudioControls
