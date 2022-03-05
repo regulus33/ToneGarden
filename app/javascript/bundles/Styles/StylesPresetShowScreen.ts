@@ -28,7 +28,6 @@ const useStyles = makeStyles({
         height: 'fit-content',
         margin: '0 auto',
         width: `660px`,
-        marginTop: '175px',
         marginBottom: '5rem',
         [`@media (max-width: ${Breakpoints.mobile})`]: {
             minWidth: '100%',
@@ -76,5 +75,3 @@ const useStyles = makeStyles({
 })
 
 export default useStyles
-
-
