@@ -6,11 +6,11 @@ import {useHistory, useParams} from 'react-router-dom'
 import BinauralBeat from '../Models/BinauralBeat'
 import useStyles from '../Styles/StylesPresetShowScreen'
 import {useGradient} from "../State/GradientContext"
-import Paper from '@mui/material/Paper'
+import {Paper} from '@mui/material'
 import PitchSlider from "../SharedComponents/PitchSlider"
 import AudioControls from "../SharedComponents/AudioControls"
 import Canvas from '../App/components/Canvas'
-import Button from "@mui/material/Button"
+import {Button} from "@mui/material"
 import {useTitle} from '../State/TitleContext'
 import BinauralBeatState from "../Types/BinauralBeatTypes";
 import ExtrasForm from "../SharedComponents/ExtrasForm";

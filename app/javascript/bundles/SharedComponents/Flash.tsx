@@ -1,8 +1,8 @@
 import * as React from "react"
 import {FunctionComponent} from "react"
-import Snackbar from '@mui/material/Snackbar';
+import {Snackbar} from '@mui/material';
 import FlashMessage, {FlashEnum} from "../Models/FlashMessage";
-import MuiAlert from "@mui/material/Alert";
+import {Alert} from "@mui/material";
 import {useFlashMessage} from "../State/FlashMessageContext";
 import {makeStyles} from "@mui/styles";
 
@@ -32,9 +32,9 @@ const Flash: FunctionComponent<Props> = (props) => {
 
         return(
             <Snackbar className={classes.root} open={ flashMessage.visible } onClose={ handleClose } autoHideDuration={ 3000 }>
-                <MuiAlert elevation={6} variant='filled' onClose={ handleClose } severity={ flashMessage.type }>
+                <Alert elevation={6} variant='filled' onClose={ handleClose } severity={ flashMessage.type }>
                     { flashMessage.text }
-                </MuiAlert>
+                </Alert>
             </Snackbar>
     )
 }

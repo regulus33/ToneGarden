@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {FunctionComponent, SyntheticEvent} from 'react'
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
+import {AppBar} from '@mui/material';
+import {Toolbar} from '@mui/material';
+import {Typography} from '@mui/material';
+import {IconButton} from '@mui/material';
+import {Menu} from '@mui/icons-material';
 import useStyles from '../Styles/StylesHeader';
 import Gradient from "../Models/Gradient";
 import {useGradient} from "../State/GradientContext";
@@ -29,7 +29,7 @@ const Header: FunctionComponent<HeaderProps> = (props) => {
                     onClick={props.toggleSettingsDrawer}
                     edge="start"
                     size="large">
-                    { props.authenticated ? <MenuIcon /> : null }
+                    { props.authenticated ? <Menu /> : null }
                 </IconButton>
                 <Typography variant="h6" className={classes.title}>
                     <div dangerouslySetInnerHTML={{__html: props.title}}/>

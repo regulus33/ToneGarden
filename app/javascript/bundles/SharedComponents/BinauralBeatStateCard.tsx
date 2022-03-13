@@ -1,18 +1,18 @@
-import Card from "@mui/material/Card"
-import Typography from "@mui/material/Typography"
-import IconButton from "@mui/material/IconButton"
-import DeleteIcon from '@mui/icons-material/Delete'
-import PlayArrowIcon from "@mui/icons-material/PlayArrow"
+import {Card} from "@mui/material"
+import {Typography} from "@mui/material"
+import {IconButton} from "@mui/material"
+import {Delete} from '@mui/icons-material'
+import {PlayArrow} from "@mui/icons-material"
 import * as React from "react"
 import {Link} from "react-router-dom"
 import useStyles from '../Styles/StylesPresetCard'
 import BinauralBeatState from "../Types/BinauralBeatTypes"
 import {forwardRef, FunctionComponent} from "react";
 import FrequencyRangeHelper from "../Helpers/FrequencyRangeHelper"
-import Zoom from '@mui/material/Zoom'
+import {Zoom} from '@mui/material'
 import {CardActions, CardHeader, ListItemIcon, ListItemText} from "@mui/material"
 import DropDown from "./DropDown"
-import MenuItem from "@mui/material/MenuItem";
+import {MenuItem} from "@mui/material";
 import NetworkService from "../Network/NetworkService";
 import Routes from "../Network/Routes";
 import {useFlashMessage} from "../State/FlashMessageContext";
@@ -40,7 +40,7 @@ export const DeleteBeat: FunctionComponent<DeleteBeatProps> = forwardRef((props:
     return (
         <MenuItem ref={ref} disabled={props.disabled} key={props.keyPass} onClick={props.onClick}>
             <ListItemIcon>
-                <DeleteIcon fontSize="small"/>
+                <Delete fontSize="small"/>
             </ListItemIcon>
             <ListItemText primary="Delete"/>
         </MenuItem>)
@@ -137,7 +137,7 @@ const BinauralBeatStateCard: FunctionComponent<BinauralBeatStateCardProps> = (pr
                             playBeat: true,
                         }}>
                             <IconButton aria-label="play/pause" size="large">
-                                <PlayArrowIcon className={classes.playArrowIcon}/>
+                                <PlayArrow className={classes.playArrowIcon}/>
                             </IconButton>
                         </Link>
                     </div>
@@ -147,4 +147,3 @@ const BinauralBeatStateCard: FunctionComponent<BinauralBeatStateCardProps> = (pr
     );
 }
 export default BinauralBeatStateCard
-
