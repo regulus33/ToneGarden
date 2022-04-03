@@ -44,7 +44,7 @@ const ExtrasForm: FunctionComponent<Props> = (props) => {
     <div className={classes.root}>
       <Accordion className={classes.accordion}>
         <AccordionSummary
-          expandIcon={<ExpandMoreIcon/>}
+          expandIcon={<ExpandMore/>}
           aria-controls="panel1c-content"
           id="panel1c-header">
           <div className={classes.column}>
