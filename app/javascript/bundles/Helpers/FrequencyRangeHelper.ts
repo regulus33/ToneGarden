@@ -60,7 +60,6 @@ class FrequencyRangeHelper {
     }
 
     static generateGradient(offset: number) {
-        console.log("offset sent to generateGradient" + offset)
         return new Gradient(FrequencyRangeHelper.rangeString(offset));
     }
 }

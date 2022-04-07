@@ -1,7 +1,7 @@
 const rangeToColorsMap = {
-    'delta': ['#2605ff', '#00eaff'],
-    'theta': ['#2605ff', '#008cff'],
-    'alpha': ['#2605ff', '#0033ff'],
+    'delta': ['#7483cc', '#ffcc00'],
+    'theta': ['#1aff00', '#9f89cb'],
+    'alpha': ['#5e91ff', '#ff8800'],
     'beta': ['#2605ff', '#5e00ff'],
     'gamma': ['#2605ff', '#a600ff'],
 }

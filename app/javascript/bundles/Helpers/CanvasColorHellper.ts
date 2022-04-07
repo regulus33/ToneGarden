@@ -13,11 +13,12 @@ class CanvasColorPair {
     }
 }
 
-
 export default class CanvasColorHelper {
     static generateColorPair(carrierOscscillator: number): CanvasColorPair {
         const rangeString = FrequencyRangeHelper.rangeString(carrierOscscillator)
-        return new CanvasColorPair(Gradient.beatColor(rangeString), Gradient.carrierColor(rangeString))
+        // return new CanvasColorPair(Gradient.beatColor(rangeString), Gradient.carrierColor(rangeString))
+        // TODO: ei
+        return new CanvasColorPair('white', 'red')
     }
 
     static setCanvasColorForBeats(beatColor: string, carrierColor: string) {

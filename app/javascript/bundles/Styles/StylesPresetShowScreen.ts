@@ -19,11 +19,12 @@ const useStyles = makeStyles({
     },
   }),
   editCardContainer: {
-    height: `calc(100vh - ${NAVBAR_HEIGHT} - ${BOTTOM_BAR_HEIGHT})`,
+    height: '100%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    marginTop: NAVBAR_HEIGHT,
+    paddingTop: NAVBAR_HEIGHT,
+    paddingBottom: BOTTOM_BAR_HEIGHT,
   },
   headerContainer: {
     padding: '1.1rem 2.2rem'
@@ -71,7 +72,7 @@ const useStyles = makeStyles({
   },
   canvasContainer: {
     margin: '0.7rem',
-    backgroundColor: Colors.canvasBackground,
+    backgroundColor: "black",
     borderRadius: '4px',
     padding: '0 .7rem',
     position: 'relative',

@@ -25,6 +25,9 @@ const useStyles = makeStyles((props: Props) =>
         top: {
             color: props.dominantColor,
             animationDuration: '550ms',
+            position: 'absolute',
+            top: '50%',
+            transform: 'translateY(50%)',
         },
         circle: {
             strokeLinecap: 'round',

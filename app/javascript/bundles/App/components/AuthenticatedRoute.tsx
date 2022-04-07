@@ -36,9 +36,7 @@ const AuthenticatedRoute: FunctionComponent<Props> = (props) => {
                             timeout={300}
                             classNames="page"
                             unmountOnExit>
-                            <div className="page">
-                                <Component {...props}/>
-                            </div>
+                            <Component {...props}/>
                         </CSSTransition>
                     )
                 }

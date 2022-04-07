@@ -125,6 +125,7 @@ export default class BinauralBeat {
         if (playing) {
             this.beatPlayed = true
             this.playing = playing
+
             // Create analyzers
             this.carrierOscillator.analyser = this.context.createAnalyser()
             this.beatOscillator.analyser = this.context.createAnalyser()
@@ -132,7 +133,6 @@ export default class BinauralBeat {
             // Create web audio oscillator instances
             this.carrierOscillator.oscillator = this.context.createOscillator()
             this.beatOscillator.oscillator = this.context.createOscillator()
-
 
             //Setup visual graph
             this.carrierOscillator.oscillator.connect(this.carrierOscillator.analyser)
@@ -158,7 +158,6 @@ export default class BinauralBeat {
             this.carrierOscillator.oscillator.connect(this.channelMerger, 0, 0)
             this.beatOscillator.oscillator.connect(this.channelMerger, 0, 1)
 
-
             this.channelMerger.connect(this.gain)
             this.gain.connect(this.context.destination)
 
@@ -173,7 +172,7 @@ export default class BinauralBeat {
             this.gain.gain.linearRampToValueAtTime(this.volume, BinauralBeat.RAMPTIME)
 
             if(useWhiteNoise) {
-                this.noiseSource = new Noise("pink").start();
+                this.noiseSource = new Noise("pink")
                 const autoFilter = new Filter({
                     type: "lowpass",
                     frequency: 200,
@@ -222,7 +221,7 @@ export default class BinauralBeat {
         const freqName = FrequencyRangeHelper.displayRangeString(
             this.carrierOscillator.offset
         )
-        return `<span style="color:${Colors.gold}">${symbol} ${freqName}</span> <span style="font-size: 1rem" class="titleText">${this.name}</span>`
+        return `<span style="color:${Colors.gold}">${symbol} ${freqName}</span> <span style="font-size: 0.8rem" class="titleText">${this.name}</span>`
     }
 
     public toState(): BinauralBeatState {

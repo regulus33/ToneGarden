@@ -1,5 +1,6 @@
 import {makeStyles} from "@mui/styles";
 import FunctionName from "../Utils/FunctionName";
+import Breakpoints from "./Breakpoints";
 
 // TODO: where is this theme spacing coming from?
 
@@ -10,7 +11,6 @@ interface Props {
 
 const useStyles = makeStyles((theme) => ({
   root: (props: Props) => {
-    console.log(`[${FunctionName()}]: value of props:`)
     return {
       flexGrow: 1,
     }
@@ -20,6 +20,11 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+  },
+  logo: {
+    [`@media (max-width: ${Breakpoints.mobile})`]: {
+      display: 'none'
+    }
   }
 }));
 

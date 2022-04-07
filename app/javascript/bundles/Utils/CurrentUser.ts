@@ -8,7 +8,13 @@ const CurrentUser = async (): Promise<User> => {
         .get(
             Routes.ShowUser
         )
-    return User.fromJson(userResponse)
+    // @ts-ignore
+  if(userResponse.status === 200) {
+      return User.fromJson(userResponse)
+  } else {
+    // create an empty user if not authenticated
+    return new User("",  "",  "",false, false)
+  }
 }
 
 export default CurrentUser
