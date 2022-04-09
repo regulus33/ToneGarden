@@ -14,8 +14,6 @@ import {useGradient} from "../State/GradientContext";
  * @param defuault the initial value of the input (used by set state)
  */
 
-//<html>TS2769: No overload matches this call.<br/>Overload 1 of 2, '(props: { component: ElementType&lt;any&gt;; } &amp; { color?: &quot;primary&quot; | &quot;secondary&quot;; classes?: Partial&lt;SliderUnstyledClasses&gt; &amp; { colorPrimary?: string; ... 4 more ...; thumbSizeSmall?: string; }; size?: &quot;medium&quot; | &quot;small&quot;; sx?: SxProps&lt;...&gt;; } &amp; { ...; } &amp; Omit&lt;...&gt;): Element', gave the following error.<br/>Type '(event: ChangeEvent, newValue: number) =&gt; void' is not assignable to type ' =&gt; void'.<br/>Types of parameters 'event' and 'event' are incompatible.<br/>Type 'Event' is missing the following properties from type 'ChangeEvent&lt;Element&gt;': nativeEvent, isDefaultPrevented, isPropagationStopped, persist<br/>Overload 2 of 2, '(props: DefaultComponentProps&lt;ExtendSliderUnstyledTypeMap&lt;SliderTypeMap&lt;&quot;span&quot;, {}&gt;&gt;&gt;): Element', gave the following error.<br/>Type '(event: ChangeEvent, newValue: number) =&gt; void' is not assignable to type '(event: Event, value: number | number[], activeThumb: number) =&gt; void'.
-
 interface PitchSliderProps {
     label: string,
     minMax: Array<number>,
@@ -98,6 +96,7 @@ const PitchSlider: FunctionComponent<PitchSliderProps> = (props) => {
                     className={classes.customSlider}
                     value={numerize(value)}
                     onMouseUp={handleBlur}
+                    // TODO: is there more to this than meets the eye?
                     onChange={handleSliderChange}
                     min={props.minMax[0]}
                     max={props.minMax[1]}

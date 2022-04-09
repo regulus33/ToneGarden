@@ -72,7 +72,6 @@ const useStyles = makeStyles({
   },
   canvasContainer: {
     margin: '0.7rem',
-    backgroundColor: "black",
     borderRadius: '4px',
     padding: '0 .7rem',
     position: 'relative',
