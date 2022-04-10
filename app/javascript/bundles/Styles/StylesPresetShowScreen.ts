@@ -7,9 +7,9 @@ import {Theme} from "../State/ThemeContext";
 interface Props {
   dominantColor: string,
   secondaryColor: string,
-  theme: Theme
+  theme: Theme,
+  accordianOpen: boolean,
 }
-
 
 // @ts-ignore
 const useStyles = makeStyles({
@@ -37,9 +37,10 @@ const useStyles = makeStyles({
   presetSubtext: {
     fontSize: '1rem'
   },
-  presetFormCard: {
+  presetFormCard: (props: Props) => ({
     margin: '0 auto',
     width: `660px`,
+    marginBottom: (props.accordianOpen ? '30vh' : 0),
     [`@media (max-width: ${Breakpoints.mobile})`]: {
       minWidth: '100%',
       width: '100vw',
@@ -47,7 +48,7 @@ const useStyles = makeStyles({
       // marginBottom: '3rem'
       // width: 'calc(100vw - 3rem)'
     }
-  },
+  }),
   pitchSliderContainer: {
     display: 'flex',
     justifyContent: 'space-around',
@@ -72,18 +73,18 @@ const useStyles = makeStyles({
   },
   canvasContainer: (props: Props) => ({
     margin: '0.7rem',
-    padding: '0 .7rem',
     position: 'relative',
     height: '22vh',
+    display: (props.accordianOpen ? 'none' : 'inherit'),
     '& > canvas': {
       backgroundColor: (props.theme === Theme.Dark ? Colors.backgroundGreyDark : Colors.backgroundGrey),
       height: '22vh',
       borderRadius: '9px',
-      width: 'calc(100% - 24px)',
       position: 'absolute',
       top: 0,
       left: 0,
-      padding: '.5rem'
+      padding: '.5rem',
+      width: '100%',
     }
   })
 })

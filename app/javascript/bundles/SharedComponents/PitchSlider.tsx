@@ -44,7 +44,7 @@ const PitchSlider: FunctionComponent<PitchSliderProps> = (props) => {
     }
 
     const numerize = (test: number|string): number => {
-        if(Number(test) === NaN) return 0
+        if(isNaN(Number(test))) return 0
         return Number(test)
     }
 
@@ -77,6 +77,8 @@ const PitchSlider: FunctionComponent<PitchSliderProps> = (props) => {
     },[props.default])
 
     // @ts-ignore
+  // @ts-ignore
+  // @ts-ignore
   return (
         <form
             className={classes.root}
@@ -97,6 +99,7 @@ const PitchSlider: FunctionComponent<PitchSliderProps> = (props) => {
                     value={numerize(value)}
                     onMouseUp={handleBlur}
                     // TODO: is there more to this than meets the eye?
+                    // @ts-ignore
                     onChange={handleSliderChange}
                     min={props.minMax[0]}
                     max={props.minMax[1]}

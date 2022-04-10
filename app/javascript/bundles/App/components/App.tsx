@@ -27,11 +27,12 @@ import {FlashMessageContext} from '../../State/FlashMessageContext'
 import ErrorScreen from "../../Screens/ErrorScreen";
 import {createTheme, ThemeProvider, useTheme} from '@mui/material/styles';
 import {darkThemeOptions, themeOptions} from "../../Styles/Theme";
+import BodyClassHelper from "../../Helpers/BodyClassHelper";
 
 const App: FunctionComponent = () => {
   const darkTheme = createTheme(darkThemeOptions)
   const lightTheme = createTheme(themeOptions)
-  const [theme, setTheme] = React.useState(Theme.Light)
+  const [theme, setTheme] = React.useState(Theme.Dark)
   const [authenticated, setAuthenticated] = React.useState(false)
   const [title, setTitle] = React.useState('Binaural Beats')
   const [useAudioWorklet, setUseAudioWorklet] = React.useState(true)
@@ -64,7 +65,9 @@ const App: FunctionComponent = () => {
     setTheme(LocalStorageService.getTheme())
     setAuthenticated(LocalStorageService.getIsAuth())
     setLoaded(true)
+    BodyClassHelper(theme)
   }, [])
+
 
   if (loaded) {
     return (

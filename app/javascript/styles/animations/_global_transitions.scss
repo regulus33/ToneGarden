@@ -1,3 +1,5 @@
+@import "../abstracts/colors";
+
 //http://reactcommunity.org/react-transition-group/with-react-router/
 
 .page {
@@ -6,10 +8,17 @@
   right: 0;
   left: 0;
   height: 100%;
-  background-color: #f5f5f5;
   @media(max-width: 900px) {
     padding-top: 0;
   }
+}
+
+body.dark div.page {
+  background-color: $backgroundGreyDark;
+}
+
+body.light div.page {
+  background-color: $backgroundGrey;
 }
 
 .page-enter {

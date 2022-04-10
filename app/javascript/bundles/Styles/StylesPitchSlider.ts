@@ -4,30 +4,12 @@ import Breakpoints from "./Breakpoints";
 
 const FORM_PADDING = '0 8px'
 
-const boxShadow =
-    '0 3px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.13),0 0 0 1px rgba(0,0,0,0.02)';
 const styles = {
     root: {
         height: 2,
         padding: '15px 0',
         [`@media(max-width: ${Breakpoints.xsMobile})`]: {}
     },
-    thumb: {
-        height: 28,
-        width: 28,
-        backgroundColor: '#fff',
-        boxShadow: boxShadow,
-        marginTop: -14,
-        marginLeft: -14,
-        '&:focus, &:hover, &$active': {
-            boxShadow: '0 3px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.3),0 0 0 1px rgba(0,0,0,0.02)',
-            // Reset on touch devices, it doesn't add specificity
-            '@media (hover: none)': {
-                boxShadow: boxShadow,
-            },
-        },
-    },
-    active: {},
     valueLabel: {
         display: 'none',
         '& *': {
@@ -52,10 +34,6 @@ interface Props {
 
 export const useStyles = makeStyles({
     root: {
-        [`@media(max-width: ${Breakpoints.xsMobile})`]:{
-            maxWidth: '120px',
-            padding: 0
-        },
         padding: FORM_PADDING
     },
     customSlider: (props: Props) => ({
@@ -66,7 +44,6 @@ export const useStyles = makeStyles({
             }
         },
     }),
-
     textField: (props: Props) => ({
         '& div': {
             display: props.textInputDisplay,

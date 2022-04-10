@@ -40,9 +40,7 @@ function BinauralBeatEditScreen(props: PresetShowScreenProps): JSX.Element {
   // Router
   const history = useHistory()
   const {preset_id} = useParams()
-  //
-  // Styles
-  const classes = useStyles({...gradient.toProps(), theme})
+
   // Beat state
   const [nameError, setNameError] = useState(null)
   const [name, setName] = useState('Name')
@@ -52,6 +50,11 @@ function BinauralBeatEditScreen(props: PresetShowScreenProps): JSX.Element {
   const [volume, setVolume] = useState(0)
   const [noiseLevel, setNoiseLevel] = useState(0)
   const [changingState, setChangingState] = useState(false)
+  const [accordianOpen, setAccordianOpen] = useState(false)
+
+  // Styles
+  // @ts-ignore
+  const classes = useStyles({...gradient.toProps(), theme, accordianOpen})
   //
   // Render edit screen or create screen?
   const isNewBeat = props.location.pathname === '/create'
@@ -112,7 +115,6 @@ function BinauralBeatEditScreen(props: PresetShowScreenProps): JSX.Element {
         )
       }
     })()
-
   }
 
   function onVolumeChange(newVolume: number): void {
@@ -216,6 +218,10 @@ function BinauralBeatEditScreen(props: PresetShowScreenProps): JSX.Element {
     // TODO this MAY be getting called more than once (had some issue with it in rubymine)
     onVolumeChange(beatInstance.volume)
     onNoiseLevelChange(beatInstance.noiseLevel)
+  }
+
+  function onAccordianChange(event: any) {
+    setAccordianOpen(!accordianOpen)
   }
 
   // On EDIT title
@@ -322,6 +328,7 @@ function BinauralBeatEditScreen(props: PresetShowScreenProps): JSX.Element {
           </div>
         </div>
         <ExtrasForm
+          onAccordianChange={onAccordianChange}
           error={nameError}
           onNameChange={onNameChange}
           name={isNewBeat ? null : name}
