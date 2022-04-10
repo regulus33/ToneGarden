@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   skip_before_action :verify_authenticity_token
   skip_before_action :authorize
 
-  APP_NAME = 'binaural beats'
+  APP_NAME = 'binaural beats'.freeze
 
   def create
     user = User.new(user_params)
@@ -21,7 +21,7 @@ class UsersController < ApplicationController
       render json: { user: UserSerializer.new(user).serialized_json }
     else
       render json: { errors: 'You are not logged in', status: 401 }
-      end
+    end
   end
 
   def update
@@ -67,7 +67,8 @@ class UsersController < ApplicationController
       :password,
       :password_confirmation,
       :use_white_noise,
-      :use_audio_worklet
+      :use_audio_worklet,
+      :theme
     )
   end
 end

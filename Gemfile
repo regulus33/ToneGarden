@@ -5,7 +5,7 @@ ruby '3.0.0'
 
 gem 'rubocop-rails'
 
-gem 'fast_jsonapi'
+gem 'fast_jsonapi', '1.5'
 
 gem 'inline_svg'
 

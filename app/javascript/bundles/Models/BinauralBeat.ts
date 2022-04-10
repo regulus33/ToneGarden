@@ -35,8 +35,11 @@ export default class BinauralBeat {
     beatCanvas: HTMLCanvasElement
     canvasWidth: number
     canvasHeight: number
+    carrierAnimationId: number
+    beatAnimationId: number
 
-    // For noise (optional feature)
+
+  // For noise (optional feature)
     noiseSource: Noise
     noiseFilter: Filter
 
@@ -165,8 +168,8 @@ export default class BinauralBeat {
             this.beatOscillator.oscillator.start()
 
             // Visualize the sound for each osc
-            this.carrierOscillator.animate()
-            this.beatOscillator.animate()
+            this.carrierAnimationId = this.carrierOscillator.animate()
+            this.beatAnimationId = this.beatOscillator.animate()
 
             this.gain.gain.linearRampToValueAtTime(this.volume, this.context.currentTime + BinauralBeat.RAMPTIME)
 
@@ -202,6 +205,8 @@ export default class BinauralBeat {
               this.carrierOscillator.oscillator?.disconnect()
               this.beatOscillator.analyser?.disconnect()
               this.carrierOscillator.analyser?.disconnect()
+              cancelAnimationFrame(this.beatAnimationId)
+              cancelAnimationFrame(this.carrierAnimationId)
             }.bind(this), 100)
 
         }

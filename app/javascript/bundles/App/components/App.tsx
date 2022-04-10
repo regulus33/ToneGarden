@@ -25,7 +25,6 @@ import Routes from "../../Network/Routes";
 import FlashMessage, {FlashEnum} from "../../Models/FlashMessage";
 import {FlashMessageContext} from '../../State/FlashMessageContext'
 import ErrorScreen from "../../Screens/ErrorScreen";
-import NetworkService from "../../Network/NetworkService";
 import {createTheme, ThemeProvider, useTheme} from '@mui/material/styles';
 import {darkThemeOptions, themeOptions} from "../../Styles/Theme";
 
@@ -62,6 +61,7 @@ const App: FunctionComponent = () => {
   )
 
   useEffect(() => {
+    setTheme(LocalStorageService.getTheme())
     setAuthenticated(LocalStorageService.getIsAuth())
     setLoaded(true)
   }, [])
@@ -84,7 +84,6 @@ const App: FunctionComponent = () => {
                             <BrowserRouter>
                               <Switch>
                                 <Layout>
-
                                   <Route exact path={Routes.ErrorScreen}
                                          component={ErrorScreen}/>
                                   <Route exact path={Routes.SignupScreen}

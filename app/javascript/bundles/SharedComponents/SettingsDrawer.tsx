@@ -49,9 +49,11 @@ const SettingsDrawer: FunctionComponent<Props> = (props) => {
 
     const handlePreferencesToggle = (event: ChangeEvent<HTMLInputElement>) => {
         const checked = event.target.checked
-
+        // Theme isn't a bool so you need to treat it special
         if(event.target.name === 'darkMode') {
-          checked ? setTheme(Theme.Dark) : setTheme(Theme.Light)
+          const theme = checked ? Theme.Dark : Theme.Light
+          LocalStorageService.setTheme(theme)
+          setTheme(theme)
           return
         }
         const name = event.target.name.split(':').shift()

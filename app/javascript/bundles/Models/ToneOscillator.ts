@@ -15,8 +15,7 @@ export interface ToneProps {
 
 
 class ToneOscillator {
-    isPlaying: boolean
-    canvas: HTMLCanvasElement
+      canvas: HTMLCanvasElement
     canvasWidth: number;
     canvasHeight: number;
     oscillator: OscillatorNode
@@ -60,12 +59,8 @@ class ToneOscillator {
         return this.type === 'beat'
     }
 
-    public stop() {
-        this.oscillator.stop(0)
-    }
-
-    public animate() {
-        requestAnimationFrame(this.vizualize.bind(this))
+    public animate(): number {
+        return requestAnimationFrame(this.vizualize.bind(this))
     }
 
     // This method is flick-triggered recursively and buffers in data from analyzer about the waveform
