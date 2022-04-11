@@ -87,6 +87,8 @@ const App: FunctionComponent = () => {
                             <BrowserRouter>
                               <Switch>
                                 <Layout>
+                                  <Route exact path={Routes.Root}
+                                         component={BinauralBeatsScreen}/>
                                   <Route exact path={Routes.ErrorScreen}
                                          component={ErrorScreen}/>
                                   <Route exact path={Routes.SignupScreen}
