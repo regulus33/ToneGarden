@@ -65,9 +65,9 @@ const App: FunctionComponent = () => {
     setTheme(LocalStorageService.getTheme())
     setAuthenticated(LocalStorageService.getIsAuth())
     setLoaded(true)
-    BodyClassHelper(theme)
   }, [])
 
+  BodyClassHelper(theme)
 
   if (loaded) {
     return (

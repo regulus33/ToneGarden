@@ -20,7 +20,6 @@ import FlashMessage, {FlashEnum} from "../Models/FlashMessage";
 import {useWhiteNoiseCtx} from "../State/UseWhiteNoiseContext";
 import {useAudioWorkletCtx} from "../State/UseAudioWorkletContext";
 import {Location} from 'history'
-import CanvasColorHelper from "../Helpers/CanvasColorHellper";
 import {BEAT_CANVAS_ID, CARRIER_CANVAS_ID} from "../Models/Constants";
 import {useTheme} from "../State/ThemeContext";
 
@@ -36,7 +35,7 @@ function BinauralBeatEditScreen(props: PresetShowScreenProps): JSX.Element {
   const {useWhiteNoise} = useWhiteNoiseCtx()
   const {useAudioWorklet} = useAudioWorkletCtx()
   const {theme} = useTheme()
-  //
+
   // Router
   const history = useHistory()
   const {preset_id} = useParams()
@@ -229,7 +228,6 @@ function BinauralBeatEditScreen(props: PresetShowScreenProps): JSX.Element {
     if (isNewBeat) {
       return
     }
-
     const localBeatState: BinauralBeatState = props.location.binauralBeatState
     if (localBeatState) {
       hydrateBeatState(localBeatState)
@@ -258,7 +256,6 @@ function BinauralBeatEditScreen(props: PresetShowScreenProps): JSX.Element {
   // On NEW title
   useEffect(function () {
     if (!isNewBeat) return
-
     // Before we populate the singleton
     // We need to pause previous sound
     // Otherwise the oscillators will be
@@ -266,7 +263,6 @@ function BinauralBeatEditScreen(props: PresetShowScreenProps): JSX.Element {
     // Tell instance to pause before we
     // Hydrate:
     // BinauralBeat.ins().setPlayingState(false, useWhiteNoise, useAudioWorklet)
-
     hydrateBeatState({
       name: 'Custom Beat',
       id: 0,
@@ -285,9 +281,6 @@ function BinauralBeatEditScreen(props: PresetShowScreenProps): JSX.Element {
     setGradient(
       FrequencyRangeHelper.generateGradient(offset)
     )
-    const pair = CanvasColorHelper.generateColorPair(offset)
-    // TODO if visual enabled!
-    CanvasColorHelper.setCanvasColorForBeats(pair.beatColor, pair.carrierColor)
   }
 
   return (
