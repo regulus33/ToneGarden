@@ -39,7 +39,7 @@ export default class BinauralBeat {
     beatAnimationId: number
 
 
-  // For noise (optional feature)
+    // For noise (optional feature)
     noiseSource: Noise
     noiseFilter: Filter
 
@@ -163,13 +163,13 @@ export default class BinauralBeat {
             this.carrierOscillator.oscillator.start()
             this.beatOscillator.oscillator.start()
 
-            // Visualize the sound for each osc
+
             this.carrierAnimationId = this.carrierOscillator.animate()
             this.beatAnimationId = this.beatOscillator.animate()
 
             this.gain.gain.linearRampToValueAtTime(this.volume, this.context.currentTime + BinauralBeat.RAMPTIME)
 
-            if(useWhiteNoise) {
+            if (useWhiteNoise) {
                 this.noiseSource = new Noise("pink")
                 const autoFilter = new Filter({
                     type: "lowpass",
@@ -180,29 +180,29 @@ export default class BinauralBeat {
                 this.noiseSource.start()
             }
 
-        } else if(this.beatPlayed) {
-           //TODO this whole method is where most crashes come from and its all in + create.
-            if(useWhiteNoise && this.noiseSource) {
+        } else if (this.beatPlayed) {
+            //TODO this whole method is where most crashes come from and its all in + create.
+            if (useWhiteNoise && this.noiseSource) {
                 this.noiseSource.stop(0)
                 this.noiseSource.dispose()
             }
             this.playing = false
             this.gain.gain.linearRampToValueAtTime(0, this.context.currentTime + BinauralBeat.RAMPTIME)
-            if(this.beatOscillator.oscillator){
-              this.beatOscillator.oscillator.stop(this.context.currentTime + BinauralBeat.RAMPTIME)
+            if (this.beatOscillator.oscillator) {
+                this.beatOscillator.oscillator.stop(this.context.currentTime + BinauralBeat.RAMPTIME)
             }
-            if(this.beatOscillator.oscillator) {
-              this.carrierOscillator.oscillator.stop(this.context.currentTime + BinauralBeat.RAMPTIME)
+            if (this.beatOscillator.oscillator) {
+                this.carrierOscillator.oscillator.stop(this.context.currentTime + BinauralBeat.RAMPTIME)
             }
-            this.delayExecutionOn(function(){
-              this.gain?.disconnect()
-              this.channelMerger?.disconnect()
-              this.beatOscillator.oscillator?.disconnect()
-              this.carrierOscillator.oscillator?.disconnect()
-              this.beatOscillator.analyser?.disconnect()
-              this.carrierOscillator.analyser?.disconnect()
-              cancelAnimationFrame(this.beatAnimationId)
-              cancelAnimationFrame(this.carrierAnimationId)
+            this.delayExecutionOn(function () {
+                this.gain?.disconnect()
+                this.channelMerger?.disconnect()
+                this.beatOscillator.oscillator?.disconnect()
+                this.carrierOscillator.oscillator?.disconnect()
+                this.beatOscillator.analyser?.disconnect()
+                this.carrierOscillator.analyser?.disconnect()
+                cancelAnimationFrame(this.beatAnimationId)
+                cancelAnimationFrame(this.carrierAnimationId)
             }.bind(this), 100)
 
         }
@@ -246,29 +246,29 @@ export default class BinauralBeat {
     }
 
     private delayExecutionOn(callback: Function, buffer?: number): void {
-      setTimeout(callback, (BinauralBeat.RAMPTIME * 1000) + (buffer ? buffer : 0.0))
+        setTimeout(callback, (BinauralBeat.RAMPTIME * 1000) + (buffer ? buffer : 0.0))
     }
 
     public cleanup() {
-      this.beatOscillator = null
-      this.carrierOscillator = null
-      this.volume = null
-      this.id = null
-      this.name = null
-      this.editable = null
-      this.description = null
-      this.noiseLevel = null
-      this.playing = null
-      this.context = null
-      this.channelMerger = null
-      this.gain = null
-      this.carrierCanvas = null
-      this.beatCanvas = null
-      this.canvasWidth = null
-      this.canvasHeight = null
-      this.carrierAnimationId = null
-      this.beatAnimationId = null
-      this.noiseSource = null
-      this.noiseFilter = null
+        this.beatOscillator = null
+        this.carrierOscillator = null
+        this.volume = null
+        this.id = null
+        this.name = null
+        this.editable = null
+        this.description = null
+        this.noiseLevel = null
+        this.playing = null
+        this.context = null
+        this.channelMerger = null
+        this.gain = null
+        this.carrierCanvas = null
+        this.beatCanvas = null
+        this.canvasWidth = null
+        this.canvasHeight = null
+        this.carrierAnimationId = null
+        this.beatAnimationId = null
+        this.noiseSource = null
+        this.noiseFilter = null
     }
 }
