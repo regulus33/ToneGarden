@@ -67,7 +67,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "webpacker", "~> 5.2"
 
-gem "react_on_rails", "~> 12.0"
+gem "react_on_rails", "~> 13.2"
 gem 'mini_racer', platforms: :ruby
 
 gem 'rubocop-rails'
