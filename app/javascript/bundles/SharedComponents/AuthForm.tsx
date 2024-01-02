@@ -10,9 +10,8 @@ import Gradient from "../Models/Gradient";
 interface AuthFormProps {
     onEmailChange(event: FormEvent<HTMLInputElement>): void,
     onPasswordChange(event: FormEvent<HTMLInputElement>): void,
-    onSubmit(event: FormEvent<HTMLFormElement>): void,
+    onSubmit(any): void,
     gradient: Gradient
-
 }
 
 const AuthForm: FunctionComponent<AuthFormProps> = ({onEmailChange, onPasswordChange, onSubmit, gradient}) => {
@@ -22,17 +21,19 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({onEmailChange, onPasswordCh
         <Paper className={classes.paper}>
             <div>
                 <Typography className={classes.heading} variant='h5'>Signup</Typography>
-                <form className={classes.authform} onSubmit={onSubmit}>
+                <form id="signup" className={classes.authform}>
                     <TextField label='Email'
                                onInput={onEmailChange}
-                               variant='outlined'
+                               variant='standard'
                                type={'email'}
+                               className={classes.textField}
                                placeholder='example@example.com'/>
                     <TextField label='Password'
                                onInput={onPasswordChange}
-                               variant='outlined'
+                               variant='standard'
+                               className={classes.textField}
                                type={'password'}/>
-                    <Button className={classes.submitButton} type="submit" variant="contained" color="primary" href="#contained-buttons">Submit</Button>
+                    <Button onClick={onSubmit} className={classes.submitButton} variant="contained" color="primary">Submit</Button>
                 </form>
             </div>
         </Paper>
