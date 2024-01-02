@@ -4,7 +4,9 @@ enum Colors {
   defaultBlue = '#0558ff',
   borderGrey = '#e8e8e8',
   deepGrey = '#a5a3a3',
-  gold = '#ffc345'
+  gold = '#ffc345',
+  darkModeCarrier = '#ffffff',
+  darkModeBeat = '#ffd400'
 }
 
 export default Colors

@@ -8,8 +8,8 @@ import ToneOscillator from "./ToneOscillator";
 import CarrierOscillator from "./CarrierOscillator";
 import BinauralBeatState from "../Types/BinauralBeatTypes";
 import FrequencyRangeHelper from "../Helpers/FrequencyRangeHelper";
-import CanvasColorHelper from "../Helpers/CanvasColorHellper";
 import Colors from "../Styles/Colors";
+import {Theme} from "../State/ThemeContext";
 
 export default class BinauralBeat {
     public static carrierMinMax = [-40, 40]
@@ -94,12 +94,9 @@ export default class BinauralBeat {
             canvasWidth: this.canvasWidth,
         }
 
-        const pair = CanvasColorHelper.generateColorPair(carrierOscillator)
-
         this.carrierOscillator = new CarrierOscillator({
                 ...baseProps,
                 canvas: this.carrierCanvas,
-                initialColor: pair.carrierColor,
                 type: 'carrier',
                 frequency: beatOscillator,
                 offset: carrierOscillator,
@@ -109,7 +106,6 @@ export default class BinauralBeat {
         this.beatOscillator = new ToneOscillator({
                 ...baseProps,
                 canvas: this.beatCanvas,
-                initialColor: pair.beatColor,
                 type: 'beat',
                 frequency: beatOscillator,
                 childOscillator: this.carrierOscillator
@@ -251,5 +247,28 @@ export default class BinauralBeat {
 
     private delayExecutionOn(callback: Function, buffer?: number): void {
       setTimeout(callback, (BinauralBeat.RAMPTIME * 1000) + (buffer ? buffer : 0.0))
+    }
+
+    public cleanup() {
+      this.beatOscillator = null
+      this.carrierOscillator = null
+      this.volume = null
+      this.id = null
+      this.name = null
+      this.editable = null
+      this.description = null
+      this.noiseLevel = null
+      this.playing = null
+      this.context = null
+      this.channelMerger = null
+      this.gain = null
+      this.carrierCanvas = null
+      this.beatCanvas = null
+      this.canvasWidth = null
+      this.canvasHeight = null
+      this.carrierAnimationId = null
+      this.beatAnimationId = null
+      this.noiseSource = null
+      this.noiseFilter = null
     }
 }

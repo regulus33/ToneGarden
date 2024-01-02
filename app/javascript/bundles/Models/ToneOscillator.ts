@@ -1,11 +1,24 @@
 import CarrierToneOsc from "./BinauralBeat";
 import BinauralBeat from "./BinauralBeat";
 import CarrierOscillator from "./CarrierOscillator";
+import {Theme} from "../State/ThemeContext";
+import CanvasColorHelper from "../Helpers/CanvasColorHellper";
+
+const ColorMap = {
+  dark: {
+    carrier: '#ffb700',
+    beat: '#fffefe'
+  },
+  light: {
+    carrier: '#01316e',
+    beat: '#500693'
+  }
+}
+
 
 export interface ToneProps {
     context: BaseAudioContext,
     canvas: HTMLCanvasElement,
-    initialColor: string,
     canvasWidth: number,
     canvasHeight: number,
     childOscillator?: CarrierOscillator,
@@ -15,16 +28,16 @@ export interface ToneProps {
 
 
 class ToneOscillator {
-      canvas: HTMLCanvasElement
-    canvasWidth: number;
-    canvasHeight: number;
-    oscillator: OscillatorNode
-    context: BaseAudioContext
-    analyser: AnalyserNode
-    initialColor: string
-    type: 'carrier' | 'beat' | 'default'
-    childOscillator?: CarrierOscillator
-    frequency: number
+  canvas: HTMLCanvasElement
+  bodyElement: HTMLBodyElement
+  canvasWidth: number;
+  canvasHeight: number;
+  oscillator: OscillatorNode
+  context: BaseAudioContext
+  analyser: AnalyserNode
+  type: 'carrier' | 'beat' | 'default'
+  childOscillator?: CarrierOscillator
+  frequency: number
 
     static setCanvasColors(offset) {
 
@@ -33,12 +46,12 @@ class ToneOscillator {
     constructor(props: ToneProps) {
         this.context = props.context
         this.canvas = props.canvas
-        this.initialColor = props.initialColor
         this.canvasWidth = props.canvasWidth
         this.canvasHeight = props.canvasHeight
         this.type = props.type
         this.childOscillator = props.childOscillator
         this.frequency = props.frequency
+        this.bodyElement = document.getElementsByTagName('body')[0]
     }
 
     public getFrequency(): number {
@@ -53,6 +66,14 @@ class ToneOscillator {
         if(BinauralBeat.ins().playing) {
             this.oscillator.frequency.setValueAtTime(frequency, 0)
         }
+    }
+
+    private initialColor(): string {
+      // TODO: make me more efficient
+      const theme = Array.from(this.bodyElement.classList).find(c =>
+        (c === Theme.Dark || c === Theme.Light)
+      )
+      return ColorMap[theme][this.type]
     }
 
     private get isBeat(): boolean {
@@ -91,7 +112,7 @@ class ToneOscillator {
             // How wide would a bar need to be for all the bars in this array to fit in this rectangle?
             const xCordinate = this.canvasWidth / array.length
 
-            drawContext.fillStyle = this.initialColor
+            drawContext.fillStyle = this.initialColor()
             // fillRect(x, y, 1, 1,)
             // xCordinate again is the exact amount of space necessary to draw each element in the array to perfectly FILL this rectangle.
             // yCordinate is the offset at which we should place our next point
