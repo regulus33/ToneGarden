@@ -21,7 +21,7 @@ class BinauralBeatsController < ApplicationController
     beat = fetch_only_allowed_beat(params[:beat_id], as_active_record: true)
     return render nil, status: :forbidden unless beat
 
-    saved = if beat.editable
+    saved = if beat.editable?
               beat.update(beat_args)
             else
               new_beat = BinauralBeat.new(beat_args)

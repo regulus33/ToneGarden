@@ -21,6 +21,7 @@ interface PitchSliderProps {
     default: number,
     handleSliderChangeCallback: (sliderValue: number) => void,
     showTextInput?: boolean,
+    step?: number,
 }
 
 const PitchSlider: FunctionComponent<PitchSliderProps> = (props) => {
@@ -32,6 +33,7 @@ const PitchSlider: FunctionComponent<PitchSliderProps> = (props) => {
     })
 
     const [value, setValue] = useState<number|string>(props.default);
+
 
     const handleSliderChange = (event: ChangeEvent, newValue: number) => {
         setValue(Number(newValue))
@@ -79,6 +81,7 @@ const PitchSlider: FunctionComponent<PitchSliderProps> = (props) => {
                 value={value}/>
             <div className={classes.root}>
                 <CustomSlider
+                    step={props.step || 1}
                     className={classes.customSlider}
                     value={typeof value === 'number' ? value : 0}
                     onMouseUp={handleBlur}

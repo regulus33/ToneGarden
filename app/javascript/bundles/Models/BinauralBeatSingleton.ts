@@ -1,10 +1,13 @@
 import {
-    Oscillator, Panner
+    Oscillator,
+    Panner,
+    Noise,
+    Gain,
+    // AutoFilter
 } from 'tone';
 import BeatOscillator from './BeatOscillator';
 import CarrierOscillator from "./CarrierOscillator";
 import BinauralBeatState from "../Types/BinauralBeatTypes";
-// import NoiseSource from "./NoiseSource";
 import FrequencyRangeHelper from "../Helpers/FrequencyRangeHelper";
 
 export default class BinauralBeatSingleton {
@@ -15,12 +18,15 @@ export default class BinauralBeatSingleton {
 
     beatOscillator: BeatOscillator
     carrierOscillator: CarrierOscillator
-    // noiseSource: NoiseSource
+    noiseSource: Noise
+    // noiseFilter: AutoFilter // Someday...
+    noiseGain: Gain
     volume: number = 0
     id: number
     name: string
     editable: boolean
     description: string
+    noiseLevel: number
 
     private static instance: BinauralBeatSingleton;
 
@@ -53,7 +59,7 @@ export default class BinauralBeatSingleton {
         this.name = name
         this.volume = volume
         this.description = description
-        // this.noiseSource = new NoiseSource(noiseLevel)
+        this.noiseLevel = noiseLevel
         this.beatOscillator = new BeatOscillator(
             beatOscillator
         )
@@ -102,6 +108,26 @@ export default class BinauralBeatSingleton {
                     1
                 )
 
+            this.noiseGain = new Gain(0).toDestination()
+
+            // this.noiseFilter = new AutoFilter({
+            //     frequency: "0",
+            //     baseFrequency: 100,
+            //     octaves: 2
+            // }).toDestination()
+
+            this.noiseSource = new Noise(
+                'pink'
+            ).connect(
+                this.noiseGain
+            ).start()
+
+            // this.noiseFilter.connect(this.noiseGain)
+
+            this.noiseGain
+                .gain
+                .rampTo(this.noiseLevel,9)
+
         } else {
             this.carrierOscillator
                 .toneOscillator
@@ -118,6 +144,8 @@ export default class BinauralBeatSingleton {
                     -Infinity,
                     1
                 )
+
+            this.noiseGain.gain.rampTo(0, 1)
         }
     }
 
@@ -151,7 +179,7 @@ export default class BinauralBeatSingleton {
             carrierOscillator: this.carrierOscillator.offset,
             volume: this.volume,
             name: this.name,
-            noiseLevel: 0,
+            noiseLevel: this.noiseLevel,
             id: this.id,
             editable: this.editable,
             description: this.description,
