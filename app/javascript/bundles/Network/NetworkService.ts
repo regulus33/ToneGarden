@@ -5,6 +5,7 @@ import LocalStorageService from "./LocalStorageService";
 import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
 import {cacheAdapterEnhancer} from 'axios-extensions';
 import FlashMessage, {FlashEnum} from "../Models/FlashMessage";
+import Routes from "./Routes";
 
 export default class NetworkService {
     private static instance: NetworkService;

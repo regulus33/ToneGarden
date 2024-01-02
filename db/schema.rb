@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_29_181201) do
+ActiveRecord::Schema.define(version: 2022_04_10_004904) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(version: 2021_08_29_181201) do
     t.string "anonymous_id"
     t.boolean "use_audio_worklet"
     t.boolean "use_white_noise"
+    t.string "theme"
   end
 
 end

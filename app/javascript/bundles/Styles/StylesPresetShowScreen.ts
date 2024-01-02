@@ -2,10 +2,12 @@ import {makeStyles} from "@mui/styles";
 import Breakpoints from "./Breakpoints";
 import {BOTTOM_BAR_HEIGHT, NAVBAR_HEIGHT} from "../Models/Constants";
 import Colors from "./Colors";
+import {Theme} from "../State/ThemeContext";
 
 interface Props {
   dominantColor: string,
   secondaryColor: string,
+  theme: Theme
 }
 
 
@@ -19,7 +21,7 @@ const useStyles = makeStyles({
     },
   }),
   editCardContainer: {
-    height: '100%',
+    height: '100vh',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -36,15 +38,13 @@ const useStyles = makeStyles({
     fontSize: '1rem'
   },
   presetFormCard: {
-    height: 'fit-content',
     margin: '0 auto',
     width: `660px`,
-    marginBottom: '5rem',
     [`@media (max-width: ${Breakpoints.mobile})`]: {
       minWidth: '100%',
       width: '100vw',
-      marginTop: '3rem',
-      marginBottom: '3rem'
+      // marginTop: '1rem',
+      // marginBottom: '3rem'
       // width: 'calc(100vw - 3rem)'
     }
   },
@@ -70,21 +70,22 @@ const useStyles = makeStyles({
   saveButtonContainer: {
     marginRight: '1.57rem'
   },
-  canvasContainer: {
+  canvasContainer: (props: Props) => ({
     margin: '0.7rem',
-    borderRadius: '4px',
     padding: '0 .7rem',
     position: 'relative',
     height: '22vh',
     '& > canvas': {
+      backgroundColor: (props.theme === Theme.Dark ? Colors.backgroundGreyDark : Colors.backgroundGrey),
       height: '22vh',
+      borderRadius: '9px',
       width: 'calc(100% - 24px)',
       position: 'absolute',
       top: 0,
       left: 0,
-      padding: '1.57em'
+      padding: '.5rem'
     }
-  }
+  })
 })
 
 export default useStyles

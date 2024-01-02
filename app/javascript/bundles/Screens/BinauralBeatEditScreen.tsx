@@ -22,6 +22,7 @@ import {useAudioWorkletCtx} from "../State/UseAudioWorkletContext";
 import {Location} from 'history'
 import CanvasColorHelper from "../Helpers/CanvasColorHellper";
 import {BEAT_CANVAS_ID, CARRIER_CANVAS_ID} from "../Models/Constants";
+import {useTheme} from "../State/ThemeContext";
 
 interface PresetShowScreenProps {
   location: Location
@@ -34,13 +35,14 @@ function BinauralBeatEditScreen(props: PresetShowScreenProps): JSX.Element {
   const {setFlashMessage} = useFlashMessage()
   const {useWhiteNoise} = useWhiteNoiseCtx()
   const {useAudioWorklet} = useAudioWorkletCtx()
+  const {theme} = useTheme()
   //
   // Router
   const history = useHistory()
   const {preset_id} = useParams()
   //
   // Styles
-  const classes = useStyles(gradient.toProps())
+  const classes = useStyles({...gradient.toProps(), theme})
   // Beat state
   const [nameError, setNameError] = useState(null)
   const [name, setName] = useState('Name')
@@ -257,7 +259,7 @@ function BinauralBeatEditScreen(props: PresetShowScreenProps): JSX.Element {
     // Orphaned but left setPlayingState.
     // Tell instance to pause before we
     // Hydrate:
-    BinauralBeat.ins().setPlayingState(false, useWhiteNoise, useAudioWorklet)
+    // BinauralBeat.ins().setPlayingState(false, useWhiteNoise, useAudioWorklet)
 
     hydrateBeatState({
       name: 'Custom Beat',
