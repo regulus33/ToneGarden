@@ -5,34 +5,86 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-# MUST BE 40hz from eachother and under 1500hz subtract small from large and you get brat frequency
 
-# def nameee
-#   result = ''
-#   result << %w[Energy Ultra Sleep Pain Focus Flow].sample
-#   result
-# end
-#
-# 25.times do
-#   beat = rand(40...1500)
-#   carrier = rand(-40...40)
-#   BinauralBeat.create(
-#     name: nameee,
-#     beatOscillator: beat,
-#     carrierOscillator: carrier,
-#     volume: 0,
-#     noiseLevel: 0,
-#     editable: [true, false].sample,
-#     description: "For #{%w[Energy Ultra Sleep Pain Focus Flow].sample} great at night"
-#   )
-# end
-#
+BinauralBeat.where(editable: false).delete_all
+
 BinauralBeat.create(
-  name: 'Sustained Focus',
+  name: 'Deep Focus',
   beatOscillator:  238,
   carrierOscillator: -11,
   noiseLevel: 0,
   editable: false,
-  description: 'Low, bass-filled tones for cognitively demanding work.'
+  description: 'Stimulating low alpha tones.'
 )
+
+BinauralBeat.create(
+  name: 'Meditation',
+  beatOscillator:  432,
+  carrierOscillator: -7,
+  noiseLevel: 0,
+  editable: false,
+  description: 'Theta waves at 432 hertz'
+)
+
+BinauralBeat.create(
+  name: 'Peak alertness',
+  beatOscillator:  209,
+  carrierOscillator: 13,
+  noiseLevel: 0,
+  editable: false,
+  description: 'Beta waves at a low, calming pitch'
+)
+
+BinauralBeat.create(
+  name: 'Study source',
+    beatOscillator: 555,
+  carrierOscillator: -8,
+  noiseLevel: 0,
+  editable: false,
+  description: 'Alpha waves for analytical thinking.'
+)
+
+BinauralBeat.create(
+  name: 'Deep learning',
+  beatOscillator: 100,
+  carrierOscillator: -33.7,
+  noiseLevel: 0,
+  editable: false,
+  description: 'Deep gamma waves'
+)
+
+BinauralBeat.create(
+  name: 'Illuminated',
+  beatOscillator: 100,
+  carrierOscillator: -33.7,
+  noiseLevel: 0,
+  editable: false,
+  description: 'Beta tones for ideation'
+)
+
+BinauralBeat.create(
+  name: 'Super sleep',
+  beatOscillator: 136,
+  carrierOscillator: 6,
+  noiseLevel: 0,
+  editable: false,
+  description: 'Theta relaxation'
+)
+
+BinauralBeat.create(
+  name: 'Deep dream',
+  beatOscillator: 57,
+  carrierOscillator: -1,
+  noiseLevel: 0,
+  editable: false,
+  description: 'Delta tones for dreaming'
+)
+
+
+
+
+
+
+
+
 
