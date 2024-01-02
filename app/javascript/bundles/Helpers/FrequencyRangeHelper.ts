@@ -40,7 +40,7 @@ class FrequencyRangeHelper {
         if (this.isInRange(offset, rangeMap['delta'])) {
             return 'delta';
         }
-        debugger
+
         return 'NA';
     }
 

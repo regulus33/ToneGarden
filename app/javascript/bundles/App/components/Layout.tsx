@@ -33,7 +33,7 @@ const Content: FunctionComponent<ContentProps> = (props) => {
     const { gradient } = useGradient()
     const classes = useStyles()
     const { drawerState, setDrawerState } = useSettingsDrawer()
-    const { flashMessage } = useFlashMessage()
+    const { flashMessage, setFlashMessage } = useFlashMessage()
     const { setAuthenticated } = useAuthenticated()
     const { setError } = useError()
     const history = useHistory()
@@ -43,7 +43,7 @@ const Content: FunctionComponent<ContentProps> = (props) => {
     }
 
     NetworkService.getInstance().setAuthenticated = setAuthenticated
-
+    NetworkService.getInstance().setFlashMessage = setFlashMessage
     NetworkService.getInstance().setError = setError
 
     const handleInputKeyUp = (event: any) => {
