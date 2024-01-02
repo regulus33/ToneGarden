@@ -1,0 +1,96 @@
+<style>
+    #hero {
+        display: flex;
+        justify-content: center;
+        width: 100vw;
+        z-index: 0;
+        background-size: contain;
+        background: linear-gradient(
+                180deg,
+                rgba(81, 53, 136, 1) 0%,
+                rgba(77, 53, 125, 1) 19%,
+                rgba(81, 53, 136, 1) 41%,
+                rgba(54, 124, 150, 1) 100%
+        );
+    }
+
+    #logo {
+        background-image: url("logo_white.svg");
+        position: absolute;
+        background-repeat: no-repeat;
+        left: 50%;
+        transform: translateX(-50%);
+        height: 40vh;
+        width: 40vw;
+        background-size: cover;
+        z-index: 1000;
+    }
+
+
+    @media only screen and (max-width: 700px) {
+        #hero {
+            background-size: contain;
+        }
+
+        #container {
+            background-color: rgb(54, 124, 150);
+            height: 100vh;
+        }
+    }
+
+    /*used in twinkleTwinkle*/
+    @keyframes twinkle {
+        0% {
+            opacity: 1;
+        }
+        30% {
+            opacity: 1;
+        }
+        70% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+</style>
+<script>
+
+    function random(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+
+    function randoTwinkleAnim(min, max) {
+        const randomSeconds = random(min, max)
+        return `twinkle ${randomSeconds}s ease-in-out infinite`
+    }
+
+
+    function twinkleTwinkle(group, min, max) {
+        for (const twinkleable of group.children) {
+            if (twinkleable) {
+                twinkleable.style.animation = randoTwinkleAnim(min, max)
+            } else {
+                console.error(`enexpected absence of twinkleable`)
+            }
+        }
+    }
+
+    function twinkleLoop() {
+
+        setTimeout(twinkleLoop, 10000)
+    }
+
+    window.onload = function () {
+        twinkleTwinkle(document.getElementById('twinkle-stars'), 5, 10)
+        twinkleTwinkle(document.getElementById('twinkleable'), 5, 10)
+    }
+</script>
+<div id="container">
+  <div id="logo"></div>
+  <div id="hero">
+    <%= inline_svg_pack_tag(File.open(Rails.public_path + 'tone_garden_night.svg')) %>
+  </div>
+</div>

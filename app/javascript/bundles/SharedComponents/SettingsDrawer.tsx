@@ -21,6 +21,7 @@ import Routes from "../Network/Routes";
 import CamelToSnake from "../Utils/CamelToSnake";
 import {useAudioWorkletCtx} from "../State/UseAudioWorkletContext";
 import CurrentUser from "../Utils/CurrentUser";
+import WelcomeUrl from "../Helpers/WelcomeUrl";
 
 const useStyles = makeStyles({
     list: {
@@ -91,9 +92,11 @@ const SettingsDrawer: FunctionComponent<Props> = (props) => {
             </List>
             <Divider/>
             <List>
-                <ListItem button key={2}>
+                <ListItem button onClick={ ()=> {
+                    window.location.href = WelcomeUrl()
+                }} key={2}>
                     <ListItemIcon><InfoRounded/></ListItemIcon>
-                    <ListItemText primary={'About binaural beats'}/>
+                    <ListItemText primary={'About'}/>
                 </ListItem>
                 <ListItem style={{position: 'relative'}}>
                     <FormControlLabel

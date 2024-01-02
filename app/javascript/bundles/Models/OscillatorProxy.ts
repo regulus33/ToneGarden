@@ -1,4 +1,4 @@
-import {BaseContext, Oscillator} from 'tone'
+import {BaseContext, getContext, Oscillator} from 'tone'
 import BetterOscillatorNode from "./BetterOscillatorNode";
 import {AnyAudioContext} from "tone/build/esm/core/context/AudioContext";
 import FunctionName from "../Utils/FunctionName";
@@ -16,7 +16,16 @@ class OscillatorProxy {
     useAudioWorklet: boolean
     audioContext: AnyAudioContext | AudioContext
 
-    constructor(options: Options) {
+    constructor(options?: Options) {
+
+         if(!options) options = {
+                useAudioWorklet: false,
+                frequency: 432,
+                volume: -999,
+                context: getContext().rawContext
+            }
+
+
         this.useAudioWorklet = options.useAudioWorklet
         this.audioContext = options.context
 
