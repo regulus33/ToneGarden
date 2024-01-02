@@ -74,12 +74,13 @@ export default class BinauralBeatSingleton {
     }
 
     set playing(playing: boolean) {
-        const context = new Context({ latencyHint: "playback" });
         // set this context as the global Context
-        setContext(context);
         // the global context is gettable with Tone.getContext()
         if (playing) {
+            getContext().latencyHint = 'playback'
+
             const pannerCarrier = new Panner(1).toDestination();
+
             this.carrierOscillator
                 .toneOscillator = new Oscillator({
                 frequency: this.carrierOscillator.frequency,
@@ -96,8 +97,8 @@ export default class BinauralBeatSingleton {
                     this.initialVolume,
                     1
                 )
-
             const pannerBeat = new Panner(-1).toDestination();
+
             this.beatOscillator
                 .toneOscillator = new Oscillator({
                 frequency: this.beatOscillator.frequency,
@@ -115,7 +116,9 @@ export default class BinauralBeatSingleton {
                     1
                 )
 
-            this.noiseGain = new Gain(0).toDestination()
+            console.log(getContext().latencyHint)
+
+            // this.noiseGain = new Gain(0).toDestination()
 
             // this.noiseFilter = new AutoFilter({
             //     frequency: "0",
@@ -123,19 +126,17 @@ export default class BinauralBeatSingleton {
             //     octaves: 2
             // }).toDestination()
 
-            this.noiseSource = new Noise(
-                'pink'
-            ).connect(
-                this.noiseGain
-            ).start()
-
-            // this.noiseFilter.connect(this.noiseGain)
-
-            this.noiseGain
-                .gain
-                .rampTo(this.noiseLevel,9)
-
-            console.log(getContext().latencyHint);
+            // this.noiseSource = new Noise(
+            //     'pink'
+            // ).connect(
+            //     this.noiseGain
+            // ).start()
+            //
+            // // this.noiseFilter.connect(this.noiseGain)
+            //
+            // this.noiseGain
+            //     .gain
+            //     .rampTo(this.noiseLevel,9)
 
         } else {
             this.carrierOscillator
