@@ -25,6 +25,9 @@ const useStyles = makeStyles((props: Props) =>
             flexBasis: '33.33%',
         },
         largeSlider: {
+            '& label' : {
+                maxWidth: '1000%',
+            },
             marginTop: '1rem',
             padding: '2rem',
             [`@media(max-width: ${Breakpoints.mobile})`]: {

@@ -1,6 +1,5 @@
 import {makeStyles} from "@mui/styles";
 import Breakpoints from "./Breakpoints";
-import Colors from "./Colors";
 
 interface Props {
     dominantColor: string,
@@ -19,7 +18,7 @@ export const useStyles = makeStyles({
     }),
 
     continueButton: {
-        backgroundColor: '#fcba03',
+        backgroundColor: '#ff9900',
         minWidth: '225px',
         fontWeight: 'bold'
     },
@@ -98,5 +97,9 @@ export const useStyles = makeStyles({
 
     or: {
         margin: '1rem 0'
+    },
+
+    lightLink: {
+        color: 'white'
     }
 })

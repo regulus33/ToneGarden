@@ -2,7 +2,6 @@ import CarrierToneOsc from "./BinauralBeat";
 import BinauralBeat from "./BinauralBeat";
 import CarrierOscillator from "./CarrierOscillator";
 import {Theme} from "../State/ThemeContext";
-import CanvasColorHelper from "../Helpers/CanvasColorHellper";
 
 const ColorMap = {
   dark: {

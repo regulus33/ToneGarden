@@ -1,7 +1,5 @@
 import FrequencyRangeHelper from "./FrequencyRangeHelper";
 import Gradient from "../Models/Gradient";
-import {BEAT_CANVAS_ID, CARRIER_CANVAS_ID} from "../Models/Constants";
-import BinauralBeat from "../Models/BinauralBeat";
 import Colors from "../Styles/Colors";
 import {Theme} from "../State/ThemeContext";
 
@@ -16,6 +14,7 @@ class CanvasColorPair {
 }
 
 export default class CanvasColorHelper {
+    // Abandoned idea where every frequency range had associated colors for both channels
     static generateColorPair(carrierOscscillator: number, theme: Theme.Dark | Theme.Light): CanvasColorPair {
         const rangeString = FrequencyRangeHelper.rangeString(carrierOscscillator)
       if(theme === Theme.Dark) {

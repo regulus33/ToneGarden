@@ -47,7 +47,7 @@ const SignupScreen: FunctionComponent<SignupScreenProps> = (props) => {
                   optionalLinkText={'Sign in'}
                   optionalLink={Routes.SigninScreen}
                   buttonText={'Signup'}
-                  heading={'Signup'}
+                  heading={'Create an account'}
                   gradient={gradient}
                   error={error}
                   onSubmit={onSubmit}

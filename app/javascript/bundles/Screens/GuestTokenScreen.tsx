@@ -19,7 +19,7 @@ const GuestTokenScreen: FunctionComponent<Props> = ( props) => {
                 .get(Routes.Guest)
             // @ts-ignore
             LocalStorageService.setToken(resp.data.token)
-            history.replace(Routes.BinauralBeatsScreen)
+            history.replace(Routes.BinauralBeatsCreateScreen)
         })()
     }, [])
 

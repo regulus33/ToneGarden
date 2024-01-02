@@ -14,14 +14,21 @@ const useStyles = makeStyles({
         height: '100%',
         [`@media(min-width: ${Breakpoints.largeDesktop})`]: {
             height: '90vh',
-        }
+        },
+
     },
     cta: {
-        position: "absolute",
-        right: 0,
-        bottom: '25px',
-        right: '50%'
-
+        position: 'absolute',
+        bottom: '105px',
+        right: '50%',
+        zIndex: 9999,
+        transform: 'translateX(50%)',
+        [`@media(min-width: ${Breakpoints.smallDesktop})`]: {
+            bottom: '64px',
+        },
+        [`@media(max-width: ${Breakpoints.mobile})`]: {
+            top: '15%'
+        }
     }
 })
 

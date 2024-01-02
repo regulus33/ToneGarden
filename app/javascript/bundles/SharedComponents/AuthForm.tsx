@@ -10,6 +10,7 @@ import {useHistory} from "react-router-dom"
 import Routes from "../Network/Routes";
 import {Link} from "react-router-dom";
 import {Divider} from "@mui/material";
+import {Theme, useTheme} from "../State/ThemeContext";
 
 interface AuthFormProps {
     onEmailChange(event: FormEvent<HTMLInputElement>): void,
@@ -39,20 +40,23 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({
                                                     }) => {
     const classes = useStyles(gradient.toProps())
     const history = useHistory()
+    const theme = useTheme()
 
     const createGuest = () => {
         history.replace(Routes.GuestTokenScreen)
     }
 
     const optionalLinkRender = () => {
+        console.log(theme.theme)
         if (optionalLinkText)
             return (
                 <div>
                     <Divider className={classes.or} variant={'middle'}/>
-                    <Link to={optionalLink}>{optionalLinkText}</Link>
+                    <Link className={theme.theme === Theme.Dark ? classes.lightLink : null} color={'white'} to={optionalLink}>{optionalLinkText}</Link>
                     <Divider className={classes.or} variant={'middle'}/>
                 </div>
             )
+
     }
 
     return (

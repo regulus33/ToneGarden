@@ -1,219 +1,116 @@
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+<!--<style>-->
+<!--    @keyframes fadeOutUp {-->
+<!--        0% {-->
+<!--            opacity: 1;-->
+<!--            top: 0;-->
+<!--        }-->
+<!--        100% {-->
+<!--            opacity: 0;-->
+<!--            top: -100%-->
+<!--        }-->
+<!--    }-->
 
-    html, body {
-        height: 100%;
-    }
-
-    body {
-        overflow-y: hidden;
-        font-family: 'Poppins', sans-serif;
-    }
-
-    #container {
-        scroll-snap-type: y mandatory;
-        overflow-y: scroll;
-        height: 100vh;
-    }
-
-    #hero {
-        display: flex;
-        justify-content: center;
-        width: 100vw;
-        z-index: 0;
-        background-size: contain;
-        background: linear-gradient(
-                180deg,
-                rgba(81, 53, 136, 1) 0%,
-                rgba(77, 53, 125, 1) 19%,
-                rgba(81, 53, 136, 1) 41%,
-                rgba(54, 124, 150, 1) 100%
-        );
-    }
-
-    #logo {
-        background-image: url("logo_white.svg");
-        position: absolute;
-        background-repeat: no-repeat;
-        left: 50%;
-        transform: translateX(-50%);
-        height: 40vh;
-        width: 40vw;
-        background-size: contain;
-        z-index: 1000;
-    }
-
-    .fadeOutUp {
-        animation: fadeOutUp 1s forwards;
-    }
-
-    .fadeInDown {
-        animation: fadeInDown 0.5s forwards;
-    }
-
-    .container {
-        height: 100vh;
-        scroll-snap-align: start;
-    }
-
-    #info-1, #info-2, #info-3 {
-        display: flex;
-        align-items: center;
-        color: white;
-        font-size: 2.5em;
-        justify-content: center;
-        flex-direction: column;
-    }
-
-    #info-1 {
-        background: linear-gradient(
-                180deg,
-                rgba(54, 124, 150, 1) 0%,
-                rgb(18, 75, 255) 100%
-        );
-    }
-
-    .title {
-        font-weight: bold;
-    }
+<!--    @keyframes fadeInDown {-->
+<!--        0% {-->
+<!--            opacity: 0;-->
+<!--            top: -100%-->
+<!--        }-->
+<!--        100% {-->
+<!--            opacity: 1;-->
+<!--            top: 0;-->
+<!--        }-->
+<!--    }-->
 
 
-    @media only screen and (max-width: 700px) {
-        #hero {
-            background-size: cover;
-        }
+<!--    /*used in twinkleTwinkle*/-->
+<!--    @keyframes twinkle {-->
+<!--        0% {-->
+<!--            opacity: 1;-->
+<!--        }-->
+<!--        30% {-->
+<!--            opacity: 1;-->
+<!--        }-->
+<!--        70% {-->
+<!--            opacity: 0;-->
+<!--        }-->
+<!--        100% {-->
+<!--            opacity: 1;-->
+<!--        }-->
+<!--    }-->
+<!--</style>-->
+<!--<script>-->
 
-        #hero svg {
-            max-height: 100vh;
-        }
-
-        #container {
-            background-color: rgb(54, 124, 150);
-        }
-
-        #logo {
-            min-width: 100vw;
-        }
-    }
-
-    @keyframes fadeOutUp {
-        0% {
-            opacity: 1;
-            top: 0;
-        }
-        100% {
-            opacity: 0;
-            top: -100%
-        }
-    }
-
-    @keyframes fadeInDown {
-        0% {
-            opacity: 0;
-            top: -100%
-        }
-        100% {
-            opacity: 1;
-            top: 0;
-        }
-    }
+<!--    function random(min, max) {-->
+<!--        return Math.floor(Math.random() * (max - min + 1)) + min;-->
+<!--    }-->
 
 
-    /*used in twinkleTwinkle*/
-    @keyframes twinkle {
-        0% {
-            opacity: 1;
-        }
-        30% {
-            opacity: 1;
-        }
-        70% {
-            opacity: 0;
-        }
-        100% {
-            opacity: 1;
-        }
-    }
+<!--    function randoTwinkleAnim(min, max) {-->
+<!--        const randomSeconds = random(min, max)-->
+<!--        return `twinkle ${randomSeconds}s ease-in-out infinite`-->
+<!--    }-->
 
 
-</style>
-<script>
+<!--    function twinkleTwinkle(group, min, max) {-->
+<!--        for (const twinkleable of group.children) {-->
+<!--            twinkleable.style.animation = randoTwinkleAnim(min, max)-->
+<!--        }-->
+<!--    }-->
 
-    function random(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
+<!--    function twinkleLoop() {-->
+<!--        setTimeout(twinkleLoop, 10000)-->
+<!--    }-->
 
-
-    function randoTwinkleAnim(min, max) {
-        const randomSeconds = random(min, max)
-        return `twinkle ${randomSeconds}s ease-in-out infinite`
-    }
-
-
-    function twinkleTwinkle(group, min, max) {
-        for (const twinkleable of group.children) {
-            twinkleable.style.animation = randoTwinkleAnim(min, max)
-        }
-    }
-
-    function twinkleLoop() {
-        setTimeout(twinkleLoop, 10000)
-    }
-
-    function setupIntersectionObserver() {
-        const imageObserver = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                if(entry.isIntersecting) {
-                    const lazyImage = entry.target
-                    lazyImage.src = lazyImage.dataset.src
-                }
-            })
-        })
-        document.querySelectorAll('img.lazy-img').forEach(function (e) {
-            imageObserver.observe(e);
-        })
-    }
+<!--    function setupIntersectionObserver() {-->
+<!--        const imageObserver = new IntersectionObserver(function (entries) {-->
+<!--            entries.forEach(function (entry) {-->
+<!--                if(entry.isIntersecting) {-->
+<!--                    const lazyImage = entry.target-->
+<!--                    lazyImage.src = lazyImage.dataset.src-->
+<!--                }-->
+<!--            })-->
+<!--        })-->
+<!--        document.querySelectorAll('img.lazy-img').forEach(function (e) {-->
+<!--            imageObserver.observe(e);-->
+<!--        })-->
+<!--    }-->
 
 
-    window.onload = function () {
-        let scrolled = false
-        twinkleTwinkle(document.getElementById('twinkle-stars'), 5, 10)
-        twinkleTwinkle(document.getElementById('twinkleable'), 5, 10)
-        setupIntersectionObserver()
-        document.getElementById("container").addEventListener('scroll', function (e) {
-            scrolled = true
-            const scrollLocation = e.target.scrollTop
-            if (scrolled && scrollLocation === 0) {
-                document.getElementById('logo').classList.add('fadeInDown')
-            } else {
-                document.getElementById('logo').classList.remove('fadeOutUp')
-                document.getElementById('logo').classList.remove('fadeInDown')
-                document.getElementById('logo').classList.add('fadeOutUp')
-            }
+<!--    window.onload = function () {-->
+<!--        let scrolled = false-->
+<!--        twinkleTwinkle(document.getElementById('twinkle-stars'), 5, 10)-->
+<!--        twinkleTwinkle(document.getElementById('twinkleable'), 5, 10)-->
+<!--        setupIntersectionObserver()-->
+<!--        document.getElementById("container").addEventListener('scroll', function (e) {-->
+<!--            scrolled = true-->
+<!--            const scrollLocation = e.target.scrollTop-->
+<!--            if (scrolled && scrollLocation === 0) {-->
+<!--                document.getElementById('logo').classList.add('fadeInDown')-->
+<!--            } else {-->
+<!--                document.getElementById('logo').classList.remove('fadeOutUp')-->
+<!--                document.getElementById('logo').classList.remove('fadeInDown')-->
+<!--                document.getElementById('logo').classList.add('fadeOutUp')-->
+<!--            }-->
 
-        })
+<!--        })-->
 
-    }
+<!--    }-->
 
-</script>
-<div id="container">
-  <div id="logo">
-  </div>
-  <div class="container" id="hero">
-    <%= inline_svg_pack_tag(File.open(Rails.public_path + 'tone_garden_night.svg')) %>
-  </div>
-  <div id="info-1" class="container">
-    <div class="title">Play and create your own binaural beats</div>
-    <div class="description">Alpha, gamma, theta, delta, beta. You name it, we got it.</div>
-    <img class="lazy-img" data-src="splash_screen_list.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg=="/>
-  </div>
-  <div id="info-1" class="container">
-    <div class="title">Play and create your own binaural beats</div>
-    <div class="description">Alpha, gamma, theta, delta, beta. You name it, we got it.</div>
-    <img class="lazy-img" data-src="splash_create.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg=="/>
-  </div>
-</div>
+<!--</script>-->
+<!--<div id="container">-->
+<!--  <div id="logo">-->
+<!--  </div>-->
+<!--  <div class="container" id="hero">-->
+    <%#= inline_svg_pack_tag(File.open(Rails.public_path + 'tone_garden_night.svg')) %>
+<!--  </div>-->
+<!--  <div id="info-1" class="container">-->
+<!--    <div class="title">Play and create your own binaural beats</div>-->
+<!--    <div class="description">Alpha, gamma, theta, delta, beta. You name it, we got it.</div>-->
+<!--    <img class="lazy-img" data-src="splash_screen_list.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg=="/>-->
+<!--  </div>-->
+<!--  <div id="info-1" class="container">-->
+<!--    <div class="title">Play and create your own binaural beats</div>-->
+<!--    <div class="description">Alpha, gamma, theta, delta, beta. You name it, we got it.</div>-->
+<!--    <img class="lazy-img" data-src="splash_create.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg=="/>-->
+<!--  </div>-->
+<!--</div>-->

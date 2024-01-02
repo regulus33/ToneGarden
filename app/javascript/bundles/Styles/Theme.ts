@@ -18,6 +18,7 @@ export const darkThemeOptions: ThemeOptions = {
       paper: '#2f2f2f',
     },
     divider: 'rgba(129,129,129,0.12)',
+    yellow: "#edc709"
   },
 };
 
@@ -33,5 +34,6 @@ export const themeOptions: ThemeOptions = {
     secondary: {
       main: '#d56aff',
     },
+    yellow: "#edc709"
   },
 };
