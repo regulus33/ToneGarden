@@ -58,26 +58,25 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
         }
     }
 
-    // TODO handle errors
-    // TODO add toast
     function saveBeat() {
-        const id = BinauralBeatSingleton.ins().id
-        const beatBody = BinauralBeatSingleton.ins().toState()
+        (async () => {
+            const id = BinauralBeatSingleton.ins().id
+            const beatBody = BinauralBeatSingleton.ins().toState()
+            const b = await NetworkService
+                .getInstance()
+                .put(Routes
+                    .BinauralBeatUpdate(
+                        id.toString()), beatBody)
 
-        NetworkService
-            .getInstance()
-            .put(Routes
-                .BinauralBeatUpdate(
-                    id.toString()), beatBody)
-            .then(function (b: BinauralBeatJson) {
-                const {name} = b.binauralBeatState.data.attributes
-                const displayName = name || 'Binaural beat'
-                setFlashMessage(new FlashMessage(`${displayName} is now saved.`, true, FlashEnum.success))
-            })
+            // @ts-ignore https://stackoverflow.com/questions/40097820/property-does-not-exist-on-type-object-observable-subscribe
+            const { name } = b.data.binauralBeatState.data.attributes
+
+            const displayName = name || 'Binaural beat'
+            setFlashMessage(new FlashMessage(`${displayName} is now saved.`, true, FlashEnum.success))
+        })()
     }
 
-    // TODO handle errors
-    // TODO add toast
+    // TODO FIX FOR AXIOS
     function createBeat() {
         const beatBody = BinauralBeatSingleton.ins().toState()
 
@@ -206,6 +205,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
     }
 
     useEffect(() => {
+        // TODO: clean this
         if (isNewBeat) {
             return
         }
@@ -227,6 +227,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
     }, [])
 
     useEffect(() => {
+        // TODO: clean this
         if (!isNewBeat) {
             return
         }

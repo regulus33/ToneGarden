@@ -2,10 +2,7 @@ import Headerz from './Headerz'
 import {Dispatch} from "react";
 import GlobalError from "../Models/GlobalError";
 import SecureStorageService from "./SecureStorageService";
-
-type RawResponse = {
-    status: number,
-}
+import axios, {Method} from "axios";
 
 export default class NetworkService {
     private static baseUrl: string = 'http://localhost:3000';
@@ -14,6 +11,7 @@ export default class NetworkService {
 
     public setAuthenticated: Dispatch<boolean>
     public setError: Dispatch<GlobalError>
+    public history: any
 
     private constructor() {}
     /**
@@ -30,50 +28,51 @@ export default class NetworkService {
         return NetworkService.instance;
     }
 
-    public async post(route: string, body: Object) {
-        const headers = new Headerz(route).deliver();
-        const rawResponse = await fetch(`${NetworkService.baseUrl}/${route}`, {
-            method: 'POST',
-            headers,
-            body: JSON.stringify(body)})
-        this.notifyAuthContext(rawResponse)
-        const json = await rawResponse.json();
-        return {ok: rawResponse.ok, ...json}
+    public post(route: string, data: object) {
+        return this.makeRequest(route, 'put', data)
     }
 
-    public async put(route: string, body: Object) {
-        const headers = new Headerz(route).deliver();
-        const rawResponse = await fetch(`${NetworkService.baseUrl}/${route}`, {
-            method: 'PUT',
-            headers,
-            body: JSON.stringify(body)})
-        this.notifyAuthContext(rawResponse)
-        const json = await rawResponse.json();
-        return {ok: rawResponse.ok, ...json}
+    public put(route: string, data: object): Promise<object> {
+      return this.makeRequest(route, 'put', data)
     }
 
-    public async get(route: string) {
-        let url = `${NetworkService.baseUrl}/${route}`
-
-        const headers = new Headerz(route).deliver();
-        const rawResponse = await fetch(url, {
-            method: 'GET',
-            headers
-        })
-        console.warn(`Processing GET to ${url} headers:`, headers)
-        await this.notifyAuthContext(rawResponse)
-        return await rawResponse.json()
+    public get(route: string): Promise<object> {
+       return this.makeRequest(route, 'get')
     }
 
-    private notifyAuthContext(response: RawResponse){
-        console.log(response.status)
-        switch (response.status) {
+    // NOTE error will make RESPONSE null
+    private async makeRequest(route: string, method: Method, data?: object): Promise<object|null> {
+        let response
+        const options = {
+            url: NetworkService.buildUrl(route),
+            method: method,
+            headers: new Headerz(route).build(),
+            withCredentials: true
+        }
+
+        data && ( options['data'] = data )
+
+        try {
+            response = await axios(options)
+            this.handleResponse(response.status)
+        } catch {
+            this.handleResponse(500)
+        }
+        return response || null
+    }
+
+
+    private handleResponse(statusCode: number){
+        if(statusCode >= 500) {
+            this.history.replace('/oops')
+        }
+        switch (statusCode) {
             case 401:
                 this.setAuthenticatedAndStore(false)
-                this.setError(new GlobalError(null,response.status, null))
+                this.setError(new GlobalError(null,statusCode, null))
                 break
             case 400:
-                this.setError(new GlobalError('Email alrready taken.', response.status, null))
+                this.setError(new GlobalError('Email alrready taken.', statusCode, null))
                 break
             case 200:
                 this.setAuthenticatedAndStore(true)
@@ -86,8 +85,12 @@ export default class NetworkService {
         }
     }
 
+    private static buildUrl(route: string): string {
+        return `${NetworkService.baseUrl}/${route}`
+    }
+
     setAuthenticatedAndStore(value: boolean) {
         this.setAuthenticated(value)
-        return SecureStorageService.setIsAuth(value)
+        SecureStorageService.setIsAuth(value)
     }
 }

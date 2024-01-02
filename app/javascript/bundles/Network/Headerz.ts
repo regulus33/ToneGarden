@@ -10,13 +10,13 @@ class Headerz {
 
     private headerz: HeadersInit = Headerz.base;
 
-    constructor(route:string) {
+     constructor(route:string) {
         if(!Headerz.notPasswordProtected.includes(route)) {
            this.headerz['Authorization'] = 'Bearer ' + SecureStorageService.getToken();
         }
     }
 
-    public deliver(){
+    public build(){
         return this.headerz
     }
 
