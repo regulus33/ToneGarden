@@ -6,16 +6,18 @@ Rails.application.routes.draw do
   # Runtime/cached scripts and React Router will handle the behavior at this URI
   get '/', to: 'initializers#index'
   get '/signup', to: 'initializers#index'
+  get '/signin', to: 'initializers#index'
   get '/presets', to: 'initializers#index'
-  get '/settings', to: 'initializers#index'
   get '/preset_show/:preset_id', to: 'initializers#index'
 
   # Json api
   get '/api/presets', to: 'presets#index'
   get '/api/preset_show/:preset_id', to: 'presets#show'
+
   resources :users, only: :create do
     collection do
       post 'login'
+      get 'guest'
     end
   end
   # TODO: standardize route names

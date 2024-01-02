@@ -6,24 +6,38 @@ import {useStyles} from "../Styles/StylesAuthForm";
 import {Paper, Typography} from "@material-ui/core";
 import Gradient from "../Models/Gradient";
 import GlobalError from "../Models/GlobalError";
+import {Link} from 'react-router-dom';
 
 interface AuthFormProps {
     onEmailChange(event: FormEvent<HTMLInputElement>): void,
+
     onPasswordChange(event: FormEvent<HTMLInputElement>): void,
+
     onSubmit(any): void,
+
+    buttonText: string,
     gradient: Gradient,
-    error?: GlobalError
+    error?: GlobalError,
+    heading: string
 }
 
-const AuthForm: FunctionComponent<AuthFormProps> = ({onEmailChange, onPasswordChange, onSubmit, gradient, error}) => {
+const AuthForm: FunctionComponent<AuthFormProps> = ({
+                                                        onEmailChange,
+                                                        onPasswordChange,
+                                                        onSubmit,
+                                                        heading,
+                                                        buttonText,
+                                                        gradient,
+                                                        error
+                                                    }) => {
     const classes = useStyles(gradient.toProps());
 
     return (
         <Paper className={classes.paper}>
             <div>
-                <Typography className={classes.heading} variant='h5'>Signup</Typography>
+                <Typography className={classes.heading} variant='h5'>{heading}</Typography>
                 <form className={classes.authform}>
-                    <TextField error={(error!=null)}
+                    <TextField error={(error != null)}
                                label={(error != null) ? error.message : 'Email'}
                                onInput={onEmailChange}
                                variant='standard'
@@ -35,8 +49,15 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({onEmailChange, onPasswordCh
                                variant='standard'
                                className={classes.textField}
                                type={'password'}/>
-                    <Button onClick={onSubmit} className={classes.submitButton} variant="contained" color="primary">Submit</Button>
+                    <Button onClick={onSubmit} className={classes.submitButton} variant="contained"
+                            color="primary">{buttonText}</Button>
                 </form>
+            </div>
+            <div className={classes.noAccountContainer}>
+                <Typography>No account yet?</Typography>
+                <div className={classes.noAccountButtonsContainer}>
+                    <Link to={'/guest'}>Continue as a guest</Link>
+                </div>
             </div>
         </Paper>
     );

@@ -13,10 +13,11 @@ import {useError} from "../../State/ErrorContext";
 const SignupScreen: FunctionComponent<SignupScreenProps> = (props) => {
     const [ email, setEmail ] = useState('')
     const [ password, setPassword ] = useState('')
-    const {gradient} = useGradient()
     const { error } = useError()
     const classes = useStyles()
     const history = useHistory()
+
+    const {gradient} = useGradient()
 
     const onEmailChange = (event) => {
         let emailText = event.target.value
@@ -29,10 +30,9 @@ const SignupScreen: FunctionComponent<SignupScreenProps> = (props) => {
 
     const onSubmit = async (event: any) => {
         const response = await NetworkService.getInstance().post(
-            Routes.NewUser,
+            Routes.Login,
             { user: { email, password } }
         );
-
         if(response.ok) {
             await SecureStorageService.setToken(response.token)
             history.push('/presets')
@@ -41,9 +41,9 @@ const SignupScreen: FunctionComponent<SignupScreenProps> = (props) => {
 
     return (
         <div className={classes.authFormContainer}>
-            <AuthForm buttonText={'Continue'} heading={'Signup'} gradient={gradient} error={error} onSubmit={onSubmit} onEmailChange={onEmailChange} onPasswordChange={onPasswordChange}/>
+            <AuthForm buttonText={'Continue'} heading={'Signin'} gradient={gradient} error={error} onSubmit={onSubmit} onEmailChange={onEmailChange} onPasswordChange={onPasswordChange}/>
         </div>
-);
+    );
 }
 
 

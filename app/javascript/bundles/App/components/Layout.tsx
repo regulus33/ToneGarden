@@ -6,6 +6,9 @@ import Header from '../../SharedComponents/Header';
 import Footer from '../../SharedComponents/Footer';
 import useStyles from "../../Styles/StylesLayout";
 import {useGradient} from "../../State/GradientContext";
+import {useSettingsDrawer} from "../../State/SettingsDrawerContext";
+import DrawerState from "../../Models/DrawerState";
+import SettingsDrawer from "../../SettingsDrawer/components/SettingsDrawer";
 export interface Props {
 }
 
@@ -16,12 +19,13 @@ interface ContentProps {
 
 // Private
 const Content: FunctionComponent<ContentProps> = (props) => {
-    const {theme, setTheme} = useTheme();
+    const { theme, setTheme } = useTheme();
     const { title } = useTitle();
     const { gradient } = useGradient();
     const classes = useStyles();
-    // TODO: DARK MODE
-    function handleInputKeyUp(event: any): void {
+    const { drawerState, setDrawerState } = useSettingsDrawer();
+
+    const handleInputKeyUp = (event: any) => {
         if (event.code == 'Digit0') {
             switch (theme) {
                 case  Theme.Dark:
@@ -36,13 +40,19 @@ const Content: FunctionComponent<ContentProps> = (props) => {
         }
     }
 
+    const toggleSettingsDrawer = () => {
+        const open = !drawerState.open
+        setDrawerState(new DrawerState(open, drawerState.anchor))
+    }
+
     return (
         <div onKeyPress={handleInputKeyUp} tabIndex={0} className={classes.mainContainer}>
-            <Header screen={title} gradient={gradient}/>
+           <Header toggleSettingsDrawer={toggleSettingsDrawer} screen={title} gradient={gradient}/>
            <div className={classes.contentContainer}>
             {
                 props.children
             }
+            <SettingsDrawer toggleSettingsDrawer={toggleSettingsDrawer}/>
            </div>
             <Footer/>
         </div>

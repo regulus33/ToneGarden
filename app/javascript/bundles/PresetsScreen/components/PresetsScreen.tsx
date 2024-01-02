@@ -1,28 +1,30 @@
-import * as React from 'react';
+import * as React from 'react'
 import {FunctionComponent, useEffect, useState} from 'react'
-import NetworkService from "../../Network/NetworkService";
-import Routes from "../../Network/Routes";
-import Preset from '../../Models/Preset';
-import Grid from '@material-ui/core/Grid';
-import PresetsList from '../../Models/PresetsList';
-import PresetCard from "./PresetCard";
-import {useTitle} from "../../State/TitleContext";
-import ProgressWheel from "../../SharedComponents/ProgressWheel";
+import NetworkService from "../../Network/NetworkService"
+import Routes from "../../Network/Routes"
+import Preset from '../../Models/Preset'
+import Grid from '@material-ui/core/Grid'
+import PresetsList from '../../Models/PresetsList'
+import PresetCard from "./PresetCard"
+import {useTitle} from "../../State/TitleContext"
+import ProgressWheel from "../../SharedComponents/ProgressWheel"
 
 interface PresetsScreenProps {
 }
 
 const PresetsScreen: FunctionComponent<PresetsScreenProps> = (props) => {
-    const { setTitle } = useTitle();
-        setTitle('Select Preset');
-    const [presets, setPresets] = useState([]);
+    const { setTitle } = useTitle()
+    const [presets, setPresets] = useState([])
+
+
     useEffect(() => {
+        setTitle('Select Preset')
         NetworkService
             .getInstance()
             .get(Routes.Presets)
             .then(function (json) {
-                const presets = new PresetsList(json.presets).presets;
-                setPresets(presets);
+                const presets = new PresetsList(json.presets).presets
+                setPresets(presets)
             })
     }, [])
 
@@ -31,18 +33,18 @@ const PresetsScreen: FunctionComponent<PresetsScreenProps> = (props) => {
             <Grid container spacing={2}> {
                 presets.map((preset: Preset) => {
                     return (
-                        <Grid item xs={12} sm={12}  lg={4}>
+                        <Grid key={preset.id} item xs={12} sm={12}  lg={4}>
                             <PresetCard preset={preset}/>
                         </Grid>
                     )
                 })
             }
             </Grid>
-        );
+        )
     } else {
         return (
             <ProgressWheel/>
-        );
+        )
     }
 }
 
