@@ -31,6 +31,9 @@ const useStyles = makeStyles((props: Props) =>
                 padding: '.4rem 2rem'
             }
         },
+      accordion: {
+
+      }
     }),
 );
 

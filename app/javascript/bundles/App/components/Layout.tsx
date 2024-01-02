@@ -36,7 +36,7 @@ const Content: FunctionComponent<ContentProps> = (props) => {
   const {authenticated, setAuthenticated} = useAuthenticated()
   const {setError} = useError()
   const history = useHistory()
-
+  console.log(title)
   NetworkService.getInstance().onServerCrash = function () {
     history.replace(Routes.ErrorScreen)
   }

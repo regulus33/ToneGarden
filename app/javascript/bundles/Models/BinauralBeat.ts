@@ -9,6 +9,7 @@ import CarrierOscillator from "./CarrierOscillator";
 import BinauralBeatState from "../Types/BinauralBeatTypes";
 import FrequencyRangeHelper from "../Helpers/FrequencyRangeHelper";
 import CanvasColorHelper from "../Helpers/CanvasColorHellper";
+import Colors from "../Styles/Colors";
 
 export default class BinauralBeat {
     public static carrierMinMax = [-40, 40]
@@ -221,7 +222,7 @@ export default class BinauralBeat {
         const freqName = FrequencyRangeHelper.displayRangeString(
             this.carrierOscillator.offset
         )
-        return `<span style="color:#ffad00">${symbol} ${freqName}</span> ${this.name}`
+        return `<span style="color:${Colors.gold}">${symbol} ${freqName}</span> <span style="font-size: 1rem" class="titleText">${this.name}</span>`
     }
 
     public toState(): BinauralBeatState {
