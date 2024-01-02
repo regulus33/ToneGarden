@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FunctionComponent } from 'react'
 import { classList } from "../../Helpers/ViewHelper";
-import { useTheme, Theme } from '../../state/ThemeContext';
+import { useTheme } from '../../state/ThemeContext';
 
 interface SignupScreenProps {
 // buttonText: string;

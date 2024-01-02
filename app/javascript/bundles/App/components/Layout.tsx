@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {FunctionComponent, ReactChildren, ReactNode} from 'react';
+import {FunctionComponent, ReactNode} from 'react';
 import {classList} from "../../Helpers/ViewHelper";
-import { useTheme, Theme } from '../../state/ThemeContext';
+import {Theme, useTheme} from '../../state/ThemeContext';
 
 // using an interface to describe the requirement of having the x property that is a y type
 export interface Props {
@@ -19,9 +19,17 @@ const Content: FunctionComponent<ContentProps> = (props) => {
     const { theme, setTheme } = useTheme();
 
     function handleInputKeyUp(event: any): void {
-        alert('dddd')
-        if (event.code == '48') {
-            setTheme(Theme.Dark)
+        if (event.code == 'Digit0') {
+            switch (theme) {
+               case  Theme.Dark:
+                    setTheme(Theme.Light);
+                    break;
+                case Theme.Light:
+                    setTheme(Theme.Dark);
+                    break;
+                default:
+                    throw('Unknown Theme type in theme state!')
+            }
         }
     }
 
