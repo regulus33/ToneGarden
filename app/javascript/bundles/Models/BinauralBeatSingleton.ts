@@ -19,7 +19,6 @@ export default class BinauralBeatSingleton {
     public static carrierMinMax = [-40, 40]
     public static beatMinMax = [0, 1500]
 
-
     beatOscillator: BeatOscillator
     carrierOscillator: CarrierOscillator
     noiseSource: Noise

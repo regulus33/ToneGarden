@@ -1,0 +1,33 @@
+var CACHE_VERSION = 'v1';
+var CACHE_NAME = CACHE_VERSION + ':sw-cache-APPNAME';
+// TODO: in depth cacheing
+// Create a local server with a symmetrical relation to actual server
+class BinauralBeatsController {
+  static show(){
+//      console.log('BinauralBeatsController#show')
+  }
+}
+
+//Install callback this inits all
+function onInstall(event) {
+     console.log('[Serviceworker]', "Installing!", event);
+    event.waitUntil(
+        caches.open(CACHE_NAME).then(function prefill(cache) {
+            return cache.addAll([
+                '<%= asset_pack_path 'application.js' %>',
+                '<%= asset_pack_path 'application.css' %>',
+               '/offline.html'
+            ]);
+        })
+    );
+}
+
+function onFetch(event){
+    const url = event.request.url
+//    console.log('[ServiceWorker] receiving fetch to:' + url)
+
+}
+
+self.addEventListener('install', onInstall)
+
+self.addEventListener('fetch', onFetch)
