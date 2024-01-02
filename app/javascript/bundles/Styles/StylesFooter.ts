@@ -7,7 +7,7 @@ const useStyles = makeStyles({
         bottom: 0,
         left: 0,
         right: 0,
-        paddingTop: '13px',
+        padding: '39px 0',
         [`@media(min-width: ${Breakpoints.smallDesktop})`]: {
         }
     },

@@ -15,6 +15,7 @@ interface Props {
   onNameChange: (event: FormEvent<HTMLDivElement>) => void,
   onVolumeChange: (value: number) => void,
   onNoiseLevelChange: (value: number) => void,
+  onAccordianChange: (event: any) => void,
   noiseLevel: number,
   error: string,
   name?: string,
@@ -41,7 +42,7 @@ const ExtrasForm: FunctionComponent<Props> = (props) => {
 
   return (
     <div className={classes.root}>
-      <Accordion className={classes.accordion}>
+      <Accordion className={classes.accordion} onChange={props.onAccordianChange}>
         <AccordionSummary
           expandIcon={<ExpandMore/>}
           aria-controls="panel1c-content"

@@ -24,6 +24,7 @@ import CurrentUser from "../Utils/CurrentUser"
 import Build from "../Helpers/Urls"
 import GotToUrl from "../Utils/GoToUrl"
 import {Theme, useTheme} from "../State/ThemeContext";
+import BodyClassHelper from "../Helpers/BodyClassHelper";
 
 const useStyles = makeStyles({
     list: {
@@ -54,6 +55,7 @@ const SettingsDrawer: FunctionComponent<Props> = (props) => {
           const theme = checked ? Theme.Dark : Theme.Light
           LocalStorageService.setTheme(theme)
           setTheme(theme)
+          BodyClassHelper(theme)
           return
         }
         const name = event.target.name.split(':').shift()

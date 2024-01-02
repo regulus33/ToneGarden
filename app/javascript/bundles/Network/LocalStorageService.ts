@@ -35,7 +35,12 @@ export default class LocalStorageService {
     }
 
   public static getTheme(): Theme.Dark  | Theme.Light {
-    return localStorage.getItem(LocalStorageType.theme) as Theme.Dark | Theme.Light
+    const item = localStorage.getItem(LocalStorageType.theme)
+      if(item != null) {
+        return item as Theme.Dark | Theme.Light
+      }
+      // TODO: configure default in some central place
+      return Theme.Dark
   }
 
   public static setTheme(value: Theme.Light | Theme.Dark) {
