@@ -103,10 +103,11 @@ const SettingsDrawer: FunctionComponent<Props> = (props) => {
             </List>
             <Divider/>
             <List>
-                <ListItem button onClick={() => GotToUrl(Build('welcome'))} key={3}>
-                    <ListItemIcon><InfoRounded/></ListItemIcon>
-                    <ListItemText primary={'About'}/>
-                </ListItem>
+                {/*TODO: broken link and page sucks*/}
+                {/*<ListItem button onClick={() => GotToUrl(Build('welcome'))} key={3}>*/}
+                {/*    <ListItemIcon><InfoRounded/></ListItemIcon>*/}
+                {/*    <ListItemText primary={'About'}/>*/}
+                {/*</ListItem>*/}
                 <ListItem button onClick={() => GotToUrl(Build('privacy-policy'))} key={2}>
                     <ListItemIcon><ExitToApp/></ListItemIcon>
                     <ListItemText primary={'Privacy policy'}/>
