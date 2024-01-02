@@ -10,7 +10,10 @@ import {useSettingsDrawer} from "../../State/SettingsDrawerContext"
 import DrawerState from "../../Models/DrawerState"
 import SettingsDrawer from "../../SharedComponents/SettingsDrawer"
 import Flash from "../../SharedComponents/Flash";
-import {useFlashMessage} from "../../State/FlashMessageContext";
+import {useFlashMessage} from "../../State/FlashMessageContext"
+import { useHistory } from 'react-router-dom'
+import NetworkService from "../../Network/NetworkService";
+import Routes from "../../Network/Routes";
 
 export interface Props {
 }
@@ -28,6 +31,11 @@ const Content: FunctionComponent<ContentProps> = (props) => {
     const classes = useStyles()
     const { drawerState, setDrawerState } = useSettingsDrawer()
     const { flashMessage } = useFlashMessage()
+    const history = useHistory()
+
+    NetworkService.getInstance().onError = function() {
+        history.replace(Routes.ErrorScreen)
+    }
 
     const handleInputKeyUp = (event: any) => {
         if (event.code == 'Digit0') {
