@@ -81,7 +81,11 @@ class BinauralBeatsController < ApplicationController
       name: beat_params[:name],
       carrierOscillator: beat_params[:carrierOscillator],
       beatOscillator: beat_params[:beatOscillator]
-    }
+    }.tap do |h|
+      if params[:action] == 'create'
+        h[:description] = beat_params[:description]
+      end
+    end
   end
 
   def beat_params
@@ -92,7 +96,8 @@ class BinauralBeatsController < ApplicationController
       :noiseLevel,
       :editable,
       :name,
-      :user_id
+      :user_id,
+      :description
     )
   end
 
