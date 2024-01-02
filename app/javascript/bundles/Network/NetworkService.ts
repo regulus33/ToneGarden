@@ -1,12 +1,21 @@
 import Headerz from './Headerz'
+import {Dispatch} from "react";
+
+type RawResponse = {
+    status: number,
+}
 
 export default class NetworkService {
     private static baseUrl: string = 'http://localhost:3000';
 
     private static instance: NetworkService;
 
+    public setAuthenticated: Dispatch<boolean>
+
     private constructor() {
     }
+
+
 
     /**
      * The static method that controls the access to the singleton instance.
@@ -28,6 +37,7 @@ export default class NetworkService {
             method: 'POST',
             headers,
             body: JSON.stringify(body)})
+        this.notifyAuthContext(rawResponse)
         return await rawResponse.json()
     }
 
@@ -40,8 +50,22 @@ export default class NetworkService {
             headers
         })
         console.warn(`Processing GET to ${url} headers:`, headers)
+        this.notifyAuthContext(rawResponse)
         return await rawResponse.json()
     }
+
+    private notifyAuthContext(response: RawResponse){
+        switch (response.status) {
+            case 401:
+                this.setAuthenticated(false)
+            case 200:
+                this.setAuthenticated(true)
+            case 201:
+                this.setAuthenticated(true)
+        }
+    }
+
+
 
 
 }
