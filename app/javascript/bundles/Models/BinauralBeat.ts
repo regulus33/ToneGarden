@@ -22,9 +22,6 @@ const rangeMap = {
     'gamma': [30, 39]
 }
 
-// TODO: check out audio panner.
-// When you click a preset you should be immediately brought here and tones should ramp up
-// https://tonejs.github.io/docs/14.7.77/Oscillator#channelInterpretation
 export default class BinauralBeat {
 
     public static carrierMinMax = [-40,40]
@@ -39,20 +36,27 @@ export default class BinauralBeat {
     playing: boolean = false
     id: number
     name: string
+    setBinauralBeatState: Dispatch<BinauralBeatState>
+
     editable: boolean
 
     private audioConnected: boolean = false
-
-    setBinauralBeatState: Dispatch<BinauralBeatState>
 
     private static instance: BinauralBeat;
     private static defaultBeat = 440;
     private static defaultCarrier = 20;
 
-    private constructor(beatFrequency: number, carrierOffset: number, noiseLevel?: number) {
-        this.beatOscillator = new BeatOscillator(beatFrequency)
-        this.carrierOscillator = new CarrierOscillator(carrierOffset, this.beatOscillator)
-        this.noiseSource = new NoiseSource(12)
+    private constructor(binauralBeatState: BinauralBeatState) {
+        this.convertBeatStateToSound(binauralBeatState)
+    }
+
+    convertBeatStateToSound(binauralBeatState: BinauralBeatState) {
+        const {volume, noiseLevel, beatOscillator, carrierOscillator} = binauralBeatState
+
+        this.volume = volume
+        this.beatOscillator = new BeatOscillator(beatOscillator)
+        this.carrierOscillator = new CarrierOscillator(carrierOscillator, this.beatOscillator)
+        this.noiseSource = new NoiseSource(noiseLevel)
 
         this.onBeatFreqChange = this.onBeatFreqChange.bind(this)
         this.onCarrierFreqChange = this.onCarrierFreqChange.bind(this)
@@ -63,12 +67,13 @@ export default class BinauralBeat {
         this.onNoiseLevelChange = this.onNoiseLevelChange.bind(this)
     }
 
-    public static getInstance(beat?: number, carrier?:number): BinauralBeat {
+
+
+    public static getInstance(binauralBeatState: BinauralBeatState): BinauralBeat {
         if (!BinauralBeat.instance) {
-            BinauralBeat.instance = new BinauralBeat(
-                beat || BinauralBeat.defaultBeat,
-                carrier  || BinauralBeat.defaultCarrier
-            );
+            BinauralBeat.instance = new BinauralBeat(binauralBeatState)
+        } else {
+            BinauralBeat.instance.convertBeatStateToSound(binauralBeatState)
         }
 
         return BinauralBeat.instance;
@@ -158,8 +163,6 @@ export default class BinauralBeat {
         }
     }
 
-    // Formerly Preset Methods
-
     static  rangeSymbol(offset: number): string {
         return symbolMap[BinauralBeat.rangeString(offset)]
     }
@@ -185,13 +188,8 @@ export default class BinauralBeat {
         return 'NA';
     }
 
-    // 4 for 4 to 7 is true
-    // 7 for 4 to 7 is true
     static isInRange(num: number, range: number[]): boolean {
-        if(num >= range[0] && num <= range[1]) {
-            return true
-        }
-        return false
+        return num >= range[0] && num <= range[1];
     }
 
     static gradient(offset: number){
