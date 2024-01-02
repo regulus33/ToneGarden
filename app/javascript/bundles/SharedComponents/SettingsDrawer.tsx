@@ -2,17 +2,25 @@ import clsx from 'clsx'
 import {makeStyles} from '@material-ui/core/styles'
 import Drawer from '@material-ui/core/Drawer'
 import List from '@material-ui/core/List'
+import Switch from '@material-ui/core/Switch'
 import Divider from '@material-ui/core/Divider'
 import ListItem from '@material-ui/core/ListItem'
 import * as React from 'react'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import {FunctionComponent} from "react"
+import {ChangeEvent, FunctionComponent, SyntheticEvent, useEffect, useState} from "react"
 import {Anchor} from "../Models/DrawerState"
-import {useSettingsDrawer} from "../State/SettingsDrawerContext";
-import {ExitToApp, InfoRounded} from "@material-ui/icons";
-import LocalStorageService from "../Network/LocalStorageService";
-import {useAuthenticated} from "../State/AuthContext";
+import {useSettingsDrawer} from "../State/SettingsDrawerContext"
+import {ExitToApp, InfoRounded} from "@material-ui/icons"
+import LocalStorageService from "../Network/LocalStorageService"
+import {useAuthenticated} from "../State/AuthContext"
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import {useWhiteNoiseCtx} from "../State/UseWhiteNoiseContext"
+import NetworkService from "../Network/NetworkService";
+import Routes from "../Network/Routes";
+import CamelToSnake from "../Utils/CamelToSnake";
+import {useAudioWorkletCtx} from "../State/UseAudioWorkletContext";
+import CurrentUser from "../Utils/CurrentUser";
 
 const useStyles = makeStyles({
     list: {
@@ -24,13 +32,40 @@ const useStyles = makeStyles({
 })
 
 interface Props {
-    toggleSettingsDrawer: ()=>void,
+    toggleSettingsDrawer: (event: SyntheticEvent) => void,
 }
 
+// This component kind of sucks because it is both "smart" and "dumb" taking toggleSettingsDrawer as a prop.
+// Its not ideal but we need to call the function in both menu click (in Header) and when clicking the drawer or other spots in doc.
 const SettingsDrawer: FunctionComponent<Props> = (props) => {
     const classes = useStyles()
-    const { drawerState } = useSettingsDrawer();
-    const { setAuthenticated } = useAuthenticated();
+    const {drawerState} = useSettingsDrawer()
+    const {setAuthenticated} = useAuthenticated()
+    const PreferencesHandler = {...useAudioWorkletCtx(), ...useWhiteNoiseCtx()}
+
+    const handlePreferencesToggle = (event: ChangeEvent<HTMLInputElement>) => {
+        const checked = event.target.checked
+        const name = event.target.name.split(':').shift()
+        const methodToCall = event.target.name.split(':').pop()
+
+        PreferencesHandler[methodToCall](checked)
+
+        NetworkService.getInstance().put(
+            Routes.UpdateUser, {
+                [CamelToSnake(name)]: checked
+            }
+        )
+    }
+
+    //Set user preferences with latest user data
+    useEffect(()=> {
+        (async () => {
+            const user = await CurrentUser()
+            PreferencesHandler.setUseWhiteNoise(user.useWhiteNoise)
+            PreferencesHandler.setUseAudioWorklet(user.useAudioWorklet)
+        })()
+
+    }, [])
 
     const signout = () => {
         LocalStorageService.setToken(null)
@@ -55,12 +90,40 @@ const SettingsDrawer: FunctionComponent<Props> = (props) => {
                 </ListItem>
             </List>
             <Divider/>
-            {/*<List>*/}
-            {/*    <ListItem button key={1}>*/}
-            {/*        <ListItemIcon><InfoRounded/></ListItemIcon>*/}
-            {/*        <ListItemText primary={'About binaural beats'}/>*/}
-            {/*    </ListItem>*/}
-            {/*</List>*/}
+            <List>
+                <ListItem button key={2}>
+                    <ListItemIcon><InfoRounded/></ListItemIcon>
+                    <ListItemText primary={'About binaural beats'}/>
+                </ListItem>
+                <ListItem style={{position: 'relative'}}>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                color="secondary"
+                                inputProps={{'aria-label': 'checkbox with default color'}}
+                                onChange={handlePreferencesToggle}
+                                checked={PreferencesHandler.useWhiteNoise}
+                                name="useWhiteNoise:setUseWhiteNoise"
+                            />
+                        }
+                        label="Whitenoise enabled"
+                    />
+                </ListItem>
+                <ListItem style={{position: 'relative'}}>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                color="secondary"
+                                inputProps={{'aria-label': 'checkbox with default color'}}
+                                onChange={handlePreferencesToggle}
+                                checked={PreferencesHandler.useAudioWorklet}
+                                name="useAudioWorklet:setUseAudioWorklet"
+                            />
+                        }
+                        label="Use audio worklet"
+                    />
+                </ListItem>
+            </List>
         </div>
     )
 

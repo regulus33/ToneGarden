@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {FunctionComponent} from 'react'
+import {FunctionComponent, SyntheticEvent} from 'react'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -12,7 +12,7 @@ import {useGradient} from "../State/GradientContext";
 interface HeaderProps {
     title: string|object,
     gradient: Gradient,
-    toggleSettingsDrawer: ()=>void
+    toggleSettingsDrawer: (event: SyntheticEvent)=>void
 }
 
 const Header: FunctionComponent<HeaderProps> = (props) => {

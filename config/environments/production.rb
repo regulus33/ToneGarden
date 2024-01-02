@@ -100,7 +100,7 @@ Rails.application.configure do
   # database is appropriate to use based on the time delay.
   #
   # The `database_resolver_context` class is used by the middleware to set
-  # timestamps for the last write to the primary. The resolver uses the context
+  # timestamps for the last write to the primary. The resolver uses the audioContext
   # class timestamps to determine how long to wait before reading from the
   # replica.
   #

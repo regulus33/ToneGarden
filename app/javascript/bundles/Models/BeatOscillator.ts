@@ -1,13 +1,15 @@
 import { Oscillator } from "tone";
 import CarrierOscillator from "./CarrierOscillator";
+import BetterOscillatorNode from "./BetterOscillatorNode";
+import OscillatorProxy from "./OscillatorProxy";
 
 class BeatOscillator {
     frequency: number
-    toneOscillator: Oscillator
+    oscillatorProxy: OscillatorProxy | Oscillator
     carrierOscillator: CarrierOscillator
+    source: 'worklet'
 
     constructor(frequency: number) {
-      this.toneOscillator = new Oscillator(frequency, "sine");
       this.frequency = frequency;
     }
 
@@ -19,9 +21,10 @@ class BeatOscillator {
             value = this.frequency
         }
 
-        // IMPORTANT: set frequency for BOTH frequency and toneOscillator.frequency
+        // IMPORTANT: set frequency for BOTH frequency and oscillatorProxy.frequency
         this.frequency = value
-        this.toneOscillator.frequency.rampTo(value, 0.5)
+        // @ts-ignore
+        this.oscillatorProxy.frequency.rampTo(value, 0.5)
 
         if(!this.carrierOscillator) {
             this.carrierOscillator = carrierOscillator
