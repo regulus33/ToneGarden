@@ -2,24 +2,32 @@ import Headerz from './Headerz'
 import {Dispatch} from "react";
 import GlobalError from "../Models/GlobalError";
 import SecureStorageService from "./SecureStorageService";
-import axios, {Method} from "axios";
+import Routes from "./Routes";
+import FunctionName from "../Utils/FunctionName";
+import axios from "axios";
+import { cacheAdapterEnhancer } from 'axios-extensions';
 
 export default class NetworkService {
     private static baseUrl: string = 'http://localhost:3000';
 
     private static instance: NetworkService;
 
+    // TODO: types for axios instance?
+    private http: any
+
     public setAuthenticated: Dispatch<boolean>
     public setError: Dispatch<GlobalError>
     public history: any
 
-    private constructor() {}
-    /**
-     * The static method that controls the access to the singleton instance.
-     *
-     * This implementation let you subclass the NetworkService class while keeping
-     * just one instance of each subclass around.
-     */
+    private constructor() {
+        this.http = axios.create({
+            headers: { 'Cache-Control': 'no-cache' },
+            // cache will be enabled by default
+            adapter: cacheAdapterEnhancer(axios.defaults.adapter)
+        });
+    }
+
+
     public static getInstance(): NetworkService {
         if (!NetworkService.instance) {
             NetworkService.instance = new NetworkService();
@@ -33,43 +41,43 @@ export default class NetworkService {
     }
 
     public put(route: string, data: object): Promise<object> {
-      return this.makeRequest(route, 'put', data)
+        return this.makeRequest(route, 'put', data)
     }
 
     public get(route: string): Promise<object> {
-       return this.makeRequest(route, 'get')
+        return this.makeRequest(route, 'get')
     }
 
     // NOTE error will make RESPONSE null
-    private async makeRequest(route: string, method: Method, data?: object): Promise<object|null> {
+    private async makeRequest(route: string, method: string, data?: object): Promise<object | null> {
         let response
         const options = {
-            url: NetworkService.buildUrl(route),
+            // url: NetworkService.buildUrl(route),
             method: method,
             headers: new Headerz(route).build(),
             withCredentials: true
         }
 
-        data && ( options['data'] = data )
+        data && (options['data'] = data)
 
         try {
-            response = await axios(options)
+            response = await this.http[method](NetworkService.buildUrl(route), options)
             this.handleResponse(response.status)
-        } catch {
+        } catch(error) {
+            console.log(`[${FunctionName()}]: value of error: ${error}`)
             this.handleResponse(500)
         }
         return response || null
     }
 
-
-    private handleResponse(statusCode: number){
-        if(statusCode >= 500) {
-            this.history.replace('/oops')
+    private handleResponse(statusCode: number) {
+        if (statusCode >= 500) {
+            this.history.replace(Routes.ErrorScreen)
         }
         switch (statusCode) {
             case 401:
                 this.setAuthenticatedAndStore(false)
-                this.setError(new GlobalError(null,statusCode, null))
+                this.setError(new GlobalError(null, statusCode, null))
                 break
             case 400:
                 this.setError(new GlobalError('Email alrready taken.', statusCode, null))

@@ -17,10 +17,15 @@ interface Props {
  * @param path The router url
  * @param title Optional title
  * @param keyProp Resolves to `key` when passed to Router (used for re-renders on same route)
- */
+ **/
+
 const AuthenticatedRoute: FunctionComponent<Props> = (props) => {
-    const {component: Component, path, title, keyProp} = props
-    const {authenticated} = useAuthenticated();
+    const { component: Component, path, title, keyProp } = props
+    const { authenticated } = useAuthenticated()
+
+    const showSignIn = (route: string): boolean => {
+        return !authenticated && route != '/signup'
+    }
 
     return (
         <Route
@@ -28,7 +33,11 @@ const AuthenticatedRoute: FunctionComponent<Props> = (props) => {
             exact path={path}
             title={title}>
             {(props) => {
-                if (authenticated) {
+                if (showSignIn(props.location.pathname)) {
+                    return (
+                        <Redirect to="/signin"/>
+                    )
+                } else {
                     return (
                         <CSSTransition
                             in={props.match != null}
@@ -39,10 +48,6 @@ const AuthenticatedRoute: FunctionComponent<Props> = (props) => {
                                 <Component {...props}/>
                             </div>
                         </CSSTransition>
-                    )
-                } else {
-                    return (
-                        <Redirect to="/signin"/>
                     )
                 }
             }}
