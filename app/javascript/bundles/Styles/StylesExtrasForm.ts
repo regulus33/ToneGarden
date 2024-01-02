@@ -7,15 +7,15 @@ interface Props {
 const useStyles = makeStyles((props: Props) =>
     createStyles({
         root: {
-            marginTop: '24px',
+            marginTop: '1.7rem',
             width: '100%',
-            borderTop: `1px solid ${Colors.borderGrey}`,
+            borderTop: `.07rem solid ${Colors.borderGrey}`,
         },
         accordian: {
           boxShadow: 'none'
         },
         secondaryHeading: {
-            fontSize: '12px',
+            fontSize: '.8rem',
             color: Colors.deepGrey,
         },
         icon: {
@@ -27,8 +27,8 @@ const useStyles = makeStyles((props: Props) =>
             flexBasis: '33.33%',
         },
         largeSlider: {
-            marginTop: '14px',
-            padding: '8px'
+            marginTop: '1rem',
+            padding: '.57rem'
         },
     }),
 );

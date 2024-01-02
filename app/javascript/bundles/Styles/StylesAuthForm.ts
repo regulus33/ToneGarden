@@ -22,41 +22,41 @@ export const useStyles = makeStyles({
         minHeight: 'calc(100vh/4)',
         minWidth: 'calc(100vw/2.5)',
         '& a': {
-            maxWidth: '100px',
+            maxWidth: '3rem',
             alignSelf: 'flex-end'
         },
             [`@media (max-width: ${Breakpoints.smallDesktop})`]: {
-            minWidth: 'calc(100vw - 400px)',
+            minWidth: 'calc(100vw - 5rem)',
         },
         [`@media (max-width: ${Breakpoints.tablet})`]: {
-            minWidth: 'calc(100vw - 64px)',
+            minWidth: 'calc(100vw - 2rem)',
         },
         [`@media (max-width: ${Breakpoints.mobile})`]: {
-            minWidth: 'calc(100vw - 32px)',
+            minWidth: 'calc(100vw - 2rem)',
         },
 
     },
     heading: {
-        marginBottom: '16px'
+        marginBottom: '.9rem'
     },
     paper: {
         height: 'fit-content',
-        padding: '24px 16px'
+        padding: '2.5rem 2rem'
     },
     textField: (props: Props) => ({
         '& div': {
             '&:before': {
-                borderBottom: `1px solid ${Colors.deepGrey}`
+                borderBottom: `.1rem solid ${Colors.deepGrey}`
             },
             '&:after': {
-                borderBottom: `2px solid ${props.dominantColor}`
+                borderBottom: `.1rem solid ${props.dominantColor}`
             }
         }
     }),
     noAccountContainer: {
         display: 'flex',
         flexDirection: 'column',
-        paddingTop: '16px',
+        paddingTop: '2rem',
         maxWidth: '50%'
     },
     noAccountButtonsContainer: {

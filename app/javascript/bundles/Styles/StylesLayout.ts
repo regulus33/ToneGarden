@@ -11,7 +11,7 @@ const useStyles = makeStyles({
     contentContainer: {
         display: 'flex',
         flexGrow: 1,
-        padding: '32px'
+        padding: '2.28rem'
     }
 })
 
