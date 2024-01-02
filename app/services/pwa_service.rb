@@ -37,7 +37,7 @@ class PwaService
       [{
          "relation" => ["delegate_permission/common.handle_all_urls"],
          "target" => { "namespace": "android_app", "package_name": "com.tonegarden",
-         "sha256_cert_fingerprints" => ["93:33:7D:0F:F2:55:E1:08:EC:52:9D:D9:FB:81:6C:B8:63:EE:2E:AD:9E:04:A7:82:37:E2:8E:9A:5A:75:06:B7"] }
+         "sha256_cert_fingerprints" => ["BD:93:B2:9C:E7:03:56:AD:8A:DC:72:D7:8C:47:0F:AD:A7:25:58:9F:F0:1D:43:FE:B4:EE:4A:E7:A0:ED:92:DA"] }
       }]
   end
 end
