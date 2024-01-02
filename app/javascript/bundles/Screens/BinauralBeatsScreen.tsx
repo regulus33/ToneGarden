@@ -1,13 +1,13 @@
 import * as React from 'react'
 import {FunctionComponent, useEffect, useState} from 'react'
-import NetworkService from "../../Network/NetworkService"
-import Routes from "../../Network/Routes"
+import NetworkService from "../Network/NetworkService"
+import Routes from "../Network/Routes"
 import Grid from '@material-ui/core/Grid'
-import BinauralBeatsList from '../../Models/BinauralBeatsList'
-import BinauralBeatStateCard from "./BinauralBeatStateCard"
-import {useTitle} from "../../State/TitleContext"
-import ProgressWheel from "../../SharedComponents/ProgressWheel"
-import {BinauralBeatState} from "../../State/BinauralBeatContext";
+import BinauralBeatsList from '../Models/BinauralBeatsList'
+import BinauralBeatStateCard from "../SharedComponents/BinauralBeatStateCard"
+import {useTitle} from "../State/TitleContext"
+import ProgressWheel from "../SharedComponents/ProgressWheel"
+import {BinauralBeatState} from "../State/BinauralBeatContext";
 
 interface PresetsScreenProps {}
 

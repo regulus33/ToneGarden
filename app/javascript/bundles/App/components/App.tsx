@@ -1,9 +1,9 @@
 import * as React from 'react'
 import {FunctionComponent, useEffect, useState} from 'react'
 import {BrowserRouter, Switch, Route} from 'react-router-dom'
-import SignupScreen from "../../SignupScreen/components/SignupScreen"
-import BinauralBeatsScreen from "../../BinauralBeatsScreen/components/BinauralBeatsScreen"
-import BinauralBeatEditScreen from "../../BinauralBeatEditScreen/components/BinauralBeatEditScreen"
+import SignupScreen from "../../Screens/SignupScreen"
+import BinauralBeatsScreen from "../../Screens/BinauralBeatsScreen"
+import BinauralBeatEditScreen from "../../Screens/BinauralBeatEditScreen"
 import Layout from './Layout'
 import {ThemeContext, Theme} from "../../State/ThemeContext"
 import {GradientContext} from "../../State/GradientContext"
@@ -19,8 +19,8 @@ import AuthenticatedRoute from "./AuthenticatedRoute"
 import SecureStorageService from "../../Network/SecureStorageService"
 import ProgressWheel from "../../SharedComponents/ProgressWheel"
 import DrawerState from "../../Models/DrawerState";
-import SigninScreen from "../../SigninScreen/components/SigninScreen";
-import GuestTokenScreen from "../../GuestTokenScreen/component/GuestTokenScreen";
+import SigninScreen from "../../Screens/SigninScreen";
+import GuestTokenScreen from "../../Screens/GuestTokenScreen";
 
 const App: FunctionComponent = () => {
     const [authenticated, setAuthenticated] = React.useState(false)
@@ -37,9 +37,9 @@ const App: FunctionComponent = () => {
     NetworkService.getInstance().setAuthenticated = setAuthenticated
     NetworkService.getInstance().setError = setError
 
-    BinauralBeat.getInstance(defaultBinauralBeatState()).setBinauralBeatState = setBinauralBeatState
-    BinauralBeat.getInstance(defaultBinauralBeatState()).setGradient = setGradient
-    BinauralBeat.getInstance(defaultBinauralBeatState()).setTitle = setTitle
+    BinauralBeat.getInstance().setBinauralBeatState = setBinauralBeatState
+    BinauralBeat.getInstance().setGradient = setGradient
+    BinauralBeat.getInstance().setTitle = setTitle
 
     const [loaded, setLoaded] = useState(false)
 
@@ -74,8 +74,10 @@ const App: FunctionComponent = () => {
                                                                         title="BinauralBeats"/>
                                                     <AuthenticatedRoute path="/preset_show/:preset_id"
                                                                         component={BinauralBeatEditScreen}
-                                                                        title="Preset Show"/>
-
+                                                                        title="Beat Edit"/>
+                                                    <AuthenticatedRoute path="/create"
+                                                                        component={BinauralBeatEditScreen}
+                                                                        title="Create a beat"/>
                                                 </Layout>
                                             </Switch>
                                         </BrowserRouter>

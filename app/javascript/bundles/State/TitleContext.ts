@@ -9,4 +9,5 @@ export const TitleContext = createContext<TitleContextType>({
     title: 'Default',
     setTitle: title => {}
 });
+
 export const useTitle = () => useContext(TitleContext)

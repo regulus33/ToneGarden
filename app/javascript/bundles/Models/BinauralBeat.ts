@@ -5,7 +5,7 @@ import {
 import BeatOscillator from './BeatOscillator';
 import CarrierOscillator from "./CarrierOscillator";
 import {Dispatch, SetStateAction} from "react";
-import {BinauralBeatState} from "../State/BinauralBeatContext";
+import {BinauralBeatState, useBinauralBeat} from "../State/BinauralBeatContext";
 import NoiseSource from "./NoiseSource";
 import Gradient from "./Gradient";
 import FrequencyRangeHelper from "../Helpers/FrequencyRangeHelper";
@@ -33,8 +33,10 @@ export default class BinauralBeat {
 
     private static instance: BinauralBeat;
 
-    private constructor(binauralBeatState: BinauralBeatState) {
-        this.hydrateFromState(binauralBeatState)
+    private constructor(binauralBeatState?: BinauralBeatState) {
+        if(binauralBeatState) {
+          this.hydrateFromState(binauralBeatState)
+        }
 
         this.onBeatFreqChange = this.onBeatFreqChange.bind(this)
         this.onCarrierFreqChange = this.onCarrierFreqChange.bind(this)
@@ -44,6 +46,7 @@ export default class BinauralBeat {
         this.toState = this.toState.bind(this)
         this.onNoiseLevelChange = this.onNoiseLevelChange.bind(this)
         this.onPitchSliderBlur = this.onPitchSliderBlur.bind(this)
+        this.onNameChange = this.onNameChange.bind(this)
     }
 
     hydrateFromState(binauralBeatState: BinauralBeatState) {
@@ -105,17 +108,25 @@ export default class BinauralBeat {
         )
     }
 
-    private generateTitle(): string {
+    generateTitle(): string {
         const symbol = FrequencyRangeHelper.rangeSymbol(
             this.carrierOscillator.offset
         )
-
-       return `${symbol} ${this.name}`
+        const freqName = FrequencyRangeHelper.rangeString(
+            this.carrierOscillator.offset
+        )
+       return `${symbol} ${freqName} ${this.name} `
     }
 
     onVolumeChange(value: number) {
         getDestination().volume.value = value
         this.volume = value
+        this.setBinauralBeatState(this.toState())
+    }
+
+    onNameChange(name) {
+        this.name = name
+        this.setTitle(this.generateTitle())
         this.setBinauralBeatState(this.toState())
     }
 
@@ -136,9 +147,6 @@ export default class BinauralBeat {
     }
 
     toState(): BinauralBeatState {
-        if(this.name === undefined) {
-            debugger
-        }
         return {
             playing: this.playing,
             beatOscillator: this.beatOscillator.frequency,
@@ -150,5 +158,4 @@ export default class BinauralBeat {
             editable: this.editable
         }
     }
-
 }
