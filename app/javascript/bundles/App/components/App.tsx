@@ -20,7 +20,7 @@ const App: FunctionComponent<Props> = (props) => {
             <BrowserRouter>
                 <Switch>
                     <Layout>
-                        <Route exact path="/signup" component={SignupScreen}/>
+                        <Route exact path="/signup" component={SignupScreen} title="Signup"/>
                     </Layout>
                 </Switch>
             </BrowserRouter>

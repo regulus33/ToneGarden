@@ -1,0 +1,34 @@
+
+$gray-light-1: #ababab;
+.page-container {
+  height: 100vh;
+}
+
+.content-container {
+  margin: 0 auto;
+  font-size: 1.4rem;
+  max-width: 800px;
+  min-height: 800px;
+ box-shadow: 1px 4px 6px 0.2px rgba($gray-light-1, 0.61);
+  background-color: white;
+  border-radius: 3px;
+  &--dark-mode {
+    color: white;
+    background-color: black;
+    box-shadow: none;
+  }
+}
+
+.app-container {
+  &--dark-mode {
+    background-color: black;
+  }
+}
+
+
+.form-container {
+  background-color: $gray-light-1 !important;
+}
+
+
+

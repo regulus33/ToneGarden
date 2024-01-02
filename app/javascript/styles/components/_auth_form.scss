@@ -1,0 +1,8 @@
+.auth-form {
+  color: black;
+  border: 1px solid #a9a9a9;
+  &--dark-mode {
+    color: red;
+    border: greenyellow;
+  }
+}

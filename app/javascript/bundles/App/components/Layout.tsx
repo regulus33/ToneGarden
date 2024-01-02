@@ -34,9 +34,7 @@ const Content: FunctionComponent<ContentProps> = (props) => {
     }
 
     return (
-        <div onKeyPress={ handleInputKeyUp } tabIndex={0}
-             className={classList(['container'], theme)}>
-            <h1>Hello</h1>
+        <div onKeyPress={ handleInputKeyUp } tabIndex={0} className={classList(['app-container'], theme)}>
             {props.children}
         </div>
     )
