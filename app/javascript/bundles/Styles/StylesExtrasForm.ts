@@ -12,9 +12,6 @@ const useStyles = makeStyles((props: Props) =>
             marginTop: '1.7rem',
             borderTop: `.07rem solid ${Colors.borderGrey}`,
         },
-        accordian: {
-            boxShadow: 'none'
-        },
         secondaryHeading: {
             fontSize: '.8rem',
             color: Colors.deepGrey,

@@ -293,7 +293,7 @@ function BinauralBeatEditScreen(props: PresetShowScreenProps):JSX.Element {
     }
 
     return (
-        <Paper className={classes.presetFormCard} elevation={0}>
+        <Paper className={classes.presetFormCard} elevation={1}>
             <div className={classes.pitchSliderContainer}>
                 <PitchSlider
                     showTextInput

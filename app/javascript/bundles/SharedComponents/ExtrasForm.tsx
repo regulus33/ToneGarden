@@ -42,15 +42,7 @@ const ExtrasForm: FunctionComponent<Props> = (props) => {
 
     return (
         <div className={classes.root}>
-            <Accordion className={classes.accordian}>
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon/>}
-                    aria-controls="panel1c-content"
-                    id="panel1c-header">
-                    <div className={classes.column}>
-                        <Typography className={classes.secondaryHeading}>More</Typography>
-                    </div>
-                </AccordionSummary>
+
                 <div className={classes.largeSlider}>
                     <TextField
                         fullWidth
@@ -74,7 +66,6 @@ const ExtrasForm: FunctionComponent<Props> = (props) => {
                     />
                 </div>
                 {noiseSlider()}
-            </Accordion>
         </div>
     )
 
