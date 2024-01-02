@@ -1,8 +1,8 @@
 import {
     Oscillator,
-    Panner,
     Noise,
     Gain,
+    Merge,
     Context,
     setContext,
     getContext
@@ -12,6 +12,7 @@ import BeatOscillator from './BeatOscillator';
 import CarrierOscillator from "./CarrierOscillator";
 import BinauralBeatState from "../Types/BinauralBeatTypes";
 import FrequencyRangeHelper from "../Helpers/FrequencyRangeHelper";
+import FunctionName from "../Utils/FunctionName";
 
 export default class BinauralBeatSingleton {
 
@@ -22,11 +23,9 @@ export default class BinauralBeatSingleton {
     beatOscillator: BeatOscillator
     carrierOscillator: CarrierOscillator
     noiseSource: Noise
-    // noiseFilter: AutoFilter // Someday...
+    merge: Merge
     noiseGain: Gain
     volume: number = 0
-    pannerCarrier: Panner
-    pannerBeat: Panner
     id: number
     name: string
     editable: boolean
@@ -38,6 +37,8 @@ export default class BinauralBeatSingleton {
     public static get inMemory() {
         return BinauralBeatSingleton.instance != null
     }
+
+    public static RAMPTIME = 1
 
     private constructor(binauralBeatState?: BinauralBeatState) {
         if (binauralBeatState) {
@@ -80,16 +81,15 @@ export default class BinauralBeatSingleton {
         // the global context is gettable with Tone.getContext()
         if (playing) {
             getContext().lookAhead = 0.5
-
-            this.pannerCarrier = new Panner(1).toDestination();
+            this.merge = new Merge(2).toDestination()
 
             this.carrierOscillator
                 .toneOscillator = new Oscillator({
                 frequency: this.carrierOscillator.frequency,
                 type: 'sine',
-                volume: -Infinity
+                volume: -999
             })
-                .connect(this.pannerCarrier)
+                .connect(this.merge, 0, 0)
                 .start()
 
             this.carrierOscillator
@@ -97,17 +97,16 @@ export default class BinauralBeatSingleton {
                 .volume
                 .linearRampTo(
                     this.initialVolume,
-                    1
+                    BinauralBeatSingleton.RAMPTIME
                 )
-            this.pannerBeat = new Panner(-1).toDestination();
 
             this.beatOscillator
                 .toneOscillator = new Oscillator({
                 frequency: this.beatOscillator.frequency,
                 type: 'sine',
-                volume: -Infinity
+                volume: -999
             })
-                .connect(this.pannerBeat)
+                .connect(this.merge, 0, 1)
                 .start()
 
             this.beatOscillator
@@ -115,11 +114,11 @@ export default class BinauralBeatSingleton {
                 .volume
                 .linearRampTo(
                     this.initialVolume,
-                    1
+                    BinauralBeatSingleton.RAMPTIME
                 )
 
 
-            this.noiseGain = new Gain(0).toDestination()
+            // this.noiseGain = new Gain(0).toDestination()
 
             // this.noiseFilter = new AutoFilter({
             //     frequency: "0",
@@ -127,17 +126,25 @@ export default class BinauralBeatSingleton {
             //     octaves: 2
             // }).toDestination()
 
-            this.noiseSource = new Noise(
-                'pink'
-            ).connect(
-                this.noiseGain
-            ).start()
+            this.noiseSource = new Noise({
+                type: 'pink',
+                volume: -Infinity
+            }).toDestination().start()
+
+            console.log(`[${FunctionName()}]: value of noiseLevel: ${Number(this.noiseLevel)}`)
+
+            this.noiseSource.volume.linearRampTo(
+                this.noiseLevel,
+                BinauralBeatSingleton.RAMPTIME
+            )
 
             // this.noiseFilter.connect(this.noiseGain)
 
-            this.noiseGain
-                .gain
-                .rampTo(this.noiseLevel,9)
+            // this.noiseGain
+            //     .gain
+            //     .rampTo(this.noiseLevel,
+            //         BinauralBeatSingleton.RAMPTIME
+            //     )
 
         } else {
             this.carrierOscillator
@@ -145,7 +152,7 @@ export default class BinauralBeatSingleton {
                 .volume
                 .linearRampTo(
                     -Infinity,
-                    1
+                    BinauralBeatSingleton.RAMPTIME
                 )
 
             this.beatOscillator
@@ -153,14 +160,16 @@ export default class BinauralBeatSingleton {
                 .volume
                 .linearRampTo(
                     -Infinity,
-                    1
+                    BinauralBeatSingleton.RAMPTIME
                 )
 
             this.noiseGain.gain.rampTo(0, 1)
-            this.carrierOscillator.toneOscillator.stop()
-            this.beatOscillator.toneOscillator.stop()
-
-            getContext().dispose()
+            // Wait for fade out of audio then dispose
+            setTimeout(() =>{
+                this.carrierOscillator.toneOscillator.stop()
+                this.beatOscillator.toneOscillator.stop()
+                getContext().dispose()
+            }, BinauralBeatSingleton.RAMPTIME * 1000)
         }
     }
 
