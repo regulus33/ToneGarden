@@ -9,10 +9,10 @@ class CarrierOscillator {
     constructor(offset: number, beatOscillator: BeatOscillator) {
         this.offset = offset;
         this.beatOscillator = beatOscillator;
-        this.toneOscillator = new Oscillator(this.frequency(), "sine");
+        this.toneOscillator = new Oscillator(this.frequency, "sine");
     }
 
-    frequency(): number {
+    get frequency():number {
         return this.beatOscillator.frequency + this.offset
     }
 

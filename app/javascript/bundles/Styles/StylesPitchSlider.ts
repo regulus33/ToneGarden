@@ -1,11 +1,10 @@
-import { makeStyles } from "@material-ui/styles";
+import {makeStyles} from "@material-ui/styles";
 import Colors from './Colors';
 
 const boxShadow =
     '0 3px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.13),0 0 0 1px rgba(0,0,0,0.02)';
-const styles ={
+const styles = {
     root: {
-        color: Colors.defaultBlue,
         height: 2,
         padding: '15px 0',
     },
@@ -26,8 +25,7 @@ const styles ={
     },
     active: {},
     valueLabel: {
-        left: 'calc(-50% + 12px)',
-        top: -22,
+        display: 'none',
         '& *': {
             background: 'transparent',
             color: '#000',
@@ -40,22 +38,31 @@ const styles ={
         height: 2,
         opacity: 0.5,
         backgroundColor: '#bfbfbf',
-    },
-    mark: {
-        backgroundColor: '#bfbfbf',
-        height: 8,
-        width: 1,
-        marginTop: -3,
-    },
-    markActive: {
-        opacity: 1,
-        backgroundColor: 'currentColor',
-    },
+    }
+}
+
+interface Props {
+    dominantColor: string
 }
 
 export const useStyles = makeStyles({
-    root: {
-
+    root: {},
+    customSlider: (props: Props) => ({
+        '& > span': {
+            '&:nth-child(2)': {
+                color: props.dominantColor
+            }
+        },
+    }),
+    textField: {
+        '& div': {
+            '&:before': {
+                borderBottom: `2px solid ${Colors.borderGrey}`
+            },
+            '&:after': {
+                borderBottom: `2px solid ${Colors.defaultBlue}`
+            }
+        }
     }
 })
 
