@@ -1,5 +1,5 @@
 import * as React from "react";
-import {FunctionComponent} from "react";
+import {ChangeEvent, FunctionComponent} from "react";
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
@@ -11,7 +11,7 @@ interface PitchSliderProps {
     label: string,
     minMax: Array<number>
     default: number,
-   updatePitch: (number: number) => void,
+   updatePitch: (event: ChangeEvent) => void,
 }
 
 const PitchSlider: FunctionComponent<PitchSliderProps> = (props) => {
@@ -20,7 +20,7 @@ const PitchSlider: FunctionComponent<PitchSliderProps> = (props) => {
     return (
         <div className={classes.root}>
             <Typography gutterBottom>{ props.label }</Typography>
-            <CustomSlider min={props.minMax[0]} max={props.minMax[1]} aria-label="ios slider" defaultValue={props.default} valueLabelDisplay="on" />
+            <CustomSlider onChange={props.updatePitch} min={props.minMax[0]} max={props.minMax[1]} aria-label="ios slider" defaultValue={props.default} valueLabelDisplay="on" />
         </div>
     );
 }

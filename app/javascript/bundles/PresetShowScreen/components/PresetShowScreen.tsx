@@ -44,9 +44,15 @@ const PresetShowScreen: FunctionComponent<PresetShowScreenProps> = (props) => {
                 <div className={classes.pitchSliderContainer}>
                 <PitchSlider
                     minMax={beat.leftOscillatorMinMax()}
-                    label={'Left Oscillator'}
-                    default={beat.leftOscillator.frequency}
-                    updatePitch={beat.updateLeftPitch}
+                    label={'Main tone'}
+                    default={beat.beatOscillator.frequency}
+                    updatePitch={beat.setBeatFrequency}
+                />
+                <PitchSlider
+                    minMax={beat.rightOscillatorMinMax()}
+                    label={'Secondary tone'}
+                    default={beat.carrierOscillator.offset}
+                    updatePitch={beat.updateRightPitch}
                 />
                 </div>
             </Card>
