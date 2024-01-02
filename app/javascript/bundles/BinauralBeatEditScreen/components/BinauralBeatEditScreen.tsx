@@ -14,6 +14,7 @@ import {useTitle} from '../../State/TitleContext'
 import {useBinauralBeat} from "../../State/BinauralBeatContext";
 import ExtrasForm from "./ExtrasForm";
 import FrequencyRangeHelper from "../../Helpers/FrequencyRangeHelper";
+import ProgressWheel from "../../SharedComponents/ProgressWheel";
 
 interface PresetShowScreenProps {
     location: any
@@ -27,7 +28,6 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
     const classes = useStyles(gradient.toProps())
 
     const computeAudioControlsState = () => {
-        console.log(binauralBeatState.playing)
         if (binauralBeatState.playing) {
             return 'play'
         } else {
@@ -36,7 +36,6 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
     }
 
     useEffect(() => {
-        console.log('use effect running now')
         const localBeatState = props.location.binauralBeatState
         if (localBeatState) {
             setTitle(`${FrequencyRangeHelper.rangeSymbol(localBeatState.carrierOscillator)} ${localBeatState.name}`)
@@ -57,8 +56,6 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
     }, [])
     if (binauralBeatState) {
         const binauralBeat = BinauralBeat.getInstance(binauralBeatState)
-        console.log('We are triggering a render in the BinauralBeatEdit')
-        console.log(binauralBeatState)
         return (
             <Paper className={classes.presetFormCard} elevation={0}>
                 <div className={classes.headerContainer}>
@@ -102,7 +99,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
         )
     } else {
         return (
-            <h1> loading </h1>
+            <ProgressWheel/>
         )
     }
 }
