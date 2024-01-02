@@ -4,11 +4,10 @@ import NetworkService from "../../Network/NetworkService";
 import Routes from "../../Network/Routes";
 import Preset from '../../Models/Preset';
 import Grid from '@material-ui/core/Grid';
-import Container from '@material-ui/core/Container';
 import PresetsList from '../../Models/PresetsList';
-import CircularProgress from '@material-ui/core/CircularProgress'
 import PresetCard from "./PresetCard";
 import {useTitle} from "../../State/TitleContext";
+import ProgressWheel from "../../SharedComponents/ProgressWheel";
 
 interface PresetsScreenProps {
 }
@@ -42,10 +41,7 @@ const PresetsScreen: FunctionComponent<PresetsScreenProps> = (props) => {
         );
     } else {
         return (
-            <Container>
-                <CircularProgress/>
-                <CircularProgress color="secondary"/>
-            </Container>
+            <ProgressWheel/>
         );
     }
 }

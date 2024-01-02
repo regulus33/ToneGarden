@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom'
 import {useStyles} from "../../Styles/StylesSignupScreen";
 import {useGradient} from "../../State/GradientContext";
 import {useError} from "../../State/ErrorContext";
+
 const SignupScreen: FunctionComponent<SignupScreenProps> = (props) => {
     const [ email, setEmail ] = useState('')
     const [ password, setPassword ] = useState('')
@@ -32,10 +33,7 @@ const SignupScreen: FunctionComponent<SignupScreenProps> = (props) => {
             Routes.NewUser,
             { user: { email, password } }
         );
-        console.log('onsubmit')
-        console.log(error)
-        console.log(response)
-        debugger
+
         if(response.ok) {
             await SecureStorageService.setToken(response.token)
             history.push('/presets')
