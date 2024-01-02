@@ -35,9 +35,16 @@ const BinauralBeatsScreen: FunctionComponent<PresetsScreenProps> = (props) => {
                 <Grid container spacing={2}> {
                     binauralBeatStates.map((binauralBeatState: BinauralBeatState, index) => {
                         return (
-                            <Grid key={binauralBeatState.id} item xs={12} sm={12} lg={4}>
-                                <BinauralBeatStateCard index={index} loaded={binauralBeatStates.length > 0}
-                                                       binauralBeatState={binauralBeatState}/>
+                            <Grid
+                                key={binauralBeatState.id}
+                                item
+                                xs={12}
+                                sm={12}
+                                lg={4}>
+                                <BinauralBeatStateCard
+                                    index={index}
+                                    loaded={binauralBeatStates.length > 0}
+                                    binauralBeatState={binauralBeatState}/>
                             </Grid>
                         )
                     })
