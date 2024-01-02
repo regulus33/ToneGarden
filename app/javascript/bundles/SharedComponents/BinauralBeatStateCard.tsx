@@ -9,35 +9,42 @@ import useStyles from '../Styles/StylesPresetCard'
 import BinauralBeatState from "../Types/BinauralBeatStateType";
 import {FunctionComponent} from "react";
 import FrequencyRangeHelper from "../Helpers/FrequencyRangeHelper";
+import Zoom from '@material-ui/core/Zoom';
 
 interface Props {
-    binauralBeatState: BinauralBeatState
+    binauralBeatState: BinauralBeatState,
+    loaded: boolean,
+    index: number,
 }
 
 const BinauralBeatStateCard: FunctionComponent<Props> = (props) => {
-    const { binauralBeatState } = props
-    const { carrierOscillator } = binauralBeatState
+    const {binauralBeatState} = props
+    const {carrierOscillator} = binauralBeatState
     const classes = useStyles();
-    return (<Card className={classes.presetCard}>
-        <CardContent>
-            <div className={classes.cardContent}>
-                <Typography component="h5" variant="h5">
+    return (<Zoom
+        in={props.loaded}
+        style={{transitionDelay: props.loaded ? `${50 * props.index}ms` : '0ms'}}>
+        <Card className={classes.presetCard}>
+            <CardContent>
+                <div className={classes.cardContent}>
+                    <Typography component="h5" variant="h5">
                     <span className={classes[FrequencyRangeHelper.rangeString(carrierOscillator)]}>
                         <span>{FrequencyRangeHelper.rangeSymbol(carrierOscillator)} &nbsp;</span>
                     </span>
-                    {binauralBeatState.name}
-                </Typography>
+                        {binauralBeatState.name}
+                    </Typography>
+                </div>
+            </CardContent>
+            <div className={classes.controls}>
+                <Link to={{
+                    pathname: `/preset_show/${binauralBeatState.id}`,
+                    binauralBeatState
+                }}>
+                    <IconButton aria-label="play/pause">
+                        <PlayArrowIcon className={classes.playArrowIcon}/>
+                    </IconButton>
+                </Link>
             </div>
-        </CardContent>
-        <div className={classes.controls}>
-            <Link to={{
-                pathname: `/preset_show/${binauralBeatState.id}`,
-                binauralBeatState}}>
-                <IconButton aria-label="play/pause">
-                    <PlayArrowIcon className={classes.playArrowIcon}/>
-                </IconButton>
-            </Link>
-        </div>
-    </Card>)
+        </Card></Zoom>)
 }
 export default BinauralBeatStateCard
