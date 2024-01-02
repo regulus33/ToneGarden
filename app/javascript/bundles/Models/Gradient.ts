@@ -1,5 +1,3 @@
-import Preset from "./Preset";
-
 const rangeToColorsMap = {
     'alpha': ['#0558ff', '#05ffe2'],
     'beta': ['#ff3d0a', '#ffb805'],
