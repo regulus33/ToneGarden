@@ -38,7 +38,8 @@ export default class NetworkService {
             headers,
             body: JSON.stringify(body)})
         this.notifyAuthContext(rawResponse)
-        return await rawResponse.json()
+        const json = await rawResponse.json();
+        return {ok: rawResponse.ok, ...json}
     }
 
     public async get(route: string) {
@@ -62,9 +63,11 @@ export default class NetworkService {
                 this.setError(new GlobalError(null,response.status, null))
                 break
             case 400:
+                console.log('setting the error')
                 this.setError(new GlobalError('Email alrready taken.', response.status, null))
                 break
             case 200:
+                console.log('here')
                 this.setAuthenticated(true)
                 this.setError(null)
                 break

@@ -28,13 +28,16 @@ const SignupScreen: FunctionComponent<SignupScreenProps> = (props) => {
     }
 
     const onSubmit = async (event: any) => {
-        event.preventDefault()
         const response = await NetworkService.getInstance().post(
             Routes.NewUser,
             { user: { email, password } }
         );
-        await SecureStorageService.setToken(response.token)
-        if(error == null) {
+        console.log('onsubmit')
+        console.log(error)
+        console.log(response)
+        debugger
+        if(response.ok) {
+            await SecureStorageService.setToken(response.token)
             history.push('/presets')
         }
     }
