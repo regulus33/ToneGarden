@@ -1,5 +1,7 @@
 import {makeStyles, createStyles} from "@material-ui/styles";
 import Colors from "./Colors";
+import Breakpoints from "./Breakpoints";
+
 interface Props {
     dominantColor: string,
 }
@@ -11,7 +13,7 @@ const useStyles = makeStyles((props: Props) =>
             borderTop: `.07rem solid ${Colors.borderGrey}`,
         },
         accordian: {
-          boxShadow: 'none'
+            boxShadow: 'none'
         },
         secondaryHeading: {
             fontSize: '.8rem',
@@ -27,7 +29,10 @@ const useStyles = makeStyles((props: Props) =>
         },
         largeSlider: {
             marginTop: '1rem',
-            padding: '2rem'
+            padding: '2rem',
+            [`@media(max-width: ${Breakpoints.mobile})`]: {
+                padding: '.4rem 2rem'
+            }
         },
     }),
 );

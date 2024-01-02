@@ -30,8 +30,10 @@ const useStyles = makeStyles({
         width: `660px`,
         marginTop: '175px',
         [`@media (max-width: ${Breakpoints.mobile})`]: {
-            minWidth: `100%`,
-            width: `100vw`
+            minWidth: '100%',
+            width: '100vw',
+            marginTop: '3rem',
+            marginBottom: '3rem'
             // width: 'calc(100vw - 3rem)'
         }
     },

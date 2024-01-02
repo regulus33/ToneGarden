@@ -2,7 +2,6 @@ import Headerz from './Headerz'
 import {Dispatch} from "react";
 import GlobalError from "../Models/GlobalError";
 import SecureStorageService from "./SecureStorageService";
-import Routes from "./Routes";
 import FunctionName from "../Utils/FunctionName";
 import axios from "axios";
 import { cacheAdapterEnhancer } from 'axios-extensions';
@@ -17,7 +16,7 @@ export default class NetworkService {
 
     public setAuthenticated: Dispatch<boolean>
     public setError: Dispatch<GlobalError>
-    public history: any
+    public onError: Function
 
     private constructor() {
         this.http = axios.create({
@@ -72,7 +71,7 @@ export default class NetworkService {
 
     private handleResponse(statusCode: number) {
         if (statusCode >= 500) {
-            this.history.replace(Routes.ErrorScreen)
+            this.onError()
         }
         switch (statusCode) {
             case 401:

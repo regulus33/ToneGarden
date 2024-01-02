@@ -6,7 +6,9 @@ import {useStyles} from "../Styles/StylesAuthForm";
 import {Paper, Typography} from "@material-ui/core";
 import Gradient from "../Models/Gradient";
 import GlobalError from "../Models/GlobalError";
-import {Link} from 'react-router-dom';
+import {useHistory} from "react-router-dom"
+import Routes from "../Network/Routes";
+import {Link} from "react-router-dom";
 
 interface AuthFormProps {
     onEmailChange(event: FormEvent<HTMLInputElement>): void,
@@ -16,9 +18,12 @@ interface AuthFormProps {
     onSubmit(any): void,
 
     buttonText: string,
+    heading: string
     gradient: Gradient,
     error?: GlobalError,
-    heading: string
+    optionalLinkText?: string,
+    optionalLink?: string,
+    guestText?: string,
 }
 
 const AuthForm: FunctionComponent<AuthFormProps> = ({
@@ -28,9 +33,29 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({
                                                         heading,
                                                         buttonText,
                                                         gradient,
-                                                        error
+                                                        error,
+                                                        optionalLinkText,
+                                                        optionalLink,
+                                                        guestText
                                                     }) => {
-    const classes = useStyles(gradient.toProps());
+    const classes = useStyles(gradient.toProps())
+    const history = useHistory()
+
+    const createGuest = () => {
+        history.replace(Routes.GuestTokenScreen)
+    }
+
+    const optionalLinkRender = () => {
+        if (optionalLinkText)
+            return (
+                <div>
+                    <Link to={optionalLink}>{optionalLinkText}</Link>
+                    <div className={classes.or}>
+                        or
+                    </div>
+                </div>
+            )
+    }
 
     return (
         <Paper className={classes.paper}>
@@ -54,9 +79,9 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({
                 </form>
             </div>
             <div className={classes.noAccountContainer}>
-                <Typography>Not interested in signing up?</Typography>
+                {optionalLinkRender()}
                 <div className={classes.noAccountButtonsContainer}>
-                    <Link className={classes.continueAsGuest} to={'/guest'}>Listen without account</Link>
+                    <Button variant='contained' color="primary" onClick={createGuest}>{guestText}</Button>
                 </div>
             </div>
         </Paper>

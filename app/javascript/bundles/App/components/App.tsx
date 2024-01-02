@@ -39,7 +39,7 @@ const App: FunctionComponent = () => {
     // TODO: no dispatches outside dom tree
     NetworkService.getInstance().setAuthenticated = setAuthenticated
     NetworkService.getInstance().setError = setError
-    NetworkService.getInstance().history = history
+    NetworkService.getInstance().onError = () => history.replace(Routes.ErrorScreen)
 
     const [loaded, setLoaded] = useState(false)
 

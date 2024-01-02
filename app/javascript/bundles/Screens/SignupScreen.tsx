@@ -40,7 +40,7 @@ const SignupScreen: FunctionComponent<SignupScreenProps> = (props) => {
     return (
         <div className={classes.authFormContainerWrapper}>
             <div className={classes.authFormContainer}>
-                <AuthForm buttonText={'Continue'} heading={'Signup'} gradient={gradient} error={error}
+                <AuthForm guestText={'Skip signup'} optionalLinkText={'Sign in'} optionalLink={Routes.SigninScreen} buttonText={'Continue'} heading={'Signup'} gradient={gradient} error={error}
                           onSubmit={onSubmit} onEmailChange={onEmailChange} onPasswordChange={onPasswordChange}/>
             </div>
         </div>

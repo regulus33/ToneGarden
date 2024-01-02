@@ -32,7 +32,7 @@ const BinauralBeatsScreen: FunctionComponent = () => {
 
     return (
         <Slide direction="right" in={binauralBeatStates.length > 0} mountOnEnter unmountOnExit>
-            <Grid className={classes.root} container spacing={2}> {
+            <Grid className={classes.root} container spacing={1}> {
                 binauralBeatStates.map((binauralBeatState: BinauralBeatState, index) => {
                     return (
                         <Grid
