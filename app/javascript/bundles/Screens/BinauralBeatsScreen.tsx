@@ -8,11 +8,13 @@ import BinauralBeatStateCard from "../SharedComponents/BinauralBeatStateCard"
 import {useTitle} from "../State/TitleContext"
 import ProgressWheel from "../SharedComponents/ProgressWheel"
 import BinauralBeatState from "../Types/BinauralBeatStateType";
+import {Slide} from "@material-ui/core";
 
-interface PresetsScreenProps {}
+interface PresetsScreenProps {
+}
 
 const BinauralBeatsScreen: FunctionComponent<PresetsScreenProps> = (props) => {
-    const { setTitle } = useTitle()
+    const {setTitle} = useTitle()
     const [binauralBeatStates, setBinauralBeatStates] = useState([])
 
 
@@ -28,24 +30,22 @@ const BinauralBeatsScreen: FunctionComponent<PresetsScreenProps> = (props) => {
             })
     }, [])
 
-    if (binauralBeatStates.length > 0) {
         return (
-            <Grid container spacing={2}> {
-                binauralBeatStates.map((binauralBeatState: BinauralBeatState, index) => {
-                    return (
-                        <Grid key={binauralBeatState.id} item xs={12} sm={12}  lg={4}>
-                            <BinauralBeatStateCard index={index} loaded={binauralBeatStates.length > 0} binauralBeatState={binauralBeatState}/>
-                        </Grid>
-                    )
-                })
-            }
-            </Grid>
+            <Slide direction="right" in={binauralBeatStates.length > 0} mountOnEnter unmountOnExit>
+                <Grid container spacing={2}> {
+                    binauralBeatStates.map((binauralBeatState: BinauralBeatState, index) => {
+                        return (
+                            <Grid key={binauralBeatState.id} item xs={12} sm={12} lg={4}>
+                                <BinauralBeatStateCard index={index} loaded={binauralBeatStates.length > 0}
+                                                       binauralBeatState={binauralBeatState}/>
+                            </Grid>
+                        )
+                    })
+                }
+                </Grid>
+            </Slide>
         )
-    } else {
-        return (
-            <ProgressWheel/>
-        )
-    }
+
 }
 
 export default BinauralBeatsScreen
