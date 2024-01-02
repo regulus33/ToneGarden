@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   # Actual classic mvc pages
   get '/welcome', to: 'seo#welcome'
+  get '/privacy-policy', to: 'seo#privacy_policy'
 
   # React Router
   # NOTE: They should all match verbatim every React Router Route you have in play

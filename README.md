@@ -1,24 +1,18 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Tone Garden is a simple mobile and web app that generates binaural beats in realtime.
 
-Things you may want to cover:
+### Style Guide:
 
-* Ruby version
+**Font:** 
+* Poppins sans-serrif 
 
-* System dependencies
+##App Icon
 
-* Configuration
+![IMAGE](./public/app_icon.png)
 
-* Database creation
+## Main Color
 
-* Database initialization
+`#0000ff` 
+`RGB(0, 0, 255, 255)`
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
