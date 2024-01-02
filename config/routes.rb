@@ -29,7 +29,7 @@ Rails.application.routes.draw do
 
   # PWA
   # TODO: DRY
-  get '/manifest', to: 'service_worker#manifest.json', defaults: { format: 'json' }
+  get '/manifest.json', to: 'service_worker#manifest', defaults: { format: 'json' }
   get '.well-known/assetlinks.json', to: 'service_worker#assetlinks', defaults: { format: 'json' }
 
   resources :users, only: :create do
