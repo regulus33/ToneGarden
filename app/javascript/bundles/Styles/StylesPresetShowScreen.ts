@@ -26,11 +26,13 @@ const useStyles = makeStyles({
     },
     presetFormCard: {
         height: 'fit-content',
-        minWidth: '35rem',
         margin: '0 auto',
+        width: `660px`,
+        marginTop: '175px',
         [`@media (max-width: ${Breakpoints.mobile})`]: {
-            minWidth: 0,
-            width: 'calc(100vw - 2.28rem)'
+            minWidth: `100%`,
+            width: `100vw`
+            // width: 'calc(100vw - 3rem)'
         }
     },
     pitchSliderContainer: {

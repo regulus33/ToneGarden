@@ -1,4 +1,4 @@
-import BinauralBeatState from "../Types/BinauralBeatStateType";
+import BinauralBeatState from "../Types/BinauralBeatTypes";
 
 export default class BinauralBeatsList {
 

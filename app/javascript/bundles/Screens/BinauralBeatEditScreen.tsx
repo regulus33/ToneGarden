@@ -2,7 +2,7 @@ import * as React from 'react'
 import {FunctionComponent, useEffect, useState} from 'react'
 import NetworkService from "../Network/NetworkService"
 import Routes from "../Network/Routes"
-import {useParams} from 'react-router-dom'
+import {useHistory, useParams} from 'react-router-dom'
 import BinauralBeatSingleton from '../Models/BinauralBeatSingleton'
 import useStyles from '../Styles/StylesPresetShowScreen'
 import {useGradient} from "../State/GradientContext"
@@ -11,11 +11,12 @@ import PitchSlider from "../SharedComponents/PitchSlider"
 import AudioControls from "../SharedComponents/AudioControls"
 import Button from "@material-ui/core/Button"
 import {useTitle} from '../State/TitleContext'
-import BinauralBeatState from "../Types/BinauralBeatStateType";
+import BinauralBeatState, {BinauralBeatJson} from "../Types/BinauralBeatTypes";
 import ExtrasForm from "../SharedComponents/ExtrasForm";
 import FrequencyRangeHelper from "../Helpers/FrequencyRangeHelper";
-import {useHistory} from 'react-router-dom'
 import {getDestination} from "tone";
+import {useFlashMessage} from "../State/FlashMessageContext";
+import FlashMessage, {FlashEnum} from "../Models/FlashMessage";
 
 interface PresetShowScreenProps {
     location: any
@@ -23,12 +24,13 @@ interface PresetShowScreenProps {
 
 const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props) => {
     // Global hooks
-    const { setTitle } = useTitle()
-    const { gradient, setGradient } = useGradient()
+    const {setTitle} = useTitle()
+    const {gradient, setGradient} = useGradient()
+    const {flashMessage, setFlashMessage} = useFlashMessage()
 
     // Router
     const history = useHistory()
-    const { preset_id } = useParams()
+    const {preset_id} = useParams()
 
     // Styles
     const classes = useStyles(gradient.toProps())
@@ -67,8 +69,10 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
             .put(Routes
                 .BinauralBeatUpdate(
                     id.toString()), beatBody)
-            .then(function (json) {
-                alert(json)
+            .then(function (b: BinauralBeatJson) {
+                const {name} = b.binauralBeatState.data.attributes
+                const displayName = name || 'Binaural beat'
+                setFlashMessage(new FlashMessage(`${displayName} is now saved.`, true, FlashEnum.success))
             })
     }
 
@@ -81,15 +85,24 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
             .getInstance()
             .post(Routes
                 .BinauralBeatCreate, beatBody)
-            .then(function (json) {
-                if (json) {
-                    const { id } = json.data
-                    const binauralBeatState: BinauralBeatState = json
+            .then(function (b: BinauralBeatJson) {
+                if (b) {
+                    const binauralBeatState: BinauralBeatState = b
+                        .binauralBeatState
                         .data
                         .attributes
+                    const {id} = binauralBeatState
                     BinauralBeatSingleton.ins(binauralBeatState)
                     const params: BinauralBeatState = BinauralBeatSingleton.ins().toState()
-                    history.push({pathname: Routes.BinauralBeatEditScreen(id), binauralBeatState: params})
+                    history.push({pathname: Routes.BinauralBeatEditScreen(String(id)), binauralBeatState: params})
+                    const {name} = params
+                    const displayName = name || 'beat'
+                    setFlashMessage(
+                        new FlashMessage(
+                            `${displayName} was successfully created`,
+                            true,
+                            FlashEnum.success)
+                    )
                 }
             })
 
@@ -104,7 +117,6 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
     function onNameChange(event: any) {
         event.preventDefault()
         const el = event.target
-        debugger
         const v = el.value
         const md = v.match(/[^a-zA-Z0-9\s]/)
         if (md) {
@@ -194,7 +206,9 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
     }
 
     useEffect(() => {
-        if (isNewBeat) { return }
+        if (isNewBeat) {
+            return
+        }
         const localBeatState: BinauralBeatState = props.location.binauralBeatState
         if (localBeatState) {
             hydrateBeatState(localBeatState)
@@ -202,18 +216,20 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
             NetworkService
                 .getInstance()
                 .get(Routes.BinauralBeatShow(preset_id))
-                .then(function (json) {
-                    const fetchedBeatState = json
+                .then(function (b: BinauralBeatJson) {
+                    const beatState = b
                         .binauralBeatState
                         .data
                         .attributes
-                    hydrateBeatState(fetchedBeatState)
+                    hydrateBeatState(beatState)
                 })
         }
     }, [])
 
     useEffect(() => {
-        if(!isNewBeat) { return }
+        if (!isNewBeat) {
+            return
+        }
 
         hydrateBeatState({
             name: '',

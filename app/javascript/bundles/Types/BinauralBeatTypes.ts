@@ -8,4 +8,16 @@ type BinauralBeatState = {
     editable: boolean,
 }
 
+export type BinauralBeatAttributes = {
+    attributes: BinauralBeatState
+}
+
+export type BinauralBeatData = {
+    data: BinauralBeatAttributes
+}
+
+export type BinauralBeatJson = {
+    binauralBeatState: BinauralBeatData
+}
+
 export default BinauralBeatState

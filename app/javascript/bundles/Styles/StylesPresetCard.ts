@@ -3,7 +3,7 @@ import Gradient from "../Models/Gradient";
 import {rangeStrings} from "../Utils/HardCoded";
 import Breakpoints from "./Breakpoints";
 
-const gradients = new Object
+const gradients = {}
 
 rangeStrings.forEach((str) => {
     gradients[str] = new Gradient(str).backGround();
@@ -11,6 +11,7 @@ rangeStrings.forEach((str) => {
 
 const useStyles = makeStyles({
     presetCard: {
+        margin: 'auto',
         [`@media (max-width: ${Breakpoints.mobile})`]: {
             maxWidth: '100%',
         },
@@ -35,30 +36,45 @@ const useStyles = makeStyles({
         display: 'inline-block'
     },
     'alpha': {
-        background: gradients['alpha'],
+        backgroundImage: gradients['alpha'],
         backgroundClip: 'text',
-        '-webkit-text-fill-color': 'transparent'
+        '-webkit-background-clip': 'text',
+        '-webkit-text-fill-color': 'transparent',
+        '-moz-background-clip': 'text',
+        '-moz-text-fill-color': 'transparent'
 
     },
     'beta': {
         background: gradients['beta'],
         backgroundClip: 'text',
-        '-webkit-text-fill-color': 'transparent'
+        '-webkit-background-clip': 'text',
+        '-webkit-text-fill-color': 'transparent',
+        '-moz-background-clip': 'text',
+        '-moz-text-fill-color': 'transparent'
     },
     'gamma': {
         background: gradients['gamma'],
         backgroundClip: 'text',
-        '-webkit-text-fill-color': 'transparent'
+        '-webkit-background-clip': 'text',
+        '-webkit-text-fill-color': 'transparent',
+        '-moz-background-clip': 'text',
+        '-moz-text-fill-color': 'transparent'
     },
     'theta': {
         background: gradients['theta'],
         backgroundClip: 'text',
-        '-webkit-text-fill-color': 'transparent'
+        '-webkit-background-clip': 'text',
+        '-webkit-text-fill-color': 'transparent',
+        '-moz-background-clip': 'text',
+        '-moz-text-fill-color': 'transparent'
     },
     'delta': {
         background: gradients['delta'],
         backgroundClip: 'text',
-        '-webkit-text-fill-color': 'transparent'
+        '-webkit-background-clip': 'text',
+        '-webkit-text-fill-color': 'transparent',
+        '-moz-background-clip': 'text',
+        '-moz-text-fill-color': 'transparent'
     }
 });
 

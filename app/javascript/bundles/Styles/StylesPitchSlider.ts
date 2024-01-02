@@ -1,5 +1,6 @@
 import {makeStyles} from "@material-ui/styles";
 import Colors from './Colors';
+import Breakpoints from "./Breakpoints";
 
 const boxShadow =
     '0 3px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.13),0 0 0 1px rgba(0,0,0,0.02)';
@@ -7,6 +8,7 @@ const styles = {
     root: {
         height: 2,
         padding: '15px 0',
+        [`@media(max-width: ${Breakpoints.xsMobile})`]: {}
     },
     thumb: {
         height: 28,
@@ -47,7 +49,11 @@ interface Props {
 }
 
 export const useStyles = makeStyles({
-    root: {},
+    root: {
+        [`@media(max-width: ${Breakpoints.xsMobile})`]:{
+            maxWidth: '120px'
+        }
+    },
     customSlider: (props: Props) => ({
         marginTop: '8px',
         '& > span': {

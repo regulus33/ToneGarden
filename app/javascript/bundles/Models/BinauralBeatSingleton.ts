@@ -3,7 +3,7 @@ import {
 } from 'tone';
 import BeatOscillator from './BeatOscillator';
 import CarrierOscillator from "./CarrierOscillator";
-import BinauralBeatState from "../Types/BinauralBeatStateType";
+import BinauralBeatState from "../Types/BinauralBeatTypes";
 // import NoiseSource from "./NoiseSource";
 import FrequencyRangeHelper from "../Helpers/FrequencyRangeHelper";
 

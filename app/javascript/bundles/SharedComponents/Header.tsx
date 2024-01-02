@@ -4,11 +4,11 @@ import {makeStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import useStyles from '../Styles/StylesHeader';
 import Gradient from "../Models/Gradient";
+import {useGradient} from "../State/GradientContext";
 
 interface HeaderProps {
     screen: string,
@@ -17,10 +17,10 @@ interface HeaderProps {
 }
 
 const Header: FunctionComponent<HeaderProps> = (props) => {
-    const classes = useStyles();
-
+    const { gradient } = useGradient()
+    const classes = useStyles(gradient.toProps());
     return (
-        <AppBar position="static"  style={{background: props.gradient.backGround()}}>
+        <AppBar position="fixed" className={classes.root} style={{background: props.gradient.backGround()}}>
             <Toolbar>
                 <IconButton
                     color="inherit"

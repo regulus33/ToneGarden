@@ -19,7 +19,7 @@ class BinauralBeatsController < ApplicationController
 
     logger.info(LoggerService.log_args('User saved beat', {user: logged_in_user.id, beat: beat.inspect})) if saved
     logger.error(LoggerService.log_args('User could not saved beat', {user: logged_in_user.id, beat: beat.inspect})) unless saved
-    render json: BinauralBeatSerializer.new(beat)
+    render json: { binauralBeatState:  BinauralBeatSerializer.new(beat) }
   end
 
   def create
@@ -29,17 +29,16 @@ class BinauralBeatsController < ApplicationController
 
     logger.info(LoggerService.log_args('User saved beat', {user: logged_in_user.id, beat: beat.inspect})) if saved
     logger.error(LoggerService.log_args('User could not saved beat', {user: logged_in_user.id, beat: beat.inspect})) unless saved
-    render json: BinauralBeatSerializer.new(beat)
+    render json: { binauralBeatState:  BinauralBeatSerializer.new(beat) }
   end
 
-
+  # Make sure users can't see eachother's beats
   private def fetch_only_allowed_beat(beat_id)
     beat = BinauralBeat.find(beat_id)
 
-    return BinauralBeatSerializer.new(beat) unless beat.user_id
-    return nil if beat.user_id != logged_in_user.id
+    return nil if beat.user_id && beat.user_id != logged_in_user.id
 
-    beat
+    BinauralBeatSerializer.new(beat)
   end
 
   private def beat_args
@@ -56,7 +55,6 @@ class BinauralBeatsController < ApplicationController
 
   private def beat_params
     params.permit(
-      :playing,
       :beatOscillator,
       :carrierOscillator,
       :volume,
