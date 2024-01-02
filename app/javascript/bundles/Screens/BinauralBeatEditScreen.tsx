@@ -158,7 +158,7 @@ function BinauralBeatEditScreen(props: PresetShowScreenProps): JSX.Element {
     // It's probably unnecessary but doesn't hurt to keep the option
     setTimeout(function () {
       setChangingState(false)
-    }, BinauralBeat.RAMPTIME * 1
+    }, BinauralBeat.RAMPTIME * 1000
     )
   }
 
@@ -218,8 +218,6 @@ function BinauralBeatEditScreen(props: PresetShowScreenProps): JSX.Element {
 
   // On EDIT title
   useEffect(function () {
-    //
-    // TODO: clean this
     if (isNewBeat) {
       return
     }
@@ -259,9 +257,7 @@ function BinauralBeatEditScreen(props: PresetShowScreenProps): JSX.Element {
     // Orphaned but left setPlayingState.
     // Tell instance to pause before we
     // Hydrate:
-    if (BinauralBeat.inMemory) {
-      BinauralBeat.ins().setPlayingState(false, useWhiteNoise, useAudioWorklet)
-    }
+    BinauralBeat.ins().setPlayingState(false, useWhiteNoise, useAudioWorklet)
 
     hydrateBeatState({
       name: 'Custom Beat',
@@ -273,12 +269,6 @@ function BinauralBeatEditScreen(props: PresetShowScreenProps): JSX.Element {
       noiseLevel: 1,
       description: 'theta',
     })
-
-    BinauralBeat.ins().setPlayingState(
-      false,
-      useWhiteNoise,
-      useAudioWorklet
-    )
 
     return pause
   }, [])

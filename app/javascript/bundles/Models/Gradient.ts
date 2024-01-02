@@ -1,9 +1,11 @@
+// TODO: leave the possibility of color coding everything in the app
+const normalizedColorHack = ['#5816ff', '#005cff']
 const rangeToColorsMap = {
-    'delta': ['#7483cc', '#ffcc00'],
-    'theta': ['#1aff00', '#9f89cb'],
-    'alpha': ['#5e91ff', '#ff8800'],
-    'beta': ['#2605ff', '#5e00ff'],
-    'gamma': ['#2605ff', '#a600ff'],
+    'delta': normalizedColorHack,
+    'theta': normalizedColorHack,
+    'alpha': normalizedColorHack,
+    'beta': normalizedColorHack,
+    'gamma':normalizedColorHack,
 }
 
 export default class Gradient {

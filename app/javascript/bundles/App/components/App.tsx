@@ -1,4 +1,5 @@
 import * as React from 'react'
+import {StyledEngineProvider} from "@mui/material";
 import {FunctionComponent, useEffect, useState} from 'react'
 import {BrowserRouter, Route, Switch} from 'react-router-dom'
 import SignupScreen from "../../Screens/SignupScreen"
@@ -67,61 +68,62 @@ const App: FunctionComponent = () => {
 
   if (loaded) {
     return (
-      <ThemeContext.Provider value={{theme, setTheme}}>
-        <ThemeProvider theme={theme === Theme.Light ? lightTheme : darkTheme}>
-          <ErrorContext.Provider value={{error, setError}}>
-            <AuthContext.Provider value={{authenticated, setAuthenticated}}>
-              <SettingsDrawerContext.Provider value={{drawerState, setDrawerState}}>
-                <TitleContext.Provider value={{title, setTitle}}>
-                  <GradientContext.Provider value={{gradient, setGradient}}>
-                    <FlashMessageContext.Provider value={{flashMessage, setFlashMessage}}>
-                      <UseAudioWorkletContext.Provider
-                        value={{useAudioWorklet, setUseAudioWorklet}}>
-                        <UseWhiteNoiseContext.Provider
-                          value={{useWhiteNoise, setUseWhiteNoise}}>
-                          <BrowserRouter>
-                            <Switch>
-                              <Layout>
-                                <Route exact path={Routes.Root}
-                                       component={BinauralBeatsScreen}/>
-                                <Route exact path={Routes.ErrorScreen}
-                                       component={ErrorScreen}/>
-                                <Route exact path={Routes.SignupScreen}
-                                       component={SignupScreen}
-                                       title="Signup"/>
-                                <Route exact path={Routes.SigninScreen}
-                                       component={SigninScreen}
-                                       title="Signin"/>
-                                <Route exact path={Routes.GuestTokenScreen}
-                                       component={GuestTokenScreen}
-                                       title="Guest"/>
-                                <AuthenticatedRoute path={Routes.BinauralBeatsScreen}
-                                                    component={BinauralBeatsScreen}
-                                                    keyProp="presets"
-                                                    title="Binaural Beats"/>
-                                <AuthenticatedRoute
-                                  path={Routes.BinauralBeatEditScreen(':preset_id')}
-                                  keyProp="preset_show"
-                                  component={BinauralBeatEditScreen as FunctionComponent}
-                                  title="Beat Edit"/>
-                                <AuthenticatedRoute
-                                  path={Routes.BinauralBeatsCreateScreen}
-                                  keyProp="create"
-                                  component={BinauralBeatEditScreen as FunctionComponent}
-                                  title="Create a beat"/>
-                              </Layout>
-                            </Switch>
-                          </BrowserRouter>
-                        </UseWhiteNoiseContext.Provider>
-                      </UseAudioWorkletContext.Provider>
-                    </FlashMessageContext.Provider>
-                  </GradientContext.Provider>
-                </TitleContext.Provider>
-              </SettingsDrawerContext.Provider>
-            </AuthContext.Provider>
-          </ErrorContext.Provider>
-        </ThemeProvider>
-      </ThemeContext.Provider>
+      <StyledEngineProvider injectFirst>
+        <ThemeContext.Provider value={{theme, setTheme}}>
+          <ThemeProvider theme={theme === Theme.Light ? lightTheme : darkTheme}>
+            <ErrorContext.Provider value={{error, setError}}>
+              <AuthContext.Provider value={{authenticated, setAuthenticated}}>
+                <SettingsDrawerContext.Provider value={{drawerState, setDrawerState}}>
+                  <TitleContext.Provider value={{title, setTitle}}>
+                    <GradientContext.Provider value={{gradient, setGradient}}>
+                      <FlashMessageContext.Provider value={{flashMessage, setFlashMessage}}>
+                        <UseAudioWorkletContext.Provider
+                          value={{useAudioWorklet, setUseAudioWorklet}}>
+                          <UseWhiteNoiseContext.Provider
+                            value={{useWhiteNoise, setUseWhiteNoise}}>
+                            <BrowserRouter>
+                              <Switch>
+                                <Layout>
+
+                                  <Route exact path={Routes.ErrorScreen}
+                                         component={ErrorScreen}/>
+                                  <Route exact path={Routes.SignupScreen}
+                                         component={SignupScreen}
+                                         title="Signup"/>
+                                  <Route exact path={Routes.SigninScreen}
+                                         component={SigninScreen}
+                                         title="Signin"/>
+                                  <Route exact path={Routes.GuestTokenScreen}
+                                         component={GuestTokenScreen}
+                                         title="Guest"/>
+                                  <AuthenticatedRoute path={Routes.BinauralBeatsScreen}
+                                                      component={BinauralBeatsScreen}
+                                                      keyProp="presets"
+                                                      title="Binaural Beats"/>
+                                  <AuthenticatedRoute
+                                    path={Routes.BinauralBeatEditScreen(':preset_id')}
+                                    keyProp="preset_show"
+                                    component={BinauralBeatEditScreen as FunctionComponent}
+                                    title="Beat Edit"/>
+                                  <AuthenticatedRoute
+                                    path={Routes.BinauralBeatsCreateScreen}
+                                    keyProp="create"
+                                    component={BinauralBeatEditScreen as FunctionComponent}
+                                    title="Create a beat"/>
+                                </Layout>
+                              </Switch>
+                            </BrowserRouter>
+                          </UseWhiteNoiseContext.Provider>
+                        </UseAudioWorkletContext.Provider>
+                      </FlashMessageContext.Provider>
+                    </GradientContext.Provider>
+                  </TitleContext.Provider>
+                </SettingsDrawerContext.Provider>
+              </AuthContext.Provider>
+            </ErrorContext.Provider>
+          </ThemeProvider>
+        </ThemeContext.Provider>
+      </StyledEngineProvider>
     )
   } else {
     return (

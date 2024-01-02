@@ -46,7 +46,7 @@ export default class BinauralBeat {
         return BinauralBeat.instance != null
     }
 
-    public static RAMPTIME = 1
+    public static RAMPTIME = 0
 
     private constructor(binauralBeatState?: BinauralBeatState) {
         if (binauralBeatState) {
@@ -82,9 +82,8 @@ export default class BinauralBeat {
         // Visualization
         this.beatCanvas = document.getElementById('beatCanvas') as HTMLCanvasElement
         this.carrierCanvas = document.getElementById('carrierCanvas') as HTMLCanvasElement
-        this.canvasWidth = this.carrierCanvas.width // we don't care which one, they are the same size
+        this.canvasWidth = this.carrierCanvas.width
         this.canvasHeight = this.carrierCanvas.height
-
 
         const baseProps = {
             context: this.context,
@@ -148,7 +147,7 @@ export default class BinauralBeat {
 
             // Set volume to 0 (no pops this way)
             this.gain = this.context.createGain()
-            // this.gain.gain.value = 0
+            this.gain.gain.value = 0
 
             // Create the stereo channel merger
             this.channelMerger = this.context.createChannelMerger(2)
@@ -169,7 +168,7 @@ export default class BinauralBeat {
             this.carrierOscillator.animate()
             this.beatOscillator.animate()
 
-            this.gain.gain.linearRampToValueAtTime(this.volume, BinauralBeat.RAMPTIME)
+            this.gain.gain.linearRampToValueAtTime(this.volume, this.context.currentTime + BinauralBeat.RAMPTIME)
 
             if(useWhiteNoise) {
                 this.noiseSource = new Noise("pink")
@@ -183,20 +182,28 @@ export default class BinauralBeat {
             }
 
         } else if(this.beatPlayed) {
-            if(useWhiteNoise) {
+           //TODO this whole method is where most crashes come from and its all in + create.
+            if(useWhiteNoise && this.noiseSource) {
                 this.noiseSource.stop(0)
                 this.noiseSource.dispose()
             }
             this.playing = false
-            this.gain.gain.linearRampToValueAtTime(0, BinauralBeat.RAMPTIME)
-            this.beatOscillator.oscillator.stop(0)
-            this.carrierOscillator.oscillator.stop(0)
-            this.gain.disconnect()
-            this.channelMerger.disconnect()
-            this.beatOscillator.oscillator.disconnect()
-            this.carrierOscillator.oscillator.disconnect()
-            this.beatOscillator.analyser.disconnect()
-            this.carrierOscillator.analyser.disconnect()
+            this.gain.gain.linearRampToValueAtTime(0, this.context.currentTime + BinauralBeat.RAMPTIME)
+            if(this.beatOscillator.oscillator){
+              this.beatOscillator.oscillator.stop(this.context.currentTime + BinauralBeat.RAMPTIME)
+            }
+            if(this.beatOscillator.oscillator) {
+              this.carrierOscillator.oscillator.stop(this.context.currentTime + BinauralBeat.RAMPTIME)
+            }
+            this.delayExecutionOn(function(){
+              this.gain?.disconnect()
+              this.channelMerger?.disconnect()
+              this.beatOscillator.oscillator?.disconnect()
+              this.carrierOscillator.oscillator?.disconnect()
+              this.beatOscillator.analyser?.disconnect()
+              this.carrierOscillator.analyser?.disconnect()
+            }.bind(this), 100)
+
         }
     }
 
@@ -235,5 +242,9 @@ export default class BinauralBeat {
             editable: this.editable,
             description: this.description,
         }
+    }
+
+    private delayExecutionOn(callback: Function, buffer?: number): void {
+      setTimeout(callback, (BinauralBeat.RAMPTIME * 1000) + (buffer ? buffer : 0.0))
     }
 }

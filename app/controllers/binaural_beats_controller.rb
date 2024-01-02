@@ -21,11 +21,13 @@ class BinauralBeatsController < ApplicationController
     beat = fetch_only_allowed_beat(params[:beat_id], as_active_record: true)
     return render nil, status: :forbidden unless beat
 
+    # creates a new beat if user was trying to edit a preset
     saved = if beat.editable?
               beat.update(beat_args)
             else
               new_beat = BinauralBeat.new(beat_args)
               new_beat.name = beat.copy_name if beat.name == new_beat.name
+              beat = new_beat
               new_beat.save
             end
 
@@ -34,6 +36,7 @@ class BinauralBeatsController < ApplicationController
       logger.error(LoggerService.log_args('User could not save beat',
                                           { user: logged_in_user.id, beat: beat.inspect }))
     end
+
     render json: { binauralBeatState: BinauralBeatSerializer.new(beat) }
   end
 

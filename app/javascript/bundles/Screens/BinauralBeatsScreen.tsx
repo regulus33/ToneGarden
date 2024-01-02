@@ -9,7 +9,6 @@ import {useTitle} from "../State/TitleContext"
 import BinauralBeatState from "../Types/BinauralBeatTypes";
 import useStyles from "../Styles/StylesBinarualBeatsScreen";
 
-
 const BinauralBeatsScreen: FunctionComponent = () => {
     const {setTitle} = useTitle()
     const [binauralBeatStates, setBinauralBeatStates] = useState([])
