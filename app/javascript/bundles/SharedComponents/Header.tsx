@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {FunctionComponent} from 'react'
-import {makeStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -11,7 +10,7 @@ import Gradient from "../Models/Gradient";
 import {useGradient} from "../State/GradientContext";
 
 interface HeaderProps {
-    screen: string,
+    title: string|object,
     gradient: Gradient,
     toggleSettingsDrawer: ()=>void
 }
@@ -19,6 +18,7 @@ interface HeaderProps {
 const Header: FunctionComponent<HeaderProps> = (props) => {
     const { gradient } = useGradient()
     const classes = useStyles(gradient.toProps());
+
     return (
         <AppBar position="fixed" className={classes.root} style={{background: props.gradient.backGround()}}>
             <Toolbar>
@@ -31,7 +31,7 @@ const Header: FunctionComponent<HeaderProps> = (props) => {
                     <MenuIcon />
                 </IconButton>
                 <Typography variant="h6" className={classes.title}>
-                    {props.screen}
+                    {props.title}
                 </Typography>
             </Toolbar>
         </AppBar>

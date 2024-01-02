@@ -10,12 +10,14 @@ Rails.application.routes.draw do
   get '/presets', to: 'initializers#index'
   get '/preset_show/:preset_id', to: 'initializers#index'
   get '/create', to: 'initializers#index'
+  get '/whoops', to: 'initializers#index'
 
   # API is namespaced bc react router can collide with some of our urls
   get '/api/binaural_beats', to: 'binaural_beats#index'
   get '/api/binaural_beats/:beat_id', to: 'binaural_beats#show'
   post '/api/binaural_beats', to: 'binaural_beats#create'
   put '/api/binaural_beats/:beat_id', to: 'binaural_beats#update'
+  delete '/api/binaural_beats/:beat_id', to: 'binaural_beats#delete'
 
   resources :users, only: :create do
     collection do

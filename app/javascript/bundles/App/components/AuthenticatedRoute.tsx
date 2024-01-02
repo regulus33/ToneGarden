@@ -11,14 +11,6 @@ interface Props {
     keyProp: string,
 }
 
-/**
- * @remarks A HOC over Route handling transition animations and redirects for authenticated  user
- * @param component The screen to be rendered
- * @param path The router url
- * @param title Optional title
- * @param keyProp Resolves to `key` when passed to Router (used for re-renders on same route)
- **/
-
 const AuthenticatedRoute: FunctionComponent<Props> = (props) => {
     const { component: Component, path, title, keyProp } = props
     const { authenticated } = useAuthenticated()

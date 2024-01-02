@@ -11,12 +11,18 @@ export const useStyles = makeStyles({
     submitButton: (props: Props) => ({
         backgroundColor: props.dominantColor,
         color: 'white',
-        maxWidth: '7rem',
-        alignSelf: 'flex-end',
+        alignSelf: 'center  ',
+        minWidth: '22   5px',
         '&:hover': {
             background: props.secondaryColor,
         }
     }),
+
+    continueButton: {
+        backgroundColor: '#fcba03',
+        minWidth: '225px',
+        fontWeight: 'bold'
+    },
 
     authform: {
         display: 'flex',
@@ -70,12 +76,13 @@ export const useStyles = makeStyles({
     noAccountContainer: {
         display: 'flex',
         flexDirection: 'column',
-        maxWidth: '50%'
+        textAlign: 'center',
+        justifyContent: 'space-between'
     },
 
     noAccountButtonsContainer: {
         display: 'flex',
-        justifyContent: 'space-between'
+        justifyContent: 'center'
     },
 
     continueAsGuest: {

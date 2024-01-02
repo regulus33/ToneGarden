@@ -9,13 +9,16 @@ import {useGradient} from "../../State/GradientContext"
 import {useSettingsDrawer} from "../../State/SettingsDrawerContext"
 import DrawerState from "../../Models/DrawerState"
 import SettingsDrawer from "../../SharedComponents/SettingsDrawer"
-import Flash from "../../SharedComponents/Flash";
+import Flash from "../../SharedComponents/Flash"
 import {useFlashMessage} from "../../State/FlashMessageContext"
 import { useHistory } from 'react-router-dom'
-import NetworkService from "../../Network/NetworkService";
-import Routes from "../../Network/Routes";
+import NetworkService from "../../Network/NetworkService"
+import Routes from "../../Network/Routes"
+import {useAuthenticated} from "../../State/AuthContext"
+import {useError} from "../../State/ErrorContext"
 
-export interface Props {
+export interface WrapperProps {
+    children: ReactNode
 }
 
 interface ContentProps {
@@ -31,11 +34,17 @@ const Content: FunctionComponent<ContentProps> = (props) => {
     const classes = useStyles()
     const { drawerState, setDrawerState } = useSettingsDrawer()
     const { flashMessage } = useFlashMessage()
+    const { setAuthenticated } = useAuthenticated()
+    const { setError } = useError()
     const history = useHistory()
 
-    NetworkService.getInstance().onError = function() {
+    NetworkService.getInstance().onServerCrash = function() {
         history.replace(Routes.ErrorScreen)
     }
+
+    NetworkService.getInstance().setAuthenticated = setAuthenticated
+
+    NetworkService.getInstance().setError = setError
 
     const handleInputKeyUp = (event: any) => {
         if (event.code == 'Digit0') {
@@ -59,7 +68,7 @@ const Content: FunctionComponent<ContentProps> = (props) => {
 
     return (
         <div onKeyPress={handleInputKeyUp} tabIndex={0} className={classes.mainContainer}>
-           <Header  toggleSettingsDrawer={toggleSettingsDrawer} screen={title} gradient={gradient}/>
+           <Header toggleSettingsDrawer={toggleSettingsDrawer} title={title} gradient={gradient}/>
             {
                 props.children
             }
@@ -69,8 +78,9 @@ const Content: FunctionComponent<ContentProps> = (props) => {
         </div>
     )
 }
+
 // https://www.basefactor.com/global-state-with-react
-const Layout: FunctionComponent<Props> = (props) => {
+const Layout: FunctionComponent<WrapperProps> = (props) => {
     return (
         <Content children={props.children} title={'Title'}/>
     );

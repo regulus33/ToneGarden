@@ -2,16 +2,16 @@ import Headerz from './Headerz'
 import {Dispatch} from "react";
 import GlobalError from "../Models/GlobalError";
 import LocalStorageService from "./LocalStorageService";
-import FunctionName from "../Utils/FunctionName";
 import axios, {AxiosInstance} from "axios";
 import {cacheAdapterEnhancer} from 'axios-extensions';
 
 export default class NetworkService {
     private static instance: NetworkService;
     private readonly http: AxiosInstance
+    private currentUrl: string
     public setAuthenticated: Dispatch<boolean>
     public setError: Dispatch<GlobalError>
-    public onError: Function
+    public onServerCrash: Function
 
     private constructor() {
         this.http = axios.create({
@@ -40,24 +40,28 @@ export default class NetworkService {
         return this.makeRequest(route, 'get')
     }
 
-    private static get useCache(): boolean{
+    public delete(route: string): Promise<object> {
+        return this.makeRequest(route, 'delete')
+    }
+
+    private static get useCache(): boolean {
         return LocalStorageService.getBustCache() === 'false'
     }
 
-    private static handleCacheInvalidation(method: 'get'|'put'|'post'|'patch'|'delete'){
-        if(method != 'get') {
+    private static handleCacheInvalidation(method: 'get' | 'put' | 'post' | 'patch' | 'delete', force?: boolean) {
+        if (method != 'get' || force) {
             LocalStorageService.setBustCache(true)
         } else {
             LocalStorageService.setBustCache(false)
         }
     }
 
-    private async makeRequest(url: string, method: 'get'|'put'|'post'|'patch'|'delete', body?: object): Promise<object | null> {
-        if(!['get', 'post', 'put', 'patch', 'delete'].includes(method)) {
+    private async makeRequest(url: string, method: 'get' | 'put' | 'post' | 'patch' | 'delete', body?: object): Promise<object | null> {
+        this.currentUrl = url
+
+        if (!['get', 'post', 'put', 'patch', 'delete'].includes(method)) {
             throw `invalid http method ${method}`
         }
-
-        NetworkService.handleCacheInvalidation(method)
 
         const options = {
             headers: new Headerz().build(),
@@ -69,7 +73,6 @@ export default class NetworkService {
         try {
             switch (method) {
                 case 'get':
-
                     response = await this.http.get(url, options)
                     break
                 case 'delete':
@@ -79,31 +82,48 @@ export default class NetworkService {
                     response = await this.http[method](url, body, options)
                     break
             }
-        } catch(errorMessage) {
-            console.log(`[${FunctionName()}]: value of errorMessage: ${errorMessage}`)
-            console.log(errorMessage)
+
+            // After a successful request either bust or don't bust cache
+            NetworkService.handleCacheInvalidation(method)
+
+        } catch (errorMessage) {
             let statusCode
-            if(errorMessage.response) {
+            console.log(errorMessage)
+            if (errorMessage.response) {
                 statusCode = errorMessage.response.status
+
+                // IF there is a validation errors(s) from server ['message', 'message']
+                if (errorMessage.response.data) {
+                    if (errorMessage.response.data.errors) {
+                        errorMessage = errorMessage
+                            .response
+                            .data
+                            .errors
+                            .join("\n")
+
+                    // Go straight to error page if 500
+                    } else if(errorMessage.response.status > 499) {
+                        return this.onServerCrash()
+                    }
+                }
             }
             this.processResponse(statusCode, errorMessage)
-            return
+
+            // Just for brevity, bust cache if any error happens.
+            NetworkService.handleCacheInvalidation(method, true)
+
         }
-        this.processResponse(response.status)
+
+        response && this.processResponse(response.status)
         return response
     }
 
+    // Looks at status code and broadcasts a global error ( we never show multiple errors simultaneously)
     private processResponse(statusCode?: number, errorMessage?: string) {
-        if (errorMessage) {
-            this.onError()
-        }
         switch (statusCode) {
             case 401:
                 this.setAuthenticatedAndStore(false)
                 this.setError(new GlobalError(null, statusCode, null))
-                break
-            case 400:
-                this.setError(new GlobalError('Email already taken.', statusCode, null))
                 break
             case 200:
                 this.setAuthenticatedAndStore(true)
@@ -113,6 +133,8 @@ export default class NetworkService {
                 this.setAuthenticatedAndStore(true)
                 this.setError(null)
                 break
+            default:
+                this.setError(new GlobalError(errorMessage, statusCode, null))
         }
     }
 

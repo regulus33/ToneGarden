@@ -12,7 +12,6 @@ import {ErrorContext} from "../../State/ErrorContext"
 import Gradient from '../../Models/Gradient'
 import {TitleContext} from "../../State/TitleContext"
 import {SettingsDrawerContext} from "../../State/SettingsDrawerContext"
-import NetworkService from "../../Network/NetworkService"
 import AuthenticatedRoute from "./AuthenticatedRoute"
 import LocalStorageService from "../../Network/LocalStorageService"
 import ProgressWheel from "../../SharedComponents/ProgressWheel"
@@ -28,17 +27,29 @@ const App: FunctionComponent = () => {
     const [authenticated, setAuthenticated] = React.useState(false)
     const [theme, setTheme] = React.useState(Theme.Light)
     const [title, setTitle] = React.useState('Binaural Beats')
-    const [gradient, setGradient] = React.useState(new Gradient('alpha'))
+    const [gradient, setGradient] = React.useState(
+        new Gradient(
+            'alpha'
+        )
+    )
     const [error, setError] = React.useState(null)
-    const [flashMessage, setFlashMessage] = React.useState(new FlashMessage('default', false, FlashEnum.success))
+    const [flashMessage, setFlashMessage] = React.useState(
+        new FlashMessage(
+            'default',
+            false,
+            FlashEnum.success)
+    )
 
-    const [drawerState, setDrawerState] = React.useState(new DrawerState(false, 'left'))
+    const [drawerState, setDrawerState] = React.useState(
+        new DrawerState(
+            false,
+            'left'
+        )
+    )
 
-    // TODO: move these to Layout
-    NetworkService.getInstance().setAuthenticated = setAuthenticated
-    NetworkService.getInstance().setError = setError
-
-    const [ loaded, setLoaded ] = useState(false)
+    const [loaded, setLoaded] = useState(
+        false
+    )
 
     useEffect(() => {
         setAuthenticated(LocalStorageService.getIsAuth())
@@ -58,7 +69,7 @@ const App: FunctionComponent = () => {
                                             <Switch>
                                                 <Layout>
                                                     <Route exact path={Routes.ErrorScreen}
-                                                           component={ErrorScreen} />
+                                                           component={ErrorScreen}/>
                                                     <Route exact path={Routes.SignupScreen}
                                                            component={SignupScreen}
                                                            title="Signup"/>

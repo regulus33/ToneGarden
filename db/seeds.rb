@@ -7,21 +7,32 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 # MUST BE 40hz from eachother and under 1500hz subtract small from large and you get brat frequency
 
-def nameee
-  result = ''
-  result << %w[Energy Ultra Sleep Pain Focus Flow].sample
-  result
-end
+# def nameee
+#   result = ''
+#   result << %w[Energy Ultra Sleep Pain Focus Flow].sample
+#   result
+# end
+#
+# 25.times do
+#   beat = rand(40...1500)
+#   carrier = rand(-40...40)
+#   BinauralBeat.create(
+#     name: nameee,
+#     beatOscillator: beat,
+#     carrierOscillator: carrier,
+#     volume: 0,
+#     noiseLevel: 0,
+#     editable: [true, false].sample,
+#     description: "For #{%w[Energy Ultra Sleep Pain Focus Flow].sample} great at night"
+#   )
+# end
+#
+BinauralBeat.create(
+  name: 'Sustained Focus',
+  beatOscillator:  238,
+  carrierOscillator: -11,
+  noiseLevel: 0,
+  editable: false,
+  description: 'Low, bass-filled tones for cognitively demanding work.'
+)
 
-25.times do
-  beat = rand(40...1500)
-  carrier = rand(-40...40)
-  BinauralBeat.create(
-    name: nameee,
-    beatOscillator: beat,
-    carrierOscillator: carrier,
-    volume: 0,
-    noiseLevel: 0,
-    editable: [true, false].sample,
-  )
-end

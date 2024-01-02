@@ -7,7 +7,7 @@ const rangeToColorsMap = {
 }
 
 export default class Gradient {
-
+    static readonly rangeStrings = Object.keys(rangeToColorsMap)
     private readonly rangeString: string;
 
     constructor(rangeString: string) {
@@ -32,16 +32,21 @@ export default class Gradient {
         return `linear-gradient(to right, ${pair[0]}, ${pair[1]})`
     }
 
+    rangeSymbolBackground() {
+        const pair = this.gradientPair()
+        return `linear-gradient(to right, ${pair[0]}, ${pair[1]} 40%)`
+    }
+
     toProps() {
         return {
             secondaryColor: this.secondaryColor(),
             dominantColor: this.dominantColor(),
-            dominantRgb: this.hexToRgb(this.dominantColor()),
-            secondaryRgb: this.hexToRgb(this.secondaryColor())
+            dominantRgb: Gradient.hexToRgb(this.dominantColor()),
+            secondaryRgb: Gradient.hexToRgb(this.secondaryColor())
         }
     }
 
-    private hexToRgb(hex) {
+    private static hexToRgb(hex) {
         var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
         return result ? {
             r: parseInt(result[1], 16),

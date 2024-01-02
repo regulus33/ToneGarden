@@ -23,8 +23,11 @@ const BinauralBeatsScreen: FunctionComponent = () => {
             const { data } = await NetworkService
                 .getInstance()
                 .get(Routes.BinauralBeats)
-            const binauralBeatStates = new BinauralBeatsList(
-                data.binauralBeatStates).binauralBeatStates
+
+            const binauralBeatStates =
+                new BinauralBeatsList(
+                data.binauralBeatStates
+                ).binauralBeatStates
             setBinauralBeatStates(binauralBeatStates)
         })()
     }, [])
@@ -43,7 +46,10 @@ const BinauralBeatsScreen: FunctionComponent = () => {
                             <BinauralBeatStateCard
                                 index={index}
                                 loaded={binauralBeatStates.length > 0}
-                                binauralBeatState={binauralBeatState}/>
+                                binauralBeatState={binauralBeatState}
+                                binauralBeatStates={binauralBeatStates}
+                                setBinauralBeatStates={setBinauralBeatStates}
+                            />
                         </Grid>
                     )
                 })

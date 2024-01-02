@@ -11,4 +11,11 @@ export default class BinauralBeatsList {
     createBinauralBeatStates(binauralBeatStates: Array<BinauralBeatState>) : Array<BinauralBeatState> {
         return binauralBeatStates
     }
+
+    without(beatState: BinauralBeatState): Array<BinauralBeatState> {
+        this.binauralBeatStates = this.binauralBeatStates.filter(function(e){
+            return e.id != beatState.id
+        })
+        return this.binauralBeatStates
+    }
 }

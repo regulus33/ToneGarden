@@ -1,15 +1,38 @@
 import {makeStyles} from "@material-ui/core/styles";
 import Gradient from "../Models/Gradient";
-import {rangeStrings} from "../Utils/HardCoded";
 import Breakpoints from "./Breakpoints";
+import {symbol} from "prop-types";
 
 const gradients = {}
 
-rangeStrings.forEach((str) => {
+const symbolGradients = {}
+
+Gradient.rangeStrings.forEach((str) => {
     gradients[str] = new Gradient(str).backGround();
 })
 
-const useStyles = makeStyles({
+Gradient.rangeStrings.forEach((str) => {
+    symbolGradients[str] = new Gradient(str).rangeSymbolBackground();
+})
+
+const circle = {
+    borderRadius: '50%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+}
+
+const styleOptions = {
+    avatar: {
+        position: 'relative',
+        left: '8px'
+    },
+    avatarFill: {
+        backgroundColor: 'white',
+        width: '47px',
+        height: '47px',
+        ...circle
+    },
     presetCard: {
         margin: 'auto',
         [`@media (max-width: ${Breakpoints.mobile})`]: {
@@ -35,47 +58,28 @@ const useStyles = makeStyles({
         },
         display: 'inline-block'
     },
-    'alpha': {
-        backgroundImage: gradients['alpha'],
-        backgroundClip: 'text',
-        '-webkit-background-clip': 'text',
-        '-webkit-text-fill-color': 'transparent',
-        '-moz-background-clip': 'text',
-        '-moz-text-fill-color': 'transparent'
+}
 
-    },
-    'beta': {
-        background: gradients['beta'],
-        backgroundClip: 'text',
-        '-webkit-background-clip': 'text',
-        '-webkit-text-fill-color': 'transparent',
-        '-moz-background-clip': 'text',
-        '-moz-text-fill-color': 'transparent'
-    },
-    'gamma': {
-        background: gradients['gamma'],
-        backgroundClip: 'text',
-        '-webkit-background-clip': 'text',
-        '-webkit-text-fill-color': 'transparent',
-        '-moz-background-clip': 'text',
-        '-moz-text-fill-color': 'transparent'
-    },
-    'theta': {
-        background: gradients['theta'],
-        backgroundClip: 'text',
-        '-webkit-background-clip': 'text',
-        '-webkit-text-fill-color': 'transparent',
-        '-moz-background-clip': 'text',
-        '-moz-text-fill-color': 'transparent'
-    },
-    'delta': {
-        background: gradients['delta'],
+Gradient.rangeStrings.forEach(function (name) {
+    styleOptions[name] = {
+        background: symbolGradients[name],
         backgroundClip: 'text',
         '-webkit-background-clip': 'text',
         '-webkit-text-fill-color': 'transparent',
         '-moz-background-clip': 'text',
         '-moz-text-fill-color': 'transparent'
     }
-});
+    styleOptions[`avatarContainer${name}`] = {
+        background: gradients[name],
+        width: '50px',
+        height: '50px',
+        position: 'relative',
+        top: '-5px',
+        ...circle
+    }
+})
+
+// @ts-ignore
+const useStyles = makeStyles(styleOptions)
 
 export default useStyles

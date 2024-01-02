@@ -9,6 +9,7 @@ import GlobalError from "../Models/GlobalError";
 import {useHistory} from "react-router-dom"
 import Routes from "../Network/Routes";
 import {Link} from "react-router-dom";
+import Divider from "@material-ui/core/Divider";
 
 interface AuthFormProps {
     onEmailChange(event: FormEvent<HTMLInputElement>): void,
@@ -49,16 +50,15 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({
         if (optionalLinkText)
             return (
                 <div>
+                    <Divider className={classes.or} variant={'middle'}/>
                     <Link to={optionalLink}>{optionalLinkText}</Link>
-                    <div className={classes.or}>
-                        or
-                    </div>
+                    <Divider className={classes.or} variant={'middle'}/>
                 </div>
             )
     }
 
     return (
-        <Paper className={classes.paper}>
+        <Paper elevation={0} className={classes.paper}>
             <div>
                 <Typography className={classes.heading} variant='h5'>{heading}</Typography>
                 <form className={classes.authform}>
@@ -81,7 +81,7 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({
             <div className={classes.noAccountContainer}>
                 {optionalLinkRender()}
                 <div className={classes.noAccountButtonsContainer}>
-                    <Button variant='contained' color="primary" onClick={createGuest}>{guestText}</Button>
+                    <Button variant='contained' className={classes.continueButton} onClick={createGuest}>{guestText}</Button>
                 </div>
             </div>
         </Paper>
