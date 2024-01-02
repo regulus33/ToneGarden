@@ -12,7 +12,7 @@ const rangeMap = {
     'delta': [0, 3],
     'theta': [4, 7],
     'alpha': [8, 12],
-    'beta': [14, 29],
+    'beta': [13, 29],
     'gamma': [30, 40]
 }
 
@@ -40,6 +40,7 @@ class FrequencyRangeHelper {
         if (this.isInRange(offset, rangeMap['delta'])) {
             return 'delta';
         }
+        debugger
         return 'NA';
     }
 

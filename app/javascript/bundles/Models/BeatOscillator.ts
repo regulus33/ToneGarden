@@ -21,7 +21,7 @@ class BeatOscillator {
 
         // IMPORTANT: set frequency for BOTH frequency and toneOscillator.frequency
         this.frequency = value
-        this.toneOscillator.frequency.value = value
+        this.toneOscillator.frequency.rampTo(value, 0.5)
 
         if(!this.carrierOscillator) {
             this.carrierOscillator = carrierOscillator
