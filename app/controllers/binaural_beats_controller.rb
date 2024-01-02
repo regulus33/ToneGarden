@@ -3,6 +3,7 @@
 # Simple crud controller
 class BinauralBeatsController < ApplicationController
   skip_before_action :verify_authenticity_token
+  before_action :limit_user_beats, only: :create
 
   def index
     render json: { binauralBeatStates: fetch_binaural_beats }
@@ -104,5 +105,11 @@ class BinauralBeatsController < ApplicationController
         user_id: logged_in_user.id
       )
     )
+  end
+
+  def limit_user_beats
+    if logged_in_user.binaural_beats.count > 100
+      render json: { errors: ['You cannot have more than 100 beats. Try deleting some first.'] }, status: :insufficient_storage
+    end
   end
 end

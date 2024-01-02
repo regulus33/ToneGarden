@@ -4,6 +4,7 @@ import GlobalError from "../Models/GlobalError";
 import LocalStorageService from "./LocalStorageService";
 import axios, {AxiosInstance} from "axios";
 import {cacheAdapterEnhancer} from 'axios-extensions';
+import FlashMessage, {FlashEnum} from "../Models/FlashMessage";
 
 export default class NetworkService {
     private static instance: NetworkService;
@@ -11,6 +12,7 @@ export default class NetworkService {
     private currentUrl: string
     public setAuthenticated: Dispatch<boolean>
     public setError: Dispatch<GlobalError>
+    public setFlashMessage: Dispatch<FlashMessage>
     public onServerCrash: Function
 
     private constructor() {
@@ -48,7 +50,7 @@ export default class NetworkService {
         return LocalStorageService.getBustCache() === 'false'
     }
 
-    private static handleCacheInvalidation(method: 'get' | 'put' | 'post' | 'patch' | 'delete', force?: boolean) {
+    private static handleCacheInvalidation(method: 'get' | 'put' | 'post' | 'patch' | 'delete' | 'pending', force?: boolean) {
         if (method != 'get' || force) {
             LocalStorageService.setBustCache(true)
         } else {
@@ -57,6 +59,8 @@ export default class NetworkService {
     }
 
     private async makeRequest(url: string, method: 'get' | 'put' | 'post' | 'patch' | 'delete', body?: object): Promise<object | null> {
+        NetworkService.handleCacheInvalidation('pending')
+
         this.currentUrl = url
 
         if (!['get', 'post', 'put', 'patch', 'delete'].includes(method)) {
@@ -83,7 +87,7 @@ export default class NetworkService {
                     break
             }
 
-            // After a successful request either bust or don't bust cache
+            // Success, report to cache handler
             NetworkService.handleCacheInvalidation(method)
 
         } catch (errorMessage) {
@@ -94,6 +98,7 @@ export default class NetworkService {
 
                 // IF there is a validation errors(s) from server ['message', 'message']
                 if (errorMessage.response.data) {
+                    // If we return errors in this format, it is not unhandled, its probably a user error
                     if (errorMessage.response.data.errors) {
                         errorMessage = errorMessage
                             .response
@@ -119,6 +124,8 @@ export default class NetworkService {
     }
 
     // Looks at status code and broadcasts a global error ( we never show multiple errors simultaneously)
+    // Also unsets error when status is successful;
+    // Also maes user signed in or not locally
     private processResponse(statusCode?: number, errorMessage?: string) {
         switch (statusCode) {
             case 401:
@@ -134,7 +141,7 @@ export default class NetworkService {
                 this.setError(null)
                 break
             default:
-                this.setError(new GlobalError(errorMessage, statusCode, null))
+                this.setFlashMessage(new FlashMessage(errorMessage, true, FlashEnum.error))
         }
     }
 

@@ -2,6 +2,7 @@ class User < ApplicationRecord
   validates_presence_of :email
   validates_uniqueness_of :email , case_sensitive: false
   validates_format_of :email, with: /@/
+  has_many :binaural_beats
 
   has_secure_password
 

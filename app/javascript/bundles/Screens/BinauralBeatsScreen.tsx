@@ -29,6 +29,7 @@ const BinauralBeatsScreen: FunctionComponent = () => {
                 data.binauralBeatStates
                 ).binauralBeatStates
             setBinauralBeatStates(binauralBeatStates)
+
         })()
     }, [])
 

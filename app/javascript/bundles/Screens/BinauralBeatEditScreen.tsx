@@ -17,6 +17,7 @@ import FrequencyRangeHelper from "../Helpers/FrequencyRangeHelper";
 import {getDestination} from "tone";
 import {useFlashMessage} from "../State/FlashMessageContext";
 import FlashMessage, {FlashEnum} from "../Models/FlashMessage";
+import {useError} from "../State/ErrorContext";
 
 interface PresetShowScreenProps {
     location: any
@@ -27,6 +28,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
     const {setTitle} = useTitle()
     const {gradient, setGradient} = useGradient()
     const {setFlashMessage} = useFlashMessage()
+    const { error } = useError()
 
     // Router
     const history = useHistory()
@@ -36,7 +38,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
     const classes = useStyles(gradient.toProps())
 
     // Beat state
-    const [error, setError] = useState(null)
+    const [nameError, setNameError] = useState(null)
     const [name, setName] = useState('Name')
     const [playing, setPlaying] = useState(false)
     const [beatOscillator, setBeatOscillator] = useState(0)
@@ -71,6 +73,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
 
             const displayName = name || 'Binaural beat'
             setFlashMessage(new FlashMessage(`${displayName} is now saved.`, true, FlashEnum.success))
+
         })()
     }
 
@@ -82,25 +85,30 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
                 .post(Routes
                     .BinauralBeatCreate, beatBody)
 
-            // @ts-ignore
-            const binauralBeatState: BinauralBeatState = b.data
-                .binauralBeatState
-                .data
-                .attributes
+            if(b) {
 
-            const {id} = binauralBeatState
-            BinauralBeatSingleton.ins(binauralBeatState)
-            const params: BinauralBeatState = BinauralBeatSingleton.ins().toState()
-            history.push({pathname: Routes.BinauralBeatEditScreen(String(id)), binauralBeatState: params})
-            const {name} = params
-            const displayName = name || 'beat'
-            setFlashMessage(
-                new FlashMessage(
-                    `${displayName} was successfully created`,
-                    true,
-                    FlashEnum.success)
-            )
+                // @ts-ignore
+                const binauralBeatState: BinauralBeatState = b.data
+                    .binauralBeatState
+                    .data
+                    .attributes
 
+                const {id} = binauralBeatState
+                BinauralBeatSingleton.ins(binauralBeatState)
+                const params: BinauralBeatState = BinauralBeatSingleton.ins().toState()
+                history.push({pathname: Routes.BinauralBeatEditScreen(String(id)), binauralBeatState: params})
+                const {name} = params
+                const displayName = name || 'beat'
+                setFlashMessage(
+                    new FlashMessage(
+                        `${displayName} was successfully created`,
+                        true,
+                        FlashEnum.success)
+                )
+                if (playing) {
+                    pause()
+                }
+            }
         })()
 
     }
@@ -119,9 +127,9 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
         if (md) {
             const ms = md[0]
             el.value.replace(ms, '')
-            return setError('Please use letters and numbers only')
+            return setNameError('Please use letters and numbers only')
         }
-        setError(null)
+        setNameError(null)
         setName(v)
         BinauralBeatSingleton.ins().name = v
         setTitle(BinauralBeatSingleton.ins().generateTitle())
@@ -148,7 +156,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
         let singletonValue = BinauralBeatSingleton.ins()
             .carrierOscillator
             .offset
-        if(singletonValue != offset) {
+        if (singletonValue != offset) {
             throw `Error! offset from updateUIFreqInfo is ${offset} and BinauralBeatSingleton.carrierOscillator has ${singletonValue}`
         }
         setTitle(BinauralBeatSingleton.ins().generateTitle())
@@ -239,7 +247,16 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
             return
         }
 
-        pause()
+        // Before we populate the singleton
+        // We need to pause previous sound
+        // Otherwise the oscillators will be
+        // Orphaned but left playing.
+        // Tell instance to pause before we
+        // Hydrate:
+
+        if (BinauralBeatSingleton.inMemory) {
+            BinauralBeatSingleton.ins().playing = false
+        }
 
         hydrateBeatState({
             name: '',
@@ -251,6 +268,9 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
             noiseLevel: 0,
             description: ''
         })
+
+        BinauralBeatSingleton.ins().playing = false
+
         return pause
     }, [])
 
@@ -287,7 +307,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
                 </div>
             </div>
             <ExtrasForm
-                error={error}
+                error={nameError}
                 onNameChange={onNameChange}
                 name={isNewBeat ? null : name}
                 gradient={gradient}
