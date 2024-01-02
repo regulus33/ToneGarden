@@ -12,7 +12,7 @@ export const useStyles = makeStyles({
         backgroundColor: props.dominantColor,
         color: 'white',
         alignSelf: 'center  ',
-        minWidth: '22   5px',
+        minWidth: '225px',
         '&:hover': {
             background: props.secondaryColor,
         }
