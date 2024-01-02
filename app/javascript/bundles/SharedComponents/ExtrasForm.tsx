@@ -14,6 +14,7 @@ interface Props {
     onNameChange: (event: FormEvent<HTMLDivElement>) => void,
     error: string,
     name?: string,
+    onVolumeChange: (value: number) => void,
 }
 
 const ExtrasForm: FunctionComponent<Props> = (props) => {
@@ -49,7 +50,7 @@ const ExtrasForm: FunctionComponent<Props> = (props) => {
                         minMax={[-80, 0]}
                         label={'Volume'}
                         default={BinauralBeat.ins().volume}
-                        handleSliderChangeCallback={BinauralBeat.ins().onVolumeChange}
+                        handleSliderChangeCallback={props.onVolumeChange}
                     />
                 </div>
             </Accordion>
