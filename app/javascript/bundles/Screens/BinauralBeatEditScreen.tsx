@@ -155,9 +155,10 @@ function BinauralBeatEditScreen(props: PresetShowScreenProps): JSX.Element {
 
   function delayButtonDisable(): void {
     setChangingState(true)
+    // It's probably unnecessary but doesn't hurt to keep the option
     setTimeout(function () {
       setChangingState(false)
-    }, BinauralBeat.RAMPTIME * 1000
+    }, BinauralBeat.RAMPTIME * 1
     )
   }
 

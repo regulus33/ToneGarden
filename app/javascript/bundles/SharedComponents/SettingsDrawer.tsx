@@ -52,6 +52,7 @@ const SettingsDrawer: FunctionComponent<Props> = (props) => {
 
         if(event.target.name === 'darkMode') {
           checked ? setTheme(Theme.Dark) : setTheme(Theme.Light)
+          return
         }
         const name = event.target.name.split(':').shift()
         const methodToCall = event.target.name.split(':').pop()
