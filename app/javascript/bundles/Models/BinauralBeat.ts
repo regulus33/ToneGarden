@@ -3,6 +3,7 @@ import BeatOscillator from './BeatOscillator';
 import CarrierOscillator from "./CarrierOscillator";
 import {Dispatch} from "react";
 import {BinauralBeatState} from "../State/BinauralBeatContext";
+import NoiseSource from "./NoiseSource";
 
 // TODO: check out audio panner.
 // When you click a preset you should be immediately brought here and tones should ramp up
@@ -16,6 +17,7 @@ export default class BinauralBeat {
     carrierOscillator: CarrierOscillator
     pannerLeft: Panner
     pannerRight: Panner
+    noiseSource: NoiseSource
     volume: number = 0
     playing: boolean = false
 
@@ -27,9 +29,10 @@ export default class BinauralBeat {
     private static defaultBeat = 440;
     private static defaultCarrier = 20;
 
-    private constructor(beatFrequency: number, carrierOffset: number) {
+    private constructor(beatFrequency: number, carrierOffset: number, noiseLevel?: number) {
         this.beatOscillator = new BeatOscillator(beatFrequency)
         this.carrierOscillator = new CarrierOscillator(carrierOffset, this.beatOscillator)
+        this.noiseSource = new NoiseSource(12)
 
         this.onBeatFreqChange = this.onBeatFreqChange.bind(this)
         this.onCarrierFreqChange = this.onCarrierFreqChange.bind(this)
@@ -37,6 +40,7 @@ export default class BinauralBeat {
         this.pause = this.pause.bind(this)
         this.onVolumeChange = this.onVolumeChange.bind(this)
         this.toState = this.toState.bind(this)
+        this.onNoiseLevelChange = this.onNoiseLevelChange.bind(this)
     }
 
     public static getInstance(beat?: number, carrier?:number): BinauralBeat {
@@ -50,7 +54,7 @@ export default class BinauralBeat {
         return BinauralBeat.instance;
     }
     public panAndConnectOscillators(): void {
-        debugger
+
         if(this.playing) return;
 
         this.pannerLeft = new Panner(1)
@@ -76,6 +80,11 @@ export default class BinauralBeat {
             .toneOscillator
             .connect(this.pannerRight)
             .start();
+
+        //NOISE
+        this.noiseSource = new NoiseSource()
+        this.noiseSource.toneNoise.toDestination()
+        this.noiseSource.toneNoise.start()
 
         this.playing = true
         this.audioConnected = true
@@ -109,6 +118,11 @@ export default class BinauralBeat {
         }
         this.playing = true
         this.setBinauralBeatState(this.toState())
+    }
+
+    onNoiseLevelChange(value: number){
+        console.log(`Noise level: ${value}`)
+        this.noiseSource.toneNoise.volume.value = value
     }
 
     toState(): BinauralBeatState {

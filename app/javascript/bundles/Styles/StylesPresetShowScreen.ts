@@ -17,6 +17,12 @@ const useStyles = makeStyles({
     headerContainer: {
         padding: '1.1rem 2.2rem'
     },
+    presetHeader: {
+        fontSize: '1.6rem',
+    },
+    presetSubtext: {
+      fontSize: '1rem'
+    },
     presetFormCard: {
         height: 'fit-content',
         minWidth: '35rem',
