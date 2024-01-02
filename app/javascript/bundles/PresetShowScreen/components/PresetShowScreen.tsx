@@ -2,11 +2,9 @@ import * as React from 'react';
 import {FunctionComponent, useEffect, useState} from 'react'
 import NetworkService from "../../Network/NetworkService";
 import Routes from "../../Network/Routes";
-import {Loader, Segment, List, Container} from "semantic-ui-react";
 import Preset from '../../Models/Preset';
 import { useParams } from 'react-router-dom';
-import PresetsList from '../../Models/PresetsList';
-import { Link } from 'react-router-dom';
+import Mixer from '../../Models/Mixer';
 interface PresetShowScreenProps {
 // buttonText: string;
 }
@@ -26,6 +24,8 @@ const PresetShowScreen: FunctionComponent<PresetShowScreenProps> = (props) => {
             })},[])
 
     if (preset) {
+        // fix me, this should be triggered by user input
+        const mx = new Mixer(preset.left, preset.right)
         return (
           <h1>There is a preset here it be bruv: {preset.name} </h1>
         );
