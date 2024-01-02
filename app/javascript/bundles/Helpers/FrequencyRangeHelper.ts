@@ -16,15 +16,23 @@ const rangeMap = {
     'gamma': [30, 40]
 }
 
+const displayRangeStringMap = {
+    'alpha': 'Alpha',
+    'beta': 'Beta',
+    'delta': 'Delta',
+    'theta': 'Theta',
+    'gamma': 'Gamma'
+}
+
 class FrequencyRangeHelper {
     static rangeSymbol(offset: number): string {
         return symbolMap[FrequencyRangeHelper.rangeString(offset)]
     }
 
-    static rangeString(offset: number): string {
+    static rangeString(offset: number): 'alpha' | 'beta' | 'delta' | 'theta' | 'gamma' {
         offset = Math.abs(offset)
         if (offset > 40)
-            return `Halt! offset out of bounds: ${offset}`
+            throw `Unexpected offset ${offset}`
         if (this.isInRange(offset, rangeMap['alpha'])) {
             return 'alpha';
         }
@@ -40,8 +48,11 @@ class FrequencyRangeHelper {
         if (this.isInRange(offset, rangeMap['delta'])) {
             return 'delta';
         }
+    }
 
-        return 'NA';
+    static displayRangeString(offset: number): 'Alpha' | 'Beta' | 'Gamma' | 'Theta' | 'Delta' {
+        const rangeStringIdent: string = this.rangeString(offset)
+        return displayRangeStringMap[rangeStringIdent]
     }
 
     static isInRange(num: number, range: number[]): boolean {

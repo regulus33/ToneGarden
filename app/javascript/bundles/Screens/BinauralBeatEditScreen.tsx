@@ -161,9 +161,6 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
             throw `Error! offset from updateUIFreqInfo is ${offset} and BinauralBeatSingleton.carrierOscillator has ${singletonValue}`
         }
         setTitle(BinauralBeatSingleton.ins().generateTitle())
-        setGradient(
-            FrequencyRangeHelper.generateGradient(offset)
-        )
     }
 
     function onBeatFreqChange(frequency: number) {
@@ -261,7 +258,6 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
         // Orphaned but left playing.
         // Tell instance to pause before we
         // Hydrate:
-
         if (BinauralBeatSingleton.inMemory) {
             BinauralBeatSingleton.ins().playing(false, useWhiteNoise, useAudioWorklet)
         }
@@ -282,6 +278,11 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
         return pause
     }, [])
 
+    const handleCarrierBlur = (offset: number) => {
+        setGradient(
+            FrequencyRangeHelper.generateGradient(offset)
+        )
+    }
 
     return (
         <Paper className={classes.presetFormCard} elevation={0}>
@@ -299,6 +300,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
                     label={'Carrier tone'}
                     default={carrierOscillator}
                     handleSliderChangeCallback={onCarrierFreqChange}
+                    handleBlur={handleCarrierBlur}
                 />
             </div>
             <div className={classes.audioControlsContainer}>
