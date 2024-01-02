@@ -226,7 +226,7 @@ export default class BinauralBeatSingleton {
         const freqName = FrequencyRangeHelper.rangeString(
             this.carrierOscillator.offset
         )
-        return `${symbol} ${freqName} ${this.name}`
+        return `<span style="color:#ffad00">${symbol} ${freqName}</span> ${this.name}`
     }
 
     toState(): BinauralBeatState {
