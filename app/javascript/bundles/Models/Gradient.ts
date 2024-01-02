@@ -11,6 +11,7 @@ export default class Gradient {
     private readonly rangeString: string;
 
     constructor(rangeString: string) {
+        console.log(rangeString)
         this.rangeString = rangeString;
     }
 

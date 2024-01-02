@@ -13,6 +13,7 @@ import Button from "@material-ui/core/Button"
 import {useTitle} from '../../State/TitleContext'
 import {useBinauralBeat} from "../../State/BinauralBeatContext";
 import ExtrasForm from "./ExtrasForm";
+import FrequencyRangeHelper from "../../Helpers/FrequencyRangeHelper";
 
 interface PresetShowScreenProps {
     location: any
@@ -38,8 +39,8 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
         console.log('use effect running now')
         const localBeatState = props.location.binauralBeatState
         if (localBeatState) {
-            setTitle(`${BinauralBeat.rangeSymbol(localBeatState.carrierOscillator)} ${localBeatState.name}`)
-            setGradient(BinauralBeat.gradient(localBeatState.carrierOscillator))
+            setTitle(`${FrequencyRangeHelper.rangeSymbol(localBeatState.carrierOscillator)} ${localBeatState.name}`)
+            setGradient(FrequencyRangeHelper.generateGradient(localBeatState.carrierOscillator))
             setBinauralBeatState(localBeatState)
         } else {
             NetworkService
@@ -48,8 +49,8 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
                 .then(function (json) {
                      const { binauralBeatState } = json
                      const { carrierOscillator } = binauralBeatState
-                     setTitle(`${BinauralBeat.rangeSymbol(carrierOscillator)} ${binauralBeatState.name}`)
-                     setGradient(BinauralBeat.gradient(carrierOscillator))
+                     setTitle(`${FrequencyRangeHelper.rangeSymbol(carrierOscillator)} ${binauralBeatState.name}`)
+                     setGradient(FrequencyRangeHelper.generateGradient(carrierOscillator))
                      setBinauralBeatState(binauralBeatState)
                 })
         }
@@ -63,7 +64,7 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
                 <div className={classes.headerContainer}>
                     <span className={classes.presetHeader}>{binauralBeatState.name}</span>
                     <span
-                        className={classes.presetSubtext}> ({BinauralBeat.rangeString(binauralBeatState.carrierOscillator)})</span>
+                        className={classes.presetSubtext}> ({FrequencyRangeHelper.rangeString(binauralBeatState.carrierOscillator)})</span>
                 </div>
                 <div className={classes.pitchSliderContainer}>
                     <PitchSlider
