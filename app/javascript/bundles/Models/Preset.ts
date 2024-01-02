@@ -1,5 +1,4 @@
 import Gradient from "./Gradient";
-// TODO: merge with BinauralBeat
 const symbolMap = {
     'alpha': 'α',
     'beta':  'β',

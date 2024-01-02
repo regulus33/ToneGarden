@@ -7,12 +7,14 @@ import {useParams} from 'react-router-dom'
 import BinauralBeat from '../../Models/BinauralBeat'
 import useStyles from '../../Styles/StylesPresetShowScreen'
 import {useGradient} from "../../State/GradientContext"
-import Paper     from '@material-ui/core/Paper'
+import Paper from '@material-ui/core/Paper'
 import PitchSlider from "../../SharedComponents/PitchSlider"
 import AudioControls from "../../SharedComponents/AudioControls"
 import Button from "@material-ui/core/Button"
 import {useTitle} from '../../State/TitleContext'
 import {useBinauralBeat} from "../../State/BinauralBeatContext";
+import ExtrasForm from "./ExtrasForm";
+import {Typography} from "@material-ui/core";
 
 interface PresetShowScreenProps {
 }
@@ -27,7 +29,7 @@ const PresetShowScreen: FunctionComponent<PresetShowScreenProps> = (props) => {
 
     const computeAudioControlsState = () => {
         console.log(binauralBeatState.playing)
-        if(binauralBeatState.playing) {
+        if (binauralBeatState.playing) {
             return 'play'
         } else {
             return 'pause'
@@ -49,29 +51,24 @@ const PresetShowScreen: FunctionComponent<PresetShowScreenProps> = (props) => {
     if (preset) {
         const binauralBeat = BinauralBeat.getInstance(preset.left, preset.right)
         return (
-            <Paper className={classes.presetFormCard}>
-                <div className={classes.pitchSliderContainer}>
-                <PitchSlider
-                    showTextInput
-                    minMax={BinauralBeat.beatMinMax}
-                    label={'Main tone'}
-                    default={binauralBeat.beatOscillator.frequency}
-                    handleSliderChangeCallback={binauralBeat.onBeatFreqChange}
-                />
-                <PitchSlider
-                    showTextInput
-                    minMax={BinauralBeat.carrierMinMax}
-                    label={'Secondary tone'}
-                    default={binauralBeat.carrierOscillator.offset}
-                    handleSliderChangeCallback={binauralBeat.onCarrierFreqChange}
-                />
+            <Paper className={classes.presetFormCard} elevation={0}>
+                <div className={classes.headerContainer}>
+                    <Typography variant={'h5'}>{preset.name}({preset.rangeString()})</Typography>
                 </div>
-                <div className={classes.largeSlider}>
+                <div className={classes.pitchSliderContainer}>
                     <PitchSlider
-                        minMax={[-80,0]}
-                        label={'Volume'}
+                        showTextInput
+                        minMax={BinauralBeat.beatMinMax}
+                        label={'Main tone'}
+                        default={binauralBeat.beatOscillator.frequency}
+                        handleSliderChangeCallback={binauralBeat.onBeatFreqChange}
+                    />
+                    <PitchSlider
+                        showTextInput
+                        minMax={BinauralBeat.carrierMinMax}
+                        label={'Secondary tone'}
                         default={binauralBeat.carrierOscillator.offset}
-                        handleSliderChangeCallback={binauralBeat.onVolumeChange}
+                        handleSliderChangeCallback={binauralBeat.onCarrierFreqChange}
                     />
                 </div>
                 <div className={classes.audioControlsContainer}>
@@ -85,6 +82,10 @@ const PresetShowScreen: FunctionComponent<PresetShowScreenProps> = (props) => {
                         </Button>
                     </div>
                 </div>
+                <ExtrasForm
+                    gradient={gradient}
+                    binauralBeat={binauralBeat}/>
+
             </Paper>
         )
     } else {
