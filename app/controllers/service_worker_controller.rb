@@ -10,4 +10,10 @@ class ServiceWorkerController < ApplicationController
       format.json { render json: PwaService.manifest.to_json }
     end
   end
+
+  def assetlinks
+    respond_to do |format|
+      format.json { render json: PwaService.manifest.to_json }
+    end
+  end
 end

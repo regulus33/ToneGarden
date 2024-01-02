@@ -2,7 +2,8 @@ class PwaService
   def self.manifest
     {
       "short_name" => "Tone Garden",
-      "name" => "Tone Garden, create your own binaural beats.",
+      "name" => "Tone Garden: binaural beat maker",
+      "display" => "standalone",
       "icons" => [
         {
           "src" => "/logo_white.svg",
