@@ -8,7 +8,7 @@ const symbolMap = {
 
 const rangeMap = {
     'alpha': [8,13],
-    'beta': [14,30],
+    'beta': [14,29],
     'delta': [0.1, 3],
     'theta': [4, 7],
     'gamma': [30, 39]
@@ -17,6 +17,7 @@ const rangeMap = {
 
 
 export default class Preset {
+    id: string;
     left: number;
     right: number;
     name: string;
@@ -65,7 +66,8 @@ export default class Preset {
 
     fromJson(json) {
         console.log('Preset:fromJson', `json: ${json}`)
-        const { left, right, range, name, color } = json;
+        const { left, right, name, id } = json;
+        this.id = id;
         this.left = left;
         this.right = right;
         this.name = name;

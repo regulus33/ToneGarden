@@ -5,6 +5,7 @@ import NetworkService from "../../Network/NetworkService";
 import Routes from "../../Network/Routes";
 import {Loader, Segment, Dimmer, List, Container} from "semantic-ui-react";
 import Preset from '../../Models/Preset';
+import { Link } from 'react-router-dom';
 import PresetsList from '../../Models/PresetsList';
 interface PresetsScreenProps {
 // buttonText: string;
@@ -31,7 +32,8 @@ const PresetsScreen: FunctionComponent<PresetsScreenProps> = (props) => {
                             return(
                                 <List.Item>
                                     <div>{preset.rangeSymbol()}</div>
-                                    <List.Header as='a'>{preset.name}</List.Header>
+                                    <List.Header as='a'>{ preset.name }</List.Header>
+                                    <Link to={`/preset_show/${preset.id}`}>{ preset.name }</Link>
                                     <List.Description as='a'>{preset.rangeString()}</List.Description>
                                 </List.Item>
                             )
