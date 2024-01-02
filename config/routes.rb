@@ -11,8 +11,8 @@ Rails.application.routes.draw do
   get '/preset_show/:preset_id', to: 'initializers#index'
 
   # Json api
-  get '/api/presets', to: 'presets#index'
-  get '/api/preset_show/:preset_id', to: 'presets#show'
+  get '/api/binaural_beats', to: 'binaural_beats#index'
+  get '/api/binaural_beats/:beat_id', to: 'binaural_beats#show'
 
   resources :users, only: :create do
     collection do

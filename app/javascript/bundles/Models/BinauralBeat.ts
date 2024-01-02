@@ -4,6 +4,23 @@ import CarrierOscillator from "./CarrierOscillator";
 import {Dispatch} from "react";
 import {BinauralBeatState} from "../State/BinauralBeatContext";
 import NoiseSource from "./NoiseSource";
+import Gradient from "./Gradient";
+
+const symbolMap = {
+    'alpha': 'α',
+    'beta':  'β',
+    'delta': 'δ',
+    'theta': 'ϴ',
+    'gamma': 'γ'
+}
+
+const rangeMap = {
+    'alpha': [8,13],
+    'beta': [14,29],
+    'delta': [0.1, 3],
+    'theta': [4, 7],
+    'gamma': [30, 39]
+}
 
 // TODO: check out audio panner.
 // When you click a preset you should be immediately brought here and tones should ramp up
@@ -20,6 +37,9 @@ export default class BinauralBeat {
     noiseSource: NoiseSource
     volume: number = 0
     playing: boolean = false
+    id: number
+    name: string
+    editable: boolean
 
     private audioConnected: boolean = false
 
@@ -131,6 +151,51 @@ export default class BinauralBeat {
             beatOscillator: this.beatOscillator.frequency,
             carrierOscillator: this.carrierOscillator.offset,
             volume: this.volume,
+            name: this.name,
+            noiseLevel: this.noiseSource.level,
+            id: this.id,
+            editable: this.editable
         }
     }
+
+    // Formerly Preset Methods
+
+    static  rangeSymbol(offset: number): string {
+        return symbolMap[BinauralBeat.rangeString(offset)]
+    }
+
+    static rangeString(offset: number) :string {
+        if(offset <= 0 || offset > 40 )
+            return 'NA';
+        if(this.isInRange(offset, rangeMap['alpha'])){
+            return 'alpha';
+        }
+        if(this.isInRange(offset, rangeMap['beta'])){
+            return 'beta';
+        }
+        if(this.isInRange(offset, rangeMap['gamma'])){
+            return 'gamma';
+        }
+        if(this.isInRange(offset, rangeMap['theta'])){
+            return 'theta';
+        }
+        if(this.isInRange(offset, rangeMap['delta'])){
+            return 'delta';
+        }
+        return 'NA';
+    }
+
+    // 4 for 4 to 7 is true
+    // 7 for 4 to 7 is true
+    static isInRange(num: number, range: number[]): boolean {
+        if(num >= range[0] && num <= range[1]) {
+            return true
+        }
+        return false
+    }
+
+    static gradient(offset: number){
+        return new Gradient(BinauralBeat.rangeString(offset));
+    }
+
 }
