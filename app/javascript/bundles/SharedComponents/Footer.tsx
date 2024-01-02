@@ -20,7 +20,6 @@ const Footer: FunctionComponent = () => {
     }, [])
 
     const handleChange = (event, newValue) => {
-        console.log(`[${FunctionName()}]: value of event: ${event.inspect}`)
         setValue(newValue);
         history.replace(`/${newValue}`)
     }

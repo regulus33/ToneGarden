@@ -43,10 +43,17 @@ const SigninScreen: FunctionComponent = () => {
     return (
         <div className={classes.authFormContainerWrapper}>
             <div className={classes.authFormContainer}>
-                <AuthForm guestText={'Continue as guest'} optionalLink={Routes.SignupScreen}
-                          optionalLinkText={'Create a new account'} buttonText={'Sign in'} heading={'Sign in'}
-                          gradient={gradient} error={error}
-                          onSubmit={onSubmit} onEmailChange={onEmailChange} onPasswordChange={onPasswordChange}/>
+                <AuthForm guestText={'Continue as guest'}
+                          optionalLink={Routes.SignupScreen}
+                          optionalLinkText={'Create a new account'}
+                          buttonText={'Sign in'}
+                          heading={'Sign in'}
+                          gradient={gradient}
+                          error={error}
+                          onSubmit={onSubmit}
+                          onEmailChange={onEmailChange}
+                          onPasswordChange={onPasswordChange}
+                />
             </div>
         </div>
     );

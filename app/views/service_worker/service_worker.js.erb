@@ -3,14 +3,11 @@ var CACHE_NAME = CACHE_VERSION + ':sw-cache-APPNAME';
 // TODO: in depth cacheing
 // Create a local server with a symmetrical relation to actual server
 class BinauralBeatsController {
-  static show(){
-//      console.log('BinauralBeatsController#show')
-  }
+  static show(){}
 }
 
 //Install callback this inits all
 function onInstall(event) {
-     console.log('[Serviceworker]', "Installing!", event);
     event.waitUntil(
         caches.open(CACHE_NAME).then(function prefill(cache) {
             return cache.addAll([
@@ -23,9 +20,7 @@ function onInstall(event) {
 }
 
 function onFetch(event){
-    const url = event.request.url
-//    console.log('[ServiceWorker] receiving fetch to:' + url)
-
+  const url = event.request.url
 }
 
 self.addEventListener('install', onInstall)

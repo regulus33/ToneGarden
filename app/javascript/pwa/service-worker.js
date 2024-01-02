@@ -10,8 +10,6 @@ function browserSupportsES6() {
 if (browserSupportsES6() && ('caches' in window) && ('serviceWorker' in navigator)) {
     navigator.serviceWorker.register('/service-worker.js', { scope: '/' })
         .then(function(reg) {
-            console.log('Service worker registration succeeded!');
         }).catch(function(error) {
-        console.log('Service worker registration failed: ' + error);
     });
 }

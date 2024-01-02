@@ -2,7 +2,7 @@ import Headerz from './Headerz'
 import {Dispatch} from "react";
 import GlobalError from "../Models/GlobalError";
 import LocalStorageService from "./LocalStorageService";
-import axios, {AxiosInstance} from "axios";
+import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
 import {cacheAdapterEnhancer} from 'axios-extensions';
 import FlashMessage, {FlashEnum} from "../Models/FlashMessage";
 
@@ -77,13 +77,13 @@ export default class NetworkService {
         try {
             switch (method) {
                 case 'get':
-                    response = await this.http.get(url, options)
+                    response = await this.http.get(url, options as AxiosRequestConfig<any>)
                     break
                 case 'delete':
-                    response = await this.http.delete(url, options)
+                    response = await this.http.delete(url, options as AxiosRequestConfig<any>)
                     break
                 default:
-                    response = await this.http[method](url, body, options)
+                    response = await this.http[method](url, body, options as AxiosRequestConfig<any>)
                     break
             }
 
@@ -92,7 +92,6 @@ export default class NetworkService {
 
         } catch (errorMessage) {
             let statusCode
-            console.log(errorMessage)
             if (errorMessage.response) {
                 statusCode = errorMessage.response.status
 

@@ -25,7 +25,6 @@ const ExtrasForm: FunctionComponent<Props> = (props) => {
   const classes = useStyles(props.gradient.toProps())
   const classesAuth = useStylesAuth(props.gradient.toProps())
   const {useWhiteNoise} = useWhiteNoiseCtx()
-  console.log(`[${FunctionName()}]: value of ${'noiseLevel'}: ${props.noiseLevel}`)
 
   const noiseSlider = () => {
     if (useWhiteNoise) return (

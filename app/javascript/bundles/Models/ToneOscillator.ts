@@ -68,7 +68,6 @@ class ToneOscillator {
         requestAnimationFrame(this.vizualize.bind(this))
     }
 
-
     // This method is flick-triggered recursively and buffers in data from analyzer about the waveform
     private vizualize() {
         //Expand the canvas

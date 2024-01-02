@@ -34,7 +34,7 @@ const Header: FunctionComponent<HeaderProps> = (props) => {
                 <Typography variant="h6" className={classes.title}>
                     <div dangerouslySetInnerHTML={{__html: props.title}}/>
                 </Typography>
-                <img style={{maxWidth: '120px'}} src={'/logo_white.svg'}/>
+                <img className={classes.logo} style={{maxWidth: '120px'}} src={'/logo_white.svg'}/>
             </Toolbar>
         </AppBar>
     );

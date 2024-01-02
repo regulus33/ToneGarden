@@ -13,9 +13,7 @@ import {Divider} from "@mui/material";
 
 interface AuthFormProps {
     onEmailChange(event: FormEvent<HTMLInputElement>): void,
-
     onPasswordChange(event: FormEvent<HTMLInputElement>): void,
-
     onSubmit(any): void,
 
     buttonText: string,

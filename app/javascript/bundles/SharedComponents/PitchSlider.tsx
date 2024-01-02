@@ -13,7 +13,8 @@ import {useGradient} from "../State/GradientContext";
  * @param minMax an array of the upper and lower bounds of the slider
  * @param defuault the initial value of the input (used by set state)
  */
-const CustomSlider = withStyles(styles)(Slider);
+
+//<html>TS2769: No overload matches this call.<br/>Overload 1 of 2, '(props: { component: ElementType&lt;any&gt;; } &amp; { color?: &quot;primary&quot; | &quot;secondary&quot;; classes?: Partial&lt;SliderUnstyledClasses&gt; &amp; { colorPrimary?: string; ... 4 more ...; thumbSizeSmall?: string; }; size?: &quot;medium&quot; | &quot;small&quot;; sx?: SxProps&lt;...&gt;; } &amp; { ...; } &amp; Omit&lt;...&gt;): Element', gave the following error.<br/>Type '(event: ChangeEvent, newValue: number) =&gt; void' is not assignable to type ' =&gt; void'.<br/>Types of parameters 'event' and 'event' are incompatible.<br/>Type 'Event' is missing the following properties from type 'ChangeEvent&lt;Element&gt;': nativeEvent, isDefaultPrevented, isPropagationStopped, persist<br/>Overload 2 of 2, '(props: DefaultComponentProps&lt;ExtendSliderUnstyledTypeMap&lt;SliderTypeMap&lt;&quot;span&quot;, {}&gt;&gt;&gt;): Element', gave the following error.<br/>Type '(event: ChangeEvent, newValue: number) =&gt; void' is not assignable to type '(event: Event, value: number | number[], activeThumb: number) =&gt; void'.
 
 interface PitchSliderProps {
     label: string,
@@ -35,8 +36,7 @@ const PitchSlider: FunctionComponent<PitchSliderProps> = (props) => {
 
     const [value, setValue] = useState<number|string>(props.default);
 
-
-    const handleSliderChange = (event: ChangeEvent, newValue: number) => {
+    const handleSliderChange = (event: ChangeEvent, newValue: number | number[], activeThumb: number) => {
         setValue(Number(newValue))
         props.handleSliderChangeCallback(Number(newValue))
     }
@@ -78,7 +78,8 @@ const PitchSlider: FunctionComponent<PitchSliderProps> = (props) => {
         setValue(props.default)
     },[props.default])
 
-    return (
+    // @ts-ignore
+  return (
         <form
             className={classes.root}
             noValidate
@@ -92,7 +93,7 @@ const PitchSlider: FunctionComponent<PitchSliderProps> = (props) => {
                 variant="standard"
                 value={value}/>
             <div className={classes.root}>
-                <CustomSlider
+                <Slider
                     step={props.step || 1}
                     className={classes.customSlider}
                     value={numerize(value)}
@@ -101,7 +102,7 @@ const PitchSlider: FunctionComponent<PitchSliderProps> = (props) => {
                     min={props.minMax[0]}
                     max={props.minMax[1]}
                     defaultValue={numerize(value)}
-                    valueLabelDisplay="on"/>
+                />
             </div>
         </form>
 

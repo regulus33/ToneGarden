@@ -163,7 +163,6 @@ function BinauralBeatEditScreen(props: PresetShowScreenProps): JSX.Element {
   }
 
   function onNoiseLevelChange(value: number): void {
-    console.log(`Noise level: ${value}`)
     if (playing) {
       BinauralBeat.ins().noiseSource.volume.rampTo(value, 0.1)
     }
