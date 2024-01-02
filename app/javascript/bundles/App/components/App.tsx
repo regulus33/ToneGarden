@@ -25,116 +25,112 @@ import FlashMessage, {FlashEnum} from "../../Models/FlashMessage";
 import {FlashMessageContext} from '../../State/FlashMessageContext'
 import ErrorScreen from "../../Screens/ErrorScreen";
 import NetworkService from "../../Network/NetworkService";
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {createTheme, ThemeProvider, useTheme} from '@mui/material/styles';
+import {darkThemeOptions, themeOptions} from "../../Styles/Theme";
 
 const App: FunctionComponent = () => {
-    const theme = createTheme({
-        palette: {
-            mode: "dark"
-        }
-    })
-    const [authenticated, setAuthenticated] = React.useState(false)
-    // const [theme, setTheme] = React.useState(Theme.Light)
-    const [title, setTitle] = React.useState('Binaural Beats')
-    const [useAudioWorklet, setUseAudioWorklet] = React.useState(true)
-    const [useWhiteNoise, setUseWhiteNoise] = React.useState(true)
-    const [gradient, setGradient] = React.useState(
-        new Gradient(
-            'alpha'
-        )
+  const darkTheme = createTheme(darkThemeOptions)
+  const lightTheme = createTheme(themeOptions)
+  const [theme, setTheme] = React.useState(Theme.Light)
+  const [authenticated, setAuthenticated] = React.useState(false)
+  const [title, setTitle] = React.useState('Binaural Beats')
+  const [useAudioWorklet, setUseAudioWorklet] = React.useState(true)
+  const [useWhiteNoise, setUseWhiteNoise] = React.useState(true)
+  const [gradient, setGradient] = React.useState(
+    new Gradient(
+      'alpha'
     )
-    const [error, setError] = React.useState(null)
-    const [flashMessage, setFlashMessage] = React.useState(
-        new FlashMessage(
-            'default',
-            false,
-            FlashEnum.success)
+  )
+  const [error, setError] = React.useState(null)
+  const [flashMessage, setFlashMessage] = React.useState(
+    new FlashMessage(
+      'default',
+      false,
+      FlashEnum.success)
+  )
+
+  const [drawerState, setDrawerState] = React.useState(
+    new DrawerState(
+      false,
+      'left'
     )
+  )
 
-    const [drawerState, setDrawerState] = React.useState(
-        new DrawerState(
-            false,
-            'left'
-        )
+  const [loaded, setLoaded] = useState(
+    false
+  )
+
+  useEffect(() => {
+    setAuthenticated(LocalStorageService.getIsAuth())
+    setLoaded(true)
+  }, [])
+
+  if (loaded) {
+    return (
+      <ThemeContext.Provider value={{theme, setTheme}}>
+        <ThemeProvider theme={theme === Theme.Light ? lightTheme : darkTheme}>
+          <ErrorContext.Provider value={{error, setError}}>
+            <AuthContext.Provider value={{authenticated, setAuthenticated}}>
+              <SettingsDrawerContext.Provider value={{drawerState, setDrawerState}}>
+                <TitleContext.Provider value={{title, setTitle}}>
+                  <GradientContext.Provider value={{gradient, setGradient}}>
+                    <FlashMessageContext.Provider value={{flashMessage, setFlashMessage}}>
+                      <UseAudioWorkletContext.Provider
+                        value={{useAudioWorklet, setUseAudioWorklet}}>
+                        <UseWhiteNoiseContext.Provider
+                          value={{useWhiteNoise, setUseWhiteNoise}}>
+                          <BrowserRouter>
+                            <Switch>
+                              <Layout>
+                                <Route exact path={Routes.Root}
+                                       component={BinauralBeatsScreen}/>
+                                <Route exact path={Routes.ErrorScreen}
+                                       component={ErrorScreen}/>
+                                <Route exact path={Routes.SignupScreen}
+                                       component={SignupScreen}
+                                       title="Signup"/>
+                                <Route exact path={Routes.SigninScreen}
+                                       component={SigninScreen}
+                                       title="Signin"/>
+                                <Route exact path={Routes.GuestTokenScreen}
+                                       component={GuestTokenScreen}
+                                       title="Guest"/>
+                                <AuthenticatedRoute path={Routes.BinauralBeatsScreen}
+                                                    component={BinauralBeatsScreen}
+                                                    keyProp="presets"
+                                                    title="Binaural Beats"/>
+                                <AuthenticatedRoute
+                                  path={Routes.BinauralBeatEditScreen(':preset_id')}
+                                  keyProp="preset_show"
+                                  component={BinauralBeatEditScreen as FunctionComponent}
+                                  title="Beat Edit"/>
+                                <AuthenticatedRoute
+                                  path={Routes.BinauralBeatsCreateScreen}
+                                  keyProp="create"
+                                  component={BinauralBeatEditScreen as FunctionComponent}
+                                  title="Create a beat"/>
+                              </Layout>
+                            </Switch>
+                          </BrowserRouter>
+                        </UseWhiteNoiseContext.Provider>
+                      </UseAudioWorkletContext.Provider>
+                    </FlashMessageContext.Provider>
+                  </GradientContext.Provider>
+                </TitleContext.Provider>
+              </SettingsDrawerContext.Provider>
+            </AuthContext.Provider>
+          </ErrorContext.Provider>
+        </ThemeProvider>
+      </ThemeContext.Provider>
     )
-
-    const [loaded, setLoaded] = useState(
-        false
+  } else {
+    return (
+      <ProgressWheel/>
     )
-
-    useEffect(() => {
-        setAuthenticated(LocalStorageService.getIsAuth())
-        setLoaded(true)
-    }, [])
-
-    if (loaded) {
-        // @ts-ignore
-        // @ts-ignore
-        return (
-            <ThemeProvider theme={theme}>
-                <ErrorContext.Provider value={{error, setError}}>
-                    <AuthContext.Provider value={{authenticated, setAuthenticated}}>
-                        {/*<ThemeContext.Provider value={{theme, setTheme}}>*/}
-                            <SettingsDrawerContext.Provider value={{drawerState, setDrawerState}}>
-                                <TitleContext.Provider value={{title, setTitle}}>
-                                    <GradientContext.Provider value={{gradient, setGradient}}>
-                                        <FlashMessageContext.Provider value={{flashMessage, setFlashMessage}}>
-                                            <UseAudioWorkletContext.Provider
-                                                value={{useAudioWorklet, setUseAudioWorklet}}>
-                                                <UseWhiteNoiseContext.Provider
-                                                    value={{useWhiteNoise, setUseWhiteNoise}}>
-                                                    <BrowserRouter>
-                                                        <Switch>
-                                                            <Layout>
-                                                                <Route exact path={Routes.Root}
-                                                                       component={BinauralBeatsScreen}/>
-                                                                <Route exact path={Routes.ErrorScreen}
-                                                                       component={ErrorScreen}/>
-                                                                <Route exact path={Routes.SignupScreen}
-                                                                       component={SignupScreen}
-                                                                       title="Signup"/>
-                                                                <Route exact path={Routes.SigninScreen}
-                                                                       component={SigninScreen}
-                                                                       title="Signin"/>
-                                                                <Route exact path={Routes.GuestTokenScreen}
-                                                                       component={GuestTokenScreen}
-                                                                       title="Guest"/>
-                                                                <AuthenticatedRoute path={Routes.BinauralBeatsScreen}
-                                                                                    component={BinauralBeatsScreen}
-                                                                                    keyProp="presets"
-                                                                                    title="Binaural Beats"/>
-                                                                <AuthenticatedRoute
-                                                                    path={Routes.BinauralBeatEditScreen(':preset_id')}
-                                                                    keyProp="preset_show"
-                                                                    component={BinauralBeatEditScreen as FunctionComponent}
-                                                                    title="Beat Edit"/>
-                                                                <AuthenticatedRoute
-                                                                    path={Routes.BinauralBeatsCreateScreen}
-                                                                    keyProp="create"
-                                                                    component={BinauralBeatEditScreen as FunctionComponent}
-                                                                    title="Create a beat"/>
-                                                            </Layout>
-                                                        </Switch>
-                                                    </BrowserRouter>
-                                                </UseWhiteNoiseContext.Provider>
-                                            </UseAudioWorkletContext.Provider>
-                                        </FlashMessageContext.Provider>
-                                    </GradientContext.Provider>
-                                </TitleContext.Provider>
-                            </SettingsDrawerContext.Provider>
-                        {/*</ThemeContext.Provider>*/}
-                    </AuthContext.Provider>
-                </ErrorContext.Provider>
-            </ThemeProvider>
-        )
-    } else {
-        return (
-            <ProgressWheel/>
-        )
-    }
+  }
 }
 
 export
 {
-    App
+  App
 }

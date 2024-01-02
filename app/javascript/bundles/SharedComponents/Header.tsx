@@ -23,7 +23,12 @@ const Header: FunctionComponent<HeaderProps> = (props) => {
     return (
         <AppBar elevation={0} position="fixed" className={classes.root} style={{background: props.gradient.backGround()}}>
             <Toolbar>
-                <IconButton color="inherit" aria-label="open drawer" onClick={props.toggleSettingsDrawer} edge="start">
+                <IconButton
+                    color="inherit"
+                    aria-label="open drawer"
+                    onClick={props.toggleSettingsDrawer}
+                    edge="start"
+                    size="large">
                     { props.authenticated ? <MenuIcon /> : null }
                 </IconButton>
                 <Typography variant="h6" className={classes.title}>

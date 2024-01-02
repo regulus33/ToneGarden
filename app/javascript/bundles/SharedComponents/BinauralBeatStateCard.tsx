@@ -136,7 +136,7 @@ const BinauralBeatStateCard: FunctionComponent<BinauralBeatStateCardProps> = (pr
                             binauralBeatState,
                             playBeat: true,
                         }}>
-                            <IconButton aria-label="play/pause">
+                            <IconButton aria-label="play/pause" size="large">
                                 <PlayArrowIcon className={classes.playArrowIcon}/>
                             </IconButton>
                         </Link>
@@ -144,7 +144,7 @@ const BinauralBeatStateCard: FunctionComponent<BinauralBeatStateCardProps> = (pr
                 </CardActions>
             </Card>
         </Zoom>
-    )
+    );
 }
 export default BinauralBeatStateCard
 
