@@ -12,7 +12,7 @@ import PitchSlider from "../../SharedComponents/PitchSlider"
 import AudioControls from "../../SharedComponents/AudioControls"
 import Button from "@material-ui/core/Button"
 import {useTitle} from '../../State/TitleContext'
-import {useBinauralBeat} from "../../State/BinauralBeatContext"
+import {useBinauralBeat} from "../../State/BinauralBeatContext";
 
 interface PresetShowScreenProps {
 }
@@ -20,9 +20,19 @@ interface PresetShowScreenProps {
 const PresetShowScreen: FunctionComponent<PresetShowScreenProps> = (props) => {
     const {setTitle} = useTitle()
     const {gradient, setGradient} = useGradient()
+    const {binauralBeatState, setBinauralBeatState} = useBinauralBeat()
     const [preset, setPreset] = useState(new Preset({}))
     const {preset_id} = useParams()
     const classes = useStyles(gradient.toProps())
+
+    const computeAudioControlsState = () => {
+        console.log(binauralBeatState.playing)
+        if(binauralBeatState.playing) {
+            return 'play'
+        } else {
+            return 'pause'
+        }
+    }
 
     useEffect(() => {
         NetworkService
@@ -42,20 +52,33 @@ const PresetShowScreen: FunctionComponent<PresetShowScreenProps> = (props) => {
             <Paper className={classes.presetFormCard}>
                 <div className={classes.pitchSliderContainer}>
                 <PitchSlider
+                    showTextInput
                     minMax={BinauralBeat.beatMinMax}
                     label={'Main tone'}
                     default={binauralBeat.beatOscillator.frequency}
                     handleSliderChangeCallback={binauralBeat.onBeatFreqChange}
                 />
                 <PitchSlider
+                    showTextInput
                     minMax={BinauralBeat.carrierMinMax}
                     label={'Secondary tone'}
                     default={binauralBeat.carrierOscillator.offset}
                     handleSliderChangeCallback={binauralBeat.onCarrierFreqChange}
                 />
                 </div>
+                <div className={classes.largeSlider}>
+                    <PitchSlider
+                        minMax={[-80,0]}
+                        label={'Volume'}
+                        default={binauralBeat.carrierOscillator.offset}
+                        handleSliderChangeCallback={binauralBeat.onVolumeChange}
+                    />
+                </div>
                 <div className={classes.audioControlsContainer}>
-                    <AudioControls handlePlayPress={binauralBeat.play} handlePausePress={binauralBeat.pause}/>
+                    <AudioControls
+                        handlePlayPress={binauralBeat.play}
+                        handlePausePress={binauralBeat.pause}
+                        disabled={computeAudioControlsState()}/>
                     <div className={classes.saveButtonContainer}>
                         <Button variant="contained" className={classes.saveButton}>
                             Save

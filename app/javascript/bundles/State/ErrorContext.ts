@@ -1,5 +1,4 @@
 import {createContext, useContext} from 'react';
-import BinauralBeat from "../Models/BinauralBeat";
 import GlobalError from "../Models/GlobalError";
 
 export type ErrorContextType = {

@@ -1,14 +1,15 @@
-import * as React from 'react';
-import {FunctionComponent, ReactNode} from 'react';
-import {Theme, useTheme} from '../../State/ThemeContext';
-import { useTitle } from '../../State/TitleContext';
-import Header from '../../SharedComponents/Header';
-import Footer from '../../SharedComponents/Footer';
-import useStyles from "../../Styles/StylesLayout";
-import {useGradient} from "../../State/GradientContext";
-import {useSettingsDrawer} from "../../State/SettingsDrawerContext";
-import DrawerState from "../../Models/DrawerState";
-import SettingsDrawer from "../../SettingsDrawer/components/SettingsDrawer";
+import * as React from 'react'
+import {FunctionComponent, ReactNode} from 'react'
+import {Theme, useTheme} from '../../State/ThemeContext'
+import { useTitle } from '../../State/TitleContext'
+import Header from '../../SharedComponents/Header'
+import Footer from '../../SharedComponents/Footer'
+import useStyles from "../../Styles/StylesLayout"
+import {useGradient} from "../../State/GradientContext"
+import {useSettingsDrawer} from "../../State/SettingsDrawerContext"
+import DrawerState from "../../Models/DrawerState"
+import SettingsDrawer from "../../SettingsDrawer/components/SettingsDrawer"
+
 export interface Props {
 }
 

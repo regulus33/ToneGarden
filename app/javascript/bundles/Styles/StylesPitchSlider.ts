@@ -42,20 +42,23 @@ const styles = {
 }
 
 interface Props {
-    dominantColor: string
+    dominantColor: string,
+    textInputDisplay: string
 }
 
 export const useStyles = makeStyles({
     root: {},
     customSlider: (props: Props) => ({
+        marginTop: '8px',
         '& > span': {
             '&:nth-child(2)': {
                 color: props.dominantColor
             }
         },
     }),
-    textField: {
+    textField: (props: Props) => ({
         '& div': {
+            display: props.textInputDisplay,
             '&:before': {
                 borderBottom: `2px solid ${Colors.borderGrey}`
             },
@@ -63,7 +66,7 @@ export const useStyles = makeStyles({
                 borderBottom: `2px solid ${Colors.defaultBlue}`
             }
         }
-    }
+    })
 })
 
 export default styles

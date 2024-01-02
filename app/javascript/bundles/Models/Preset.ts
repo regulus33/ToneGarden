@@ -1,8 +1,8 @@
 import Gradient from "./Gradient";
-
+// TODO: merge with BinauralBeat
 const symbolMap = {
     'alpha': 'α',
-    'beta': 'β',
+    'beta':  'β',
     'delta': 'δ',
     'theta': 'ϴ',
     'gamma': 'γ'
@@ -31,7 +31,6 @@ export default class Preset {
         const difference = Math.abs(this.left - this.right);
         console.log(`difference: ${difference}`)
         if(difference <= 0 || difference > 40 )
-            // alert('Invalid Binaural Beat');
             return 'NA';
         if(this.isInRange(difference, rangeMap['alpha'])){
             return 'alpha';
