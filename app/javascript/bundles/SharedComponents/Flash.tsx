@@ -13,7 +13,7 @@ interface Props {
 const useStyles = makeStyles(
     {
         root: {
-            bottom: '90px'
+            bottom: '90px',
         }
     }
 )

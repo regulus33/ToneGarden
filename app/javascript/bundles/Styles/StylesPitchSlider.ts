@@ -2,6 +2,8 @@ import {makeStyles} from "@material-ui/styles";
 import Colors from './Colors';
 import Breakpoints from "./Breakpoints";
 
+const FORM_PADDING = '0 8px'
+
 const boxShadow =
     '0 3px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.13),0 0 0 1px rgba(0,0,0,0.02)';
 const styles = {
@@ -51,8 +53,10 @@ interface Props {
 export const useStyles = makeStyles({
     root: {
         [`@media(max-width: ${Breakpoints.xsMobile})`]:{
-            maxWidth: '120px'
-        }
+            maxWidth: '120px',
+            padding: 0
+        },
+        padding: FORM_PADDING
     },
     customSlider: (props: Props) => ({
         marginTop: '8px',
@@ -72,7 +76,8 @@ export const useStyles = makeStyles({
             '&:after': {
                 borderBottom: `.14rem solid ${Colors.defaultBlue}`
             }
-        }
+        },
+        padding: FORM_PADDING
     })
 })
 

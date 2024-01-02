@@ -1,11 +1,15 @@
 import {makeStyles} from "@material-ui/core/styles";
+import Breakpoints from "./Breakpoints";
 
 const useStyles = makeStyles({
     root: {
         position: 'fixed',
         bottom: 0,
         left: 0,
-        right: 0
+        right: 0,
+        [`@media(min-width: ${Breakpoints.smallDesktop})`]: {
+            height: '90px'
+        }
     },
 });
 

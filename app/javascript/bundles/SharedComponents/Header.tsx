@@ -20,7 +20,7 @@ const Header: FunctionComponent<HeaderProps> = (props) => {
     const classes = useStyles(gradient.toProps());
 
     return (
-        <AppBar position="fixed" className={classes.root} style={{background: props.gradient.backGround()}}>
+        <AppBar elevation={0} position="fixed" className={classes.root} style={{background: props.gradient.backGround()}}>
             <Toolbar>
                 <IconButton
                     color="inherit"
