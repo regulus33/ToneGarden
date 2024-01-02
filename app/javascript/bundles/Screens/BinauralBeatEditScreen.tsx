@@ -11,18 +11,19 @@ import PitchSlider from "../SharedComponents/PitchSlider"
 import AudioControls from "../SharedComponents/AudioControls"
 import Button from "@material-ui/core/Button"
 import {useTitle} from '../State/TitleContext'
-import BinauralBeatState from "../State/BinauralBeatContext";
+import BinauralBeatState from "../Types/BinauralBeatStateType";
 import ExtrasForm from "../SharedComponents/ExtrasForm";
 import FrequencyRangeHelper from "../Helpers/FrequencyRangeHelper";
 import ProgressWheel from "../SharedComponents/ProgressWheel";
-import { useHistory } from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
 import {getDestination} from "tone";
+import FastJson from "../Types/FastJsonType";
 
 interface PresetShowScreenProps {
     location: any
 }
 
-const BinauralBeatEditScreen:FunctionComponent<PresetShowScreenProps> = (props) => {
+const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props) => {
     // Global hooks
     const {setTitle} = useTitle()
     const {gradient, setGradient} = useGradient()
@@ -36,13 +37,13 @@ const BinauralBeatEditScreen:FunctionComponent<PresetShowScreenProps> = (props) 
 
     // Beat state
     const [error, setError] = useState(null)
-    const [name, setName ] = useState('Name')
-    const [playing, setPlaying ] = useState(false)
-    const [beatOscillator, setBeatOscillator ] = useState(0)
-    const [carrierOscillator, setCarrierOscillator ] = useState(0)
-    const [volume, setVolume ] = useState(0)
-    const [noiseLevel, setNoiseLevel ] = useState(0)
-    const [editable, setEditable ] = useState(false)
+    const [name, setName] = useState('Name')
+    const [playing, setPlaying] = useState(false)
+    const [beatOscillator, setBeatOscillator] = useState(0)
+    const [carrierOscillator, setCarrierOscillator] = useState(0)
+    const [volume, setVolume] = useState(0)
+    const [noiseLevel, setNoiseLevel] = useState(0)
+    const [editable, setEditable] = useState(false)
     const [beatObtained, setBeatObtained] = useState(false)
 
     const isCreate = props.location.pathname === '/create'
@@ -56,8 +57,8 @@ const BinauralBeatEditScreen:FunctionComponent<PresetShowScreenProps> = (props) 
     }
 
     function saveBeat() {
-        const id = BinauralBeat.getInstance().id
-        const beatBody = BinauralBeat.getInstance().toState()
+        const id = BinauralBeat.ins().id
+        const beatBody = BinauralBeat.ins().toState()
 
         NetworkService
             .getInstance()
@@ -70,27 +71,32 @@ const BinauralBeatEditScreen:FunctionComponent<PresetShowScreenProps> = (props) 
     }
 
     function createBeat() {
-        const id = BinauralBeat.getInstance().id
-        const beatBody = BinauralBeat.getInstance().toState()
+        const beatBody = BinauralBeat.ins().toState()
 
         NetworkService
             .getInstance()
             .post(Routes
-                .BinauralBeatCreate(
-                    id.toString()), beatBody)
-            .then(function (json) {
-                debugger
-                history.replace(`/presets/${id}`,
-                    BinauralBeat.getInstance().
-                    toState())
+                .BinauralBeatCreate, beatBody)
+            .then(function (fastJson: FastJson) {
+                if(fastJson) {
+                    const { id } = fastJson.data
+                    const binauralBeatState: BinauralBeatState = fastJson
+                        .data
+                        .attributes
+                    BinauralBeat.ins(binauralBeatState)
+                    const params: BinauralBeatState = BinauralBeat.ins().toState()
+                    // TODO: navigating to a new route in same component may be an issue
 
+                    history.push({pathname: Routes.BinauralBeatEditScreen(id), binauralBeatState: params})
+
+                }
             })
 
     }
 
-   function onVolumeChange(value: number){
+    function onVolumeChange(value: number) {
         getDestination().volume.value = value
-        BinauralBeat.getInstance().volume = value
+        BinauralBeat.ins().volume = value
         setVolume(value)
     }
 
@@ -105,32 +111,32 @@ const BinauralBeatEditScreen:FunctionComponent<PresetShowScreenProps> = (props) 
         }
         setError(null)
 
-        BinauralBeat.getInstance().name = v
-        setTitle(BinauralBeat.getInstance().generateTitle())
+        BinauralBeat.ins().name = v
+        setTitle(BinauralBeat.ins().generateTitle())
     }
 
     function pause() {
-        BinauralBeat.getInstance().playing = false
+        BinauralBeat.ins().playing = false
         setPlaying(false)
     }
 
     function play() {
-        BinauralBeat.getInstance().playing = true
+        BinauralBeat.ins().playing = true
         setPlaying(true)
     }
 
     function onNoiseLevelChange(value: number) {
         console.log(`Noise level: ${value}`)
-        BinauralBeat.getInstance().noiseSource.toneNoise.volume.value = value
+        BinauralBeat.ins().noiseSource.toneNoise.volume.value = value
         setNoiseLevel(value)
     }
 
     function onPitchSliderBlur(offset: number) {
-        setTitle(BinauralBeat.getInstance().generateTitle())
+        setTitle(BinauralBeat.ins().generateTitle())
         setGradient(
             FrequencyRangeHelper
                 .generateGradient(
-                    BinauralBeat.getInstance()
+                    BinauralBeat.ins()
                         .carrierOscillator
                         .offset
                 )
@@ -139,43 +145,59 @@ const BinauralBeatEditScreen:FunctionComponent<PresetShowScreenProps> = (props) 
 
     function onBeatFreqChange(frequency: Number) {
         BinauralBeat
-            .getInstance()
+            .ins()
             .beatOscillator
             .setFrequency(BinauralBeat
-                .getInstance()
-                .carrierOscillator,
+                    .ins()
+                    .carrierOscillator,
                 Number(frequency))
     }
 
     function onCarrierFreqChange(offset: Number) {
         BinauralBeat
-            .getInstance()
+            .ins()
             .carrierOscillator
             .offset = Number(offset)
         BinauralBeat
-            .getInstance()
+            .ins()
             .beatOscillator
             .setFrequency(
-                BinauralBeat.getInstance().carrierOscillator, null)
-        console.log(BinauralBeat.getInstance().beatOscillator.toneOscillator.frequency.value);
+                BinauralBeat.ins().carrierOscillator, null)
+        console.log(BinauralBeat.ins().beatOscillator.toneOscillator.frequency.value);
     }
 
-    if (!isCreate) {
-        useEffect(() => {
-            const localBeatState: BinauralBeatState = props.location.binauralBeatState
-            if (localBeatState) {
-                const binauralBeat = BinauralBeat.getInstance(localBeatState)
-                setTitle(BinauralBeat.getInstance().generateTitle())
-                setGradient(FrequencyRangeHelper.generateGradient(localBeatState.carrierOscillator))
+    function hydrateBeatState(beat: BinauralBeatState) {
+        BinauralBeat.ins(beat)
 
-                setName(localBeatState.name)
-                setPlaying(localBeatState.playing)
-                setBeatOscillator(localBeatState.beatOscillator)
-                setCarrierOscillator(localBeatState.carrierOscillator)
-                setVolume(localBeatState.volume)
-                setNoiseLevel(localBeatState.noiseLevel)
-                setEditable(localBeatState.editable)
-                setBeatObtained(true)
+        setTitle(
+            BinauralBeat
+                .ins()
+                .generateTitle()
+        )
+
+        setGradient(
+            FrequencyRangeHelper.generateGradient(
+                beat.carrierOscillator
+            )
+        )
+
+        setName(beat.name)
+        setPlaying(beat.playing)
+        setBeatOscillator(beat.beatOscillator)
+        setCarrierOscillator(beat.carrierOscillator)
+        setVolume(beat.volume)
+        setNoiseLevel(beat.noiseLevel)
+        setEditable(beat.editable)
+        setBeatObtained(true)
+    }
+
+    useEffect(() => {
+        if (!isCreate) {
+            const localBeatState: BinauralBeatState = props.location.binauralBeatState
+
+            debugger
+            if (localBeatState) {
+                hydrateBeatState(localBeatState)
             } else {
                 NetworkService
                     .getInstance()
@@ -183,25 +205,24 @@ const BinauralBeatEditScreen:FunctionComponent<PresetShowScreenProps> = (props) 
                     .then(function (json) {
                         const fetchedBeatState: BinauralBeatState = json
                             .binauralBeatState
-                            .data
-                            .attributes
 
-                        const instance = BinauralBeat.getInstance(fetchedBeatState)
-                        setTitle(instance.generateTitle())
-                        setGradient(FrequencyRangeHelper.generateGradient(fetchedBeatState.carrierOscillator))
-
-                        setName(fetchedBeatState.name)
-                        setPlaying(fetchedBeatState.playing)
-                        setBeatOscillator(fetchedBeatState.beatOscillator)
-                        setCarrierOscillator(fetchedBeatState.carrierOscillator)
-                        setVolume(fetchedBeatState.volume)
-                        setNoiseLevel(fetchedBeatState.noiseLevel)
-                        setEditable(fetchedBeatState.editable)
-                        setBeatObtained(true)
+                        hydrateBeatState(fetchedBeatState)
                     })
             }
-        }, [])
-    }
+        } else {
+            hydrateBeatState({
+                name: '',
+                id: 0,
+                beatOscillator: 432,
+                carrierOscillator: 4,
+                playing: false,
+                volume: 0,
+                editable: true,
+                noiseLevel: 0,
+            })
+        }
+
+    }, [])
 
     if (beatObtained) {
         return (
@@ -239,7 +260,7 @@ const BinauralBeatEditScreen:FunctionComponent<PresetShowScreenProps> = (props) 
                 <ExtrasForm
                     error={error}
                     onNameChange={onNameChange}
-                    name={isCreate ? null : name }
+                    name={isCreate ? null : name}
                     gradient={gradient}
                 />
             </Paper>

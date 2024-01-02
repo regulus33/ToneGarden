@@ -14,8 +14,6 @@ class BinauralBeatsController < ApplicationController
   end
 
   def update
-    # todo
-    # binding.pry
   end
 
   def create
@@ -34,13 +32,9 @@ class BinauralBeatsController < ApplicationController
 
     logger.info(LoggerService.log_args('User saved beat', {user: logged_in_user.id, beat: beat.inspect})) if saved
     logger.error(LoggerService.log_args('User could not saved beat', {user: logged_in_user.id, beat: beat.inspect})) unless saved
-
-    render json: { binauralBeat: BinauralBeatSerializer.new(beat).serialized_json, status: :created }
-    render json: {
-      binauralBeatState: BinauralBeatSerializer.new(beat),
-      status: :created,
-    }
+    render json: BinauralBeatSerializer.new(beat)
   end
+
 
   private def fetch_only_allowed_beat(beat_id)
     beat = BinauralBeat.find(beat_id)

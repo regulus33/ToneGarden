@@ -7,19 +7,21 @@ interface Props {
     component: FunctionComponent,
     path: string,
     title: string,
+    keyProp: string,
 }
 
 const AuthenticatedRoute: FunctionComponent<Props> = (props) => {
-    const {component: Component, path, title} = props
+    const {component: Component, path, title, keyProp} = props
     const {authenticated} = useAuthenticated();
 
     return(
         <Route
+            key={keyProp}
+            exact path={    path}
+            title={title}
             render={props =>
                 authenticated ? <Component {...props}/> : <Redirect to={"/signin"}/>
-            }
-            exact path={path}
-            title={title} />
+            }/>
     )
 }
 

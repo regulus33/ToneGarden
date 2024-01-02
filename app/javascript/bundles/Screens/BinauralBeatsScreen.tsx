@@ -7,7 +7,7 @@ import BinauralBeatsList from '../Models/BinauralBeatsList'
 import BinauralBeatStateCard from "../SharedComponents/BinauralBeatStateCard"
 import {useTitle} from "../State/TitleContext"
 import ProgressWheel from "../SharedComponents/ProgressWheel"
-import {BinauralBeatState} from "../State/BinauralBeatContext";
+import BinauralBeatState from "../Types/BinauralBeatStateType";
 
 interface PresetsScreenProps {}
 
