@@ -4,10 +4,8 @@ import {
 } from 'tone';
 import BeatOscillator from './BeatOscillator';
 import CarrierOscillator from "./CarrierOscillator";
-import {Dispatch, SetStateAction} from "react";
 import {BinauralBeatState, useBinauralBeat} from "../State/BinauralBeatContext";
 import NoiseSource from "./NoiseSource";
-import Gradient from "./Gradient";
 import FrequencyRangeHelper from "../Helpers/FrequencyRangeHelper";
 
 export default class BinauralBeat {
@@ -27,10 +25,6 @@ export default class BinauralBeat {
     editable: boolean
     playing: boolean
 
-    setBinauralBeatState: Dispatch<BinauralBeatState>
-    setTitle: Dispatch<SetStateAction<string>>
-    setGradient: Dispatch<Gradient>
-
     private static instance: BinauralBeat;
 
     private constructor(binauralBeatState?: BinauralBeatState) {
@@ -38,15 +32,7 @@ export default class BinauralBeat {
           this.hydrateFromState(binauralBeatState)
         }
 
-        this.onBeatFreqChange = this.onBeatFreqChange.bind(this)
-        this.onCarrierFreqChange = this.onCarrierFreqChange.bind(this)
-        this.play = this.play.bind(this)
-        this.pause = this.pause.bind(this)
-        this.onVolumeChange = this.onVolumeChange.bind(this)
         this.toState = this.toState.bind(this)
-        this.onNoiseLevelChange = this.onNoiseLevelChange.bind(this)
-        this.onPitchSliderBlur = this.onPitchSliderBlur.bind(this)
-        this.onNameChange = this.onNameChange.bind(this)
     }
 
     hydrateFromState(binauralBeatState: BinauralBeatState) {
@@ -85,29 +71,6 @@ export default class BinauralBeat {
         return BinauralBeat.instance;
     }
 
-    onBeatFreqChange(frequency: Number) {
-        this.beatOscillator.setFrequency(this.carrierOscillator, Number(frequency))
-    }
-
-    onCarrierFreqChange(offset: Number) {
-        this.carrierOscillator.offset = Number(offset)
-        this.beatOscillator.setFrequency(this.carrierOscillator, null)
-        console.log(this.beatOscillator.toneOscillator.frequency.value);
-    }
-
-    onPitchSliderBlur(offset: number) {
-        this.setBinauralBeatState(this.toState())
-        this.setTitle(this.generateTitle())
-        this.setGradient(
-            FrequencyRangeHelper
-                .generateGradient(
-                    this
-                        .carrierOscillator
-                        .offset
-                )
-        )
-    }
-
     generateTitle(): string {
         const symbol = FrequencyRangeHelper.rangeSymbol(
             this.carrierOscillator.offset
@@ -116,34 +79,6 @@ export default class BinauralBeat {
             this.carrierOscillator.offset
         )
        return `${symbol} ${freqName} ${this.name} `
-    }
-
-    onVolumeChange(value: number) {
-        getDestination().volume.value = value
-        this.volume = value
-        this.setBinauralBeatState(this.toState())
-    }
-
-    onNameChange(name) {
-        this.name = name
-        this.setTitle(this.generateTitle())
-        this.setBinauralBeatState(this.toState())
-    }
-
-    pause() {
-        this.playing = false
-        this.setBinauralBeatState(this.toState())
-    }
-
-    play() {
-        this.playing = true
-        this.setBinauralBeatState(this.toState())
-    }
-
-    onNoiseLevelChange(value: number) {
-        console.log(`Noise level: ${value}`)
-        this.noiseSource.toneNoise.volume.value = value
-        this.setBinauralBeatState(this.toState())
     }
 
     toState(): BinauralBeatState {
