@@ -77,10 +77,8 @@ export default class BinauralBeatSingleton {
     }
 
     set playing(playing: boolean) {
-        // set this context as the global Context
-        // the global context is gettable with Tone.getContext()
         if (playing) {
-            getContext().lookAhead = 0.5
+            getContext().lookAhead = 0.1
             this.merge = new Merge(2).toDestination()
 
             this.carrierOscillator
@@ -116,35 +114,19 @@ export default class BinauralBeatSingleton {
                     this.initialVolume,
                     BinauralBeatSingleton.RAMPTIME
                 )
+            // Too much complexity for now. we leave it out until we have beats perfect
+            // this.noiseSource = new Noise({
+            //     type: 'pink',
+            //     volume: -Infinity
+            // }).toDestination().start()
+            //
+            // console.log(`[${FunctionName()}]: value of noiseLevel: ${Number(this.noiseLevel)}`)
+            //
+            // this.noiseSource.volume.linearRampTo(
+            //     this.noiseLevel,
+            //     BinauralBeatSingleton.RAMPTIME
+            // )
 
-
-            // this.noiseGain = new Gain(0).toDestination()
-
-            // this.noiseFilter = new AutoFilter({
-            //     frequency: "0",
-            //     baseFrequency: 100,
-            //     octaves: 2
-            // }).toDestination()
-
-            this.noiseSource = new Noise({
-                type: 'pink',
-                volume: -Infinity
-            }).toDestination().start()
-
-            console.log(`[${FunctionName()}]: value of noiseLevel: ${Number(this.noiseLevel)}`)
-
-            this.noiseSource.volume.linearRampTo(
-                this.noiseLevel,
-                BinauralBeatSingleton.RAMPTIME
-            )
-
-            // this.noiseFilter.connect(this.noiseGain)
-
-            // this.noiseGain
-            //     .gain
-            //     .rampTo(this.noiseLevel,
-            //         BinauralBeatSingleton.RAMPTIME
-            //     )
 
         } else {
             this.carrierOscillator
@@ -163,7 +145,6 @@ export default class BinauralBeatSingleton {
                     BinauralBeatSingleton.RAMPTIME
                 )
 
-            this.noiseGain.gain.rampTo(0, 1)
             // Wait for fade out of audio then dispose
             setTimeout(() =>{
                 this.carrierOscillator.toneOscillator.stop()
