@@ -1,28 +1,26 @@
 import {makeStyles} from "@mui/styles";
+import {FEATURE_GRAPH_BACKGROUND} from "../Models/Constants";
+import Breakpoints from "./Breakpoints";
 
 const useStyles = makeStyles({
     container: {
-        marginTop: 56,
-        backgroundColor: '#301D54',
+        backgroundColor: FEATURE_GRAPH_BACKGROUND,
         position: 'relative',
-        // display: 'flex',
-        // justifyContent: 'center',
-        // alignItems: 'center',
-        // flexDirection: 'column',
-        // width: '100%',
-        // position: 'absolute',
-        // top: '50%',
-        // left: '50%',
-        // transform: 'translate(-50%, -50%)',
+        height: '100vh'
     },
     hero: {
-        width: '100%'
+        marginTop: 56,
+        width: '100%',
+        height: '100%',
+        [`@media(min-width: ${Breakpoints.largeDesktop})`]: {
+            height: '90vh',
+        }
     },
     cta: {
         position: "absolute",
         right: 0,
-        top: '50%',
-        right: '5%'
+        bottom: '25px',
+        right: '50%'
 
     }
 })

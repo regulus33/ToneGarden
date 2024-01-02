@@ -16,6 +16,7 @@ import NetworkService from "../../Network/NetworkService"
 import Routes from "../../Network/Routes"
 import {useAuthenticated} from "../../State/AuthContext"
 import {useError} from "../../State/ErrorContext"
+import {MAIN_CONTAINER_ID} from "../../Models/Constants";
 
 export interface WrapperProps {
   children: ReactNode
@@ -64,7 +65,7 @@ const Content: FunctionComponent<ContentProps> = (props) => {
   }
 
   return (
-    <div className={classes.mainContainer}>
+    <div id={MAIN_CONTAINER_ID} className={classes.mainContainer}>
       <Header authenticated={authenticated} toggleSettingsDrawer={toggleSettingsDrawer} title={title}
               gradient={gradient}/>
       {props.children}

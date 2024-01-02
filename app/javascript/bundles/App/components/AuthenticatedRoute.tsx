@@ -14,9 +14,11 @@ interface Props {
 const AuthenticatedRoute: FunctionComponent<Props> = (props) => {
     const { component: Component, path, title, keyProp } = props
     const { authenticated } = useAuthenticated()
+    // TODO: this shouldn't be necessary, signup and welcome are rendered from Route not AuthenticatedRoute
+    const GUEST_ROUTES = ['/welcome', '/signup']
 
     const showSignIn = (route: string): boolean => {
-        return !authenticated && route != '/signup'
+        return !authenticated && !GUEST_ROUTES.includes(route)
     }
 
     return (

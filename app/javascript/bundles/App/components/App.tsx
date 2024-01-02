@@ -101,6 +101,11 @@ const App: FunctionComponent = () => {
                                   <Route exact path={Routes.GuestTokenScreen}
                                          component={GuestTokenScreen}
                                          title="Guest"/>
+                                  <Route
+                                      path={Routes.SeoScreen}
+                                      keyProp="welcome"
+                                      component={SeoPage}
+                                      title="Create a beat"/>
                                   <AuthenticatedRoute path={Routes.BinauralBeatsScreen}
                                                       component={BinauralBeatsScreen}
                                                       keyProp="presets"
@@ -115,11 +120,6 @@ const App: FunctionComponent = () => {
                                     keyProp="create"
                                     component={BinauralBeatEditScreen as FunctionComponent}
                                     title="Create a beat"/>
-                                  <AuthenticatedRoute
-                                      path={Routes.SeoScreen}
-                                      keyProp="welcome"
-                                      component={SeoPage as FunctionComponent}
-                                      title="Create a beat"/>
                                 </Layout>
                               </Switch>
                             </BrowserRouter>
