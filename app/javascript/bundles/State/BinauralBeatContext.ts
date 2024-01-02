@@ -19,7 +19,7 @@ export const defaultBinauralBeatState = () => {
         beatOscillator: 0,
         carrierOscillator: 0,
         volume: 0,
-        noiseLevel: 0,
+        noiseLevel: -Infinity,
         editable: false,
     }
 }

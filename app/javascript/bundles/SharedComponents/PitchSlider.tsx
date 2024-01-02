@@ -1,5 +1,5 @@
 import * as React from "react";
-import {ChangeEvent, FunctionComponent} from "react";
+import {ChangeEvent, Dispatch, FunctionComponent} from "react";
 import {withStyles} from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
 import TextField from '@material-ui/core/TextField';
@@ -13,20 +13,25 @@ interface PitchSliderProps {
     minMax: Array<number>,
     default: number,
     handleSliderChangeCallback: (sliderValue: number) => void,
-    showTextInput?: boolean
+    handleSliderBlurCallback?: (sliderValue: number) => void,
+    showTextInput?: boolean,
 }
 
 const PitchSlider: FunctionComponent<PitchSliderProps> = (props) => {
     console.log('hi there, this is PitchSlider. default is: ' + props.default)
+
     const { gradient } = useGradient();
+
     const classes = useStyles({
         textInputDisplay: (props.showTextInput ? 'inherit' : 'none'),
         ...gradient.toProps()
     })
+
     const [value, setValue] = React.useState<number | string | Array<number | string>>(props.default);
 
     const handleSliderChange = (event: ChangeEvent, newValue: number) => {
         setValue(Number(newValue))
+        console.log('handle slider change' + newValue)
         props.handleSliderChangeCallback(Number(newValue))
     }
 
@@ -43,6 +48,9 @@ const PitchSlider: FunctionComponent<PitchSliderProps> = (props) => {
             setValue(props.minMax[0])
         }
         props.handleSliderChangeCallback(Number(value))
+        if(props.handleSliderBlurCallback) {
+            props.handleSliderBlurCallback(Number(value))
+        }
     };
 
     console.log(props.default)
@@ -62,7 +70,7 @@ const PitchSlider: FunctionComponent<PitchSliderProps> = (props) => {
                 <CustomSlider
                     className={classes.customSlider}
                     value={typeof value === 'number' ? value : 0}
-                    onBlur={handleBlur}
+                    onMouseUp={handleBlur}
                     onChange={handleSliderChange}
                     min={props.minMax[0]}
                     max={props.minMax[1]}
