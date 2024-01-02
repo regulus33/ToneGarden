@@ -253,7 +253,6 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
         <Paper className={classes.presetFormCard} elevation={0}>
             <div className={classes.pitchSliderContainer}>
                 <PitchSlider
-                    handleSliderBlurCallback={updateUIFreqInfo}
                     showTextInput
                     minMax={BinauralBeatSingleton.beatMinMax}
                     label={'Main tone'}
@@ -261,7 +260,6 @@ const BinauralBeatEditScreen: FunctionComponent<PresetShowScreenProps> = (props)
                     handleSliderChangeCallback={onBeatFreqChange}
                 />
                 <PitchSlider
-                    handleSliderBlurCallback={updateUIFreqInfo}
                     showTextInput
                     minMax={BinauralBeatSingleton.carrierMinMax}
                     label={'Carrier tone'}
