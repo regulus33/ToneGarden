@@ -3,11 +3,11 @@ import {
     Merge,
     getContext,
 } from 'tone';
+// @ts-ignore
 import ToneOscillator from "./ToneOscillator";
 import CarrierOscillator from "./CarrierOscillator";
 import BinauralBeatState from "../Types/BinauralBeatTypes";
 import FrequencyRangeHelper from "../Helpers/FrequencyRangeHelper";
-import Gradient from "./Gradient";
 import CanvasColorHelper from "../Helpers/CanvasColorHellper";
 
 export default class BinauralBeat {
@@ -16,6 +16,7 @@ export default class BinauralBeat {
 
     beatOscillator: ToneOscillator
     carrierOscillator: CarrierOscillator
+    beatPlayed: boolean = false
 
     volume: number
     id: number
@@ -120,6 +121,7 @@ export default class BinauralBeat {
         const context = getContext()
 
         if (playing) {
+            this.beatPlayed = true
             this.playing = playing
             // Create analyzers
             this.carrierOscillator.analyser = this.context.createAnalyser()
@@ -168,7 +170,7 @@ export default class BinauralBeat {
 
             this.gain.gain.linearRampToValueAtTime(this.volume, BinauralBeat.RAMPTIME)
 
-        } else {
+        } else if(this.beatPlayed) {
             this.playing = false
             this.gain.gain.linearRampToValueAtTime(0, BinauralBeat.RAMPTIME)
             this.beatOscillator.oscillator.stop(0)

@@ -268,7 +268,7 @@ function BinauralBeatEditScreen(props: PresetShowScreenProps):JSX.Element {
             id: 0,
             beatOscillator: 432,
             carrierOscillator: 4,
-            volume: 0,
+            volume: 1,
             editable: true,
             noiseLevel: 0,
             description: 'theta',
