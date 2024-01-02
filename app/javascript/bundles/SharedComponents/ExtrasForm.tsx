@@ -3,10 +3,10 @@ import {FormEvent, FunctionComponent} from 'react'
 import PitchSlider from "./PitchSlider"
 import Gradient from "../Models/Gradient";
 import {Accordion, AccordionSummary, Typography} from "@mui/material"
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import {ExpandMore} from '@mui/icons-material'
 import useStyles from "../Styles/StylesExtrasForm"
 import {useStyles as useStylesAuth} from "../Styles/StylesAuthForm"
-import TextField from "@mui/material/TextField";
+import {TextField} from "@mui/material";
 import FunctionName from "../Utils/FunctionName";
 import {useWhiteNoiseCtx} from "../State/UseWhiteNoiseContext";
 

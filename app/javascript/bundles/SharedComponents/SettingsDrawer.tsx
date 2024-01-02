@@ -1,20 +1,20 @@
 import clsx from 'clsx'
 import {makeStyles} from '@mui/styles'
-import Drawer from '@mui/material/Drawer'
-import List from '@mui/material/List'
-import Switch from '@mui/material/Switch'
-import Divider from '@mui/material/Divider'
-import ListItem from '@mui/material/ListItem'
+import {Drawer} from '@mui/material'
+import {List} from '@mui/material'
+import {Switch} from '@mui/material'
+import {Divider} from '@mui/material'
+import {ListItem} from '@mui/material'
 import * as React from 'react'
 import {ChangeEvent, FunctionComponent, SyntheticEvent, useEffect} from 'react'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemText from '@mui/material/ListItemText'
+import {ListItemIcon} from '@mui/material'
+import {ListItemText} from '@mui/material'
 import {Anchor} from "../Models/DrawerState"
 import {useSettingsDrawer} from "../State/SettingsDrawerContext"
 import {ExitToApp, InfoRounded} from "@mui/icons-material"
 import LocalStorageService from "../Network/LocalStorageService"
 import {useAuthenticated} from "../State/AuthContext"
-import FormControlLabel from '@mui/material/FormControlLabel'
+import {FormControlLabel} from '@mui/material'
 import {useWhiteNoiseCtx} from "../State/UseWhiteNoiseContext"
 import NetworkService from "../Network/NetworkService"
 import Routes from "../Network/Routes"

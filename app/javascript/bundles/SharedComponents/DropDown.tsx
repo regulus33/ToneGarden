@@ -1,8 +1,8 @@
 import * as React from 'react'
 import {FunctionComponent, forwardRef} from "react";
-import Menu from '@mui/material/Menu'
-import IconButton from "@mui/material/IconButton";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import {Menu} from '@mui/material'
+import {IconButton} from "@mui/material";
+import {MoreVert} from "@mui/icons-material";
 
 interface Option {
     keyPass: number|string,
@@ -35,7 +35,7 @@ const DropDown: FunctionComponent<Props> = forwardRef((props: Props, ref) => {
         <div>
             <div>
                 <IconButton aria-label="settings" onClick={handleClick} size="large">
-                    <MoreVertIcon/>
+                    <MoreVert/>
                 </IconButton>
             </div>
             <Menu

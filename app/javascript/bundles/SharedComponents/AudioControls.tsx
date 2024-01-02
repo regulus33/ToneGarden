@@ -1,8 +1,7 @@
 import * as React from 'react';
 import {FunctionComponent} from "react";
-import IconButton from "@mui/material/IconButton";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import Pause from "@mui/icons-material/Pause";
+import {IconButton} from "@mui/material";
+import {PlayArrow, Pause} from "@mui/icons-material";
 import useStyles from "../Styles/StylesAudioControls";
 
 interface AudioControlsProps {
@@ -33,7 +32,7 @@ const AudioControls: FunctionComponent<AudioControlsProps> = (props) => {
                 aria-label="play"
                 onClick={props.handlePlayPress}
                 size="large">
-                <PlayArrowIcon/>
+                <PlayArrow/>
             </IconButton>
             <IconButton
                 disabled={pauseDisabled()}
