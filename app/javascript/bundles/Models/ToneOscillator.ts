@@ -14,8 +14,6 @@ const ColorMap = {
     beat: '#500693'
   }
 }
-
-
 export interface ToneProps {
     context: BaseAudioContext,
     canvas: HTMLCanvasElement,

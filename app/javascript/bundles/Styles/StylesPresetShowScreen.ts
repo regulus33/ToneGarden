@@ -1,6 +1,6 @@
 import {makeStyles} from "@mui/styles";
 import Breakpoints from "./Breakpoints";
-import {BOTTOM_BAR_HEIGHT, NAVBAR_HEIGHT} from "../Models/Constants";
+import {BEAT_CANVAS_ID, BOTTOM_BAR_HEIGHT, NAVBAR_HEIGHT} from "../Models/Constants";
 import Colors from "./Colors";
 import {Theme} from "../State/ThemeContext";
 
@@ -76,6 +76,9 @@ const useStyles = makeStyles({
     position: 'relative',
     height: '22vh',
     display: (props.accordianOpen ? 'none' : 'inherit'),
+    [`& > canvas#${BEAT_CANVAS_ID}`]: {
+      background: 'transparent'
+    },
     '& > canvas': {
       backgroundColor: (props.theme === Theme.Dark ? Colors.backgroundGreyDark : Colors.backgroundGrey),
       height: '22vh',
@@ -85,7 +88,7 @@ const useStyles = makeStyles({
       left: 0,
       padding: '.5rem',
       width: '100%',
-    }
+    },
   })
 })
 
