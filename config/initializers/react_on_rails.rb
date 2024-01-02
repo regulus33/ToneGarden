@@ -42,4 +42,5 @@ ReactOnRails.configure do |config|
   # React components.
   #
   config.server_bundle_js_file = "whitenoise-bundle.js"
+  config.server_bundle_js_file = "applicaiton-bundle.js"
 end

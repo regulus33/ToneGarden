@@ -1,8 +1,10 @@
-body {
-  // TODO DELETE ME AND IMPORT FILES
-  background-color: green !important;
-}
+@import 'abstract/variables';
+@import 'abstract/functions';
+@import 'abstract/mixins';
 
-h1 {
-  color: red !important;
-}
+@import 'base/animations';
+@import 'base/typography';
+@import 'base/utilities';
+
+@import 'layouts/layout';
+@import 'components/page_title';

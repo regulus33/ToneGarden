@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  get '/', to: 'whitenoise#index'
-
+  get '/', to: 'initializers#index'
+  get '/signup', to: 'initializers#index'
   resources :users, only: :create do
     collection do
       post 'login'

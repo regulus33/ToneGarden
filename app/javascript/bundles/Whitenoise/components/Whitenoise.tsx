@@ -53,7 +53,7 @@ const playPink= ()=>{
 
 const Whitenoise: FunctionComponent<Props> = (props: Props) => {
   const [name, setName] = useState(props.name);
-  
+
   return (
     <div>
       <div>
@@ -68,6 +68,5 @@ const Whitenoise: FunctionComponent<Props> = (props: Props) => {
     </div>
   );
 }
-  
+
 export default Whitenoise;
- 

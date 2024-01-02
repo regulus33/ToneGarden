@@ -2,7 +2,7 @@
 
 # Application Controller
 class ApplicationController < ActionController::Base
-  before_action :authorize
+  # before_action :authorize
 
   # { Authorization: 'Bearer <token>' }
   def bearer_token
