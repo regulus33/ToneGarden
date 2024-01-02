@@ -1,3 +1,5 @@
+import Gradient from "./Gradient";
+
 const symbolMap = {
     'alpha': 'α',
     'beta': 'β',
@@ -70,6 +72,10 @@ export default class Preset {
         this.left = left;
         this.right = right;
         this.name = name;
+    }
+
+    gradient(){
+        return new Gradient(this.rangeString());
     }
 
     toJson(): object {

@@ -7,8 +7,8 @@ export default class Mixer {
     rightOscillator: Oscillator
 
     constructor(left: number, right: number) {
-        this.leftOscillator = new Oscillator(left, "sine");
-        this.rightOscillator = new Oscillator(right, "sine");
+        this.leftOscillator = new Oscillator(left, "sine1");
+        this.rightOscillator = new Oscillator(right, "sine1");
         this.panAndConnectOscillators();
     }
 
