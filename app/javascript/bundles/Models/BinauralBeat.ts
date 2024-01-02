@@ -1,7 +1,7 @@
 import {
     Noise,
-    Merge,
     getContext,
+    Filter,
 } from 'tone';
 // @ts-ignore
 import ToneOscillator from "./ToneOscillator";
@@ -37,6 +37,7 @@ export default class BinauralBeat {
 
     // For noise (optional feature)
     noiseSource: Noise
+    noiseFilter: Filter
 
     private static instance: BinauralBeat;
 
@@ -170,7 +171,22 @@ export default class BinauralBeat {
 
             this.gain.gain.linearRampToValueAtTime(this.volume, BinauralBeat.RAMPTIME)
 
+            if(useWhiteNoise) {
+                this.noiseSource = new Noise("pink").start();
+                const autoFilter = new Filter({
+                    type: "lowpass",
+                    frequency: 200,
+                    gain: 0,
+                }).toDestination()
+                this.noiseSource.connect(autoFilter);
+                this.noiseSource.start()
+            }
+
         } else if(this.beatPlayed) {
+            if(useWhiteNoise) {
+                this.noiseSource.stop(0)
+                this.noiseSource.dispose()
+            }
             this.playing = false
             this.gain.gain.linearRampToValueAtTime(0, BinauralBeat.RAMPTIME)
             this.beatOscillator.oscillator.stop(0)
