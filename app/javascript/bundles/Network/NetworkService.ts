@@ -29,7 +29,7 @@ export default class NetworkService {
     }
 
     public post(route: string, data: object) {
-        return this.makeRequest(route, 'put', data)
+        return this.makeRequest(route, 'post', data)
     }
 
     public put(route: string, data: object): Promise<object> {
