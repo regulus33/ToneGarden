@@ -24,6 +24,7 @@ import Routes from "../../Network/Routes";
 import FlashMessage, {FlashEnum} from "../../Models/FlashMessage";
 import {FlashMessageContext} from '../../State/FlashMessageContext'
 import ErrorScreen from "../../Screens/ErrorScreen";
+import {ThemeProvider} from "@material-ui/core";
 import NetworkService from "../../Network/NetworkService";
 
 const App: FunctionComponent = () => {
@@ -62,6 +63,8 @@ const App: FunctionComponent = () => {
     }, [])
 
     if (loaded) {
+        // @ts-ignore
+        // @ts-ignore
         return (
             <ErrorContext.Provider value={{error, setError}}>
                 <AuthContext.Provider value={{authenticated, setAuthenticated}}>
@@ -95,11 +98,11 @@ const App: FunctionComponent = () => {
                                                             <AuthenticatedRoute
                                                                 path={Routes.BinauralBeatEditScreen(':preset_id')}
                                                                 keyProp="preset_show"
-                                                                component={BinauralBeatEditScreen}
+                                                                component={BinauralBeatEditScreen as FunctionComponent}
                                                                 title="Beat Edit"/>
                                                             <AuthenticatedRoute path={Routes.BinauralBeatsCreateScreen}
                                                                                 keyProp="create"
-                                                                                component={BinauralBeatEditScreen}
+                                                                                component={BinauralBeatEditScreen as FunctionComponent}
                                                                                 title="Create a beat"/>
                                                         </Layout>
                                                     </Switch>
