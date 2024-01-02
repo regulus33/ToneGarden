@@ -2,12 +2,12 @@ import * as React from 'react'
 import {FunctionComponent, useEffect, useState} from 'react'
 import NetworkService from "../Network/NetworkService"
 import Routes from "../Network/Routes"
-import Grid from '@material-ui/core/Grid'
+import Grid from '@mui/material/Grid'
 import BinauralBeatsList from '../Models/BinauralBeatsList'
 import BinauralBeatStateCard from "../SharedComponents/BinauralBeatStateCard"
 import {useTitle} from "../State/TitleContext"
 import BinauralBeatState from "../Types/BinauralBeatTypes";
-import {Slide} from "@material-ui/core";
+import {Slide} from "@mui/material";
 import useStyles from "../Styles/StylesBinarualBeatsScreen";
 
 

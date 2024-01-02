@@ -1,10 +1,10 @@
 import * as React from "react"
 import {FunctionComponent} from "react"
-import Snackbar from '@material-ui/core/Snackbar';
+import Snackbar from '@mui/material/Snackbar';
 import FlashMessage, {FlashEnum} from "../Models/FlashMessage";
-import MuiAlert from "@material-ui/lab/Alert";
+import MuiAlert from "@mui/material/Alert";
 import {useFlashMessage} from "../State/FlashMessageContext";
-import {makeStyles} from "@material-ui/styles";
+import {makeStyles} from "@mui/styles";
 
 interface Props {
     flashMessage: FlashMessage,

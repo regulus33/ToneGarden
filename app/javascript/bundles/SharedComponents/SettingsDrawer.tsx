@@ -1,20 +1,20 @@
 import clsx from 'clsx'
-import {makeStyles} from '@material-ui/core/styles'
-import Drawer from '@material-ui/core/Drawer'
-import List from '@material-ui/core/List'
-import Switch from '@material-ui/core/Switch'
-import Divider from '@material-ui/core/Divider'
-import ListItem from '@material-ui/core/ListItem'
+import {makeStyles} from '@mui/styles'
+import Drawer from '@mui/material/Drawer'
+import List from '@mui/material/List'
+import Switch from '@mui/material/Switch'
+import Divider from '@mui/material/Divider'
+import ListItem from '@mui/material/ListItem'
 import * as React from 'react'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
 import {ChangeEvent, FunctionComponent, SyntheticEvent, useEffect, useState} from "react"
 import {Anchor} from "../Models/DrawerState"
 import {useSettingsDrawer} from "../State/SettingsDrawerContext"
-import {ExitToApp, InfoRounded} from "@material-ui/icons"
+import {ExitToApp, InfoRounded} from "@mui/icons-material"
 import LocalStorageService from "../Network/LocalStorageService"
 import {useAuthenticated} from "../State/AuthContext"
-import FormControlLabel from '@material-ui/core/FormControlLabel'
+import FormControlLabel from '@mui/material/FormControlLabel'
 import {useWhiteNoiseCtx} from "../State/UseWhiteNoiseContext"
 import NetworkService from "../Network/NetworkService"
 import Routes from "../Network/Routes"

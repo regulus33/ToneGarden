@@ -1,8 +1,8 @@
-import {makeStyles} from "@material-ui/styles";
+import {makeStyles} from "@mui/styles";
 import Colors from './Colors';
 import Breakpoints from "./Breakpoints";
 import FunctionName from "../Utils/FunctionName";
-import {hexToRgb} from "@material-ui/core";
+import {hexToRgb} from "@mui/material";
 
 const styles = {
     root: {

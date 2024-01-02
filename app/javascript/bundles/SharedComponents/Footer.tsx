@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {FunctionComponent, useEffect} from 'react'
-import BottomNavigation from '@material-ui/core/BottomNavigation';
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import BottomNavigation from '@mui/material/BottomNavigation';
+import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import useStyles from "../Styles/StylesFooter";
-import MusicNoteIcon from "@material-ui/icons/MusicNote";
-import AddIcon from "@material-ui/icons/Add";
+import MusicNoteIcon from "@mui/icons-material/MusicNote";
+import AddIcon from "@mui/icons-material/Add";
 import {useHistory} from 'react-router-dom'
 import FunctionName from "../Utils/FunctionName";
 

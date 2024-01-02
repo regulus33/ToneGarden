@@ -1,24 +1,24 @@
-import Card from "@material-ui/core/Card"
-import Typography from "@material-ui/core/Typography"
-import IconButton from "@material-ui/core/IconButton"
-import DeleteIcon from '@material-ui/icons/Delete'
-import PlayArrowIcon from "@material-ui/icons/PlayArrow"
+import Card from "@mui/material/Card"
+import Typography from "@mui/material/Typography"
+import IconButton from "@mui/material/IconButton"
+import DeleteIcon from '@mui/icons-material/Delete'
+import PlayArrowIcon from "@mui/icons-material/PlayArrow"
 import * as React from "react"
 import {Link} from "react-router-dom"
 import useStyles from '../Styles/StylesPresetCard'
 import BinauralBeatState from "../Types/BinauralBeatTypes"
 import {forwardRef, FunctionComponent} from "react";
 import FrequencyRangeHelper from "../Helpers/FrequencyRangeHelper"
-import Zoom from '@material-ui/core/Zoom'
-import {CardActions, CardHeader, ListItemIcon, ListItemText} from "@material-ui/core"
+import Zoom from '@mui/material/Zoom'
+import {CardActions, CardHeader, ListItemIcon, ListItemText} from "@mui/material"
 import DropDown from "./DropDown"
-import MenuItem from "@material-ui/core/MenuItem";
+import MenuItem from "@mui/material/MenuItem";
 import NetworkService from "../Network/NetworkService";
 import Routes from "../Network/Routes";
 import {useFlashMessage} from "../State/FlashMessageContext";
 import FlashMessage, {FlashEnum} from "../Models/FlashMessage";
 import BinauralBeatsList from "../Models/BinauralBeatsList";
-import {CreateSharp} from "@material-ui/icons";
+import {CreateSharp} from "@mui/icons-material";
 import {useHistory} from 'react-router-dom'
 import {chompString} from "../Helpers/ViewHelper";
 

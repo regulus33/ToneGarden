@@ -2,11 +2,11 @@ import * as React from 'react'
 import {FormEvent, FunctionComponent} from 'react'
 import PitchSlider from "./PitchSlider"
 import Gradient from "../Models/Gradient";
-import {Accordion, AccordionSummary, Typography} from "@material-ui/core"
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import {Accordion, AccordionSummary, Typography} from "@mui/material"
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import useStyles from "../Styles/StylesExtrasForm"
 import {useStyles as useStylesAuth} from "../Styles/StylesAuthForm"
-import TextField from "@material-ui/core/TextField";
+import TextField from "@mui/material/TextField";
 import FunctionName from "../Utils/FunctionName";
 import {useWhiteNoiseCtx} from "../State/UseWhiteNoiseContext";
 

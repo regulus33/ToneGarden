@@ -1,4 +1,4 @@
-import {makeStyles} from "@material-ui/core/styles";
+import {makeStyles} from "@mui/styles";
 import Gradient from "../Models/Gradient";
 import Breakpoints from "./Breakpoints";
 import {symbol} from "prop-types";
