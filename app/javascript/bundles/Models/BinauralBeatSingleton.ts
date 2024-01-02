@@ -1,41 +1,37 @@
 import {
-    Panner,
-    getDestination,
+    Oscillator, Panner
 } from 'tone';
 import BeatOscillator from './BeatOscillator';
 import CarrierOscillator from "./CarrierOscillator";
 import BinauralBeatState from "../Types/BinauralBeatStateType";
-import NoiseSource from "./NoiseSource";
+// import NoiseSource from "./NoiseSource";
 import FrequencyRangeHelper from "../Helpers/FrequencyRangeHelper";
 
-export default class BinauralBeat {
+export default class BinauralBeatSingleton {
 
     public static carrierMinMax = [-40, 40]
     public static beatMinMax = [0, 1500]
 
     beatOscillator: BeatOscillator
     carrierOscillator: CarrierOscillator
-    pannerLeft: Panner
-    pannerRight: Panner
-    noiseSource: NoiseSource
+    // noiseSource: NoiseSource
 
     volume: number = 0
     id: number
     name: string
     editable: boolean
-    playing: boolean
 
-    private static instance: BinauralBeat;
+    private static instance: BinauralBeatSingleton;
 
     private constructor(binauralBeatState?: BinauralBeatState) {
         if(binauralBeatState) {
-          this.hydrateFromState(binauralBeatState)
+          this.hydrateBeatState(binauralBeatState)
         }
 
         this.toState = this.toState.bind(this)
     }
 
-    hydrateFromState(binauralBeatState: BinauralBeatState) {
+    hydrateBeatState(binauralBeatState: BinauralBeatState) {
         const {
             id,
             volume,
@@ -44,15 +40,13 @@ export default class BinauralBeat {
             carrierOscillator,
             editable,
             name,
-            playing,
         } = binauralBeatState
 
         this.id = id
         this.editable = editable
         this.name = name
-        this.playing = playing
         this.volume = volume
-        this.noiseSource = new NoiseSource(noiseLevel)
+        // this.noiseSource = new NoiseSource(noiseLevel)
         this.beatOscillator = new BeatOscillator(beatOscillator)
         this.carrierOscillator = new CarrierOscillator(
             carrierOscillator,
@@ -61,14 +55,41 @@ export default class BinauralBeat {
 
     }
 
-    public static ins(binauralBeatState?: BinauralBeatState): BinauralBeat {
-        if (!BinauralBeat.instance) {
-            BinauralBeat.instance = new BinauralBeat(binauralBeatState)
+    set playing(playing: boolean) {
+        if(playing) {
+            const pannerCarrier = new Panner(1).toDestination();
+            this.carrierOscillator
+                .toneOscillator =  new Oscillator(
+                    this.carrierOscillator
+                        .frequency, 'sine')
+                .connect(pannerCarrier)
+                .start()
+
+            const pannerBeat = new Panner(-1).toDestination();
+            this.beatOscillator
+                .toneOscillator =  new Oscillator(
+                    this.beatOscillator.frequency, 'sine')
+                .connect(pannerBeat)
+                .start()
+
+        } else {
+            this.carrierOscillator.toneOscillator.mute = true
+            this.beatOscillator.toneOscillator.mute = true
+        }
+    }
+
+    public static ins(binauralBeatState?: BinauralBeatState): BinauralBeatSingleton {
+        if (!BinauralBeatSingleton.instance) {
+            if(binauralBeatState) {
+                BinauralBeatSingleton.instance = new BinauralBeatSingleton(binauralBeatState)
+            } else {
+                BinauralBeatSingleton.instance = new BinauralBeatSingleton()
+            }
         } else if(binauralBeatState) {
-            BinauralBeat.instance.hydrateFromState(binauralBeatState)
+            BinauralBeatSingleton.instance.hydrateBeatState(binauralBeatState)
         }
 
-        return BinauralBeat.instance;
+        return BinauralBeatSingleton.instance;
     }
 
     generateTitle(): string {
@@ -83,12 +104,11 @@ export default class BinauralBeat {
 
     toState(): BinauralBeatState {
         return {
-            playing: this.playing,
             beatOscillator: this.beatOscillator.frequency,
             carrierOscillator: this.carrierOscillator.offset,
             volume: this.volume,
             name: this.name,
-            noiseLevel: this.noiseSource.level,
+            noiseLevel: 0,
             id: this.id,
             editable: this.editable
         }
