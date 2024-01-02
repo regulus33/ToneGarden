@@ -2,7 +2,7 @@
 
 # Application Controller
 class ApplicationController < ActionController::Base
-  # before_action :authorize
+  before_action :authorize
 
   # { Authorization: 'Bearer <token>' }
   def bearer_token
@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   end
 
   def logged_in_user
-    dtk = JwtService.decode(bearer_token: bearer_token)
+    dtk = JwtService.decoded_token(bearer_token)
     return unless dtk
 
     user_id = dtk[0]['user_id']

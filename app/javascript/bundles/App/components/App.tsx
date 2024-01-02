@@ -1,14 +1,15 @@
 import * as React from 'react';
 import {FunctionComponent} from 'react'
 import {BrowserRouter, Switch, Route} from 'react-router-dom'
-import SignupScreen from "../../Signup/components/SignupScreen";
+import SignupScreen from "../../SignupScreen/components/SignupScreen";
+import PresetsScreen from "../../PresetsScreen/components/PresetsScreen";
 import Layout from './Layout';
 
 export interface Props {
     // Todo, maybe not needed
 }
 
-import { ThemeContext, Theme} from "../../state/ThemeContext";
+import { ThemeContext, Theme} from "../../State/ThemeContext";
 
 
 
@@ -21,6 +22,7 @@ const App: FunctionComponent<Props> = (props) => {
                 <Switch>
                     <Layout>
                         <Route exact path="/signup" component={SignupScreen} title="Signup"/>
+                        <Route exact path="/presets" component={PresetsScreen} title="Presets"/>
                     </Layout>
                 </Switch>
             </BrowserRouter>
