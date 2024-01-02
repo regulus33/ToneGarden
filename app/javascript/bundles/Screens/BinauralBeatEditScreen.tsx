@@ -17,7 +17,6 @@ import FrequencyRangeHelper from "../Helpers/FrequencyRangeHelper";
 import {getDestination} from "tone";
 import {useFlashMessage} from "../State/FlashMessageContext";
 import FlashMessage, {FlashEnum} from "../Models/FlashMessage";
-import {useError} from "../State/ErrorContext";
 
 interface PresetShowScreenProps {
     location: any

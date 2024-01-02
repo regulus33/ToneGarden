@@ -3,6 +3,9 @@ import {
     Panner,
     Noise,
     Gain,
+    Context,
+    setContext,
+    getContext
     // AutoFilter
 } from 'tone';
 import BeatOscillator from './BeatOscillator';
@@ -71,6 +74,10 @@ export default class BinauralBeatSingleton {
     }
 
     set playing(playing: boolean) {
+        const context = new Context({ latencyHint: "playback" });
+        // set this context as the global Context
+        setContext(context);
+        // the global context is gettable with Tone.getContext()
         if (playing) {
             const pannerCarrier = new Panner(1).toDestination();
             this.carrierOscillator
@@ -127,6 +134,8 @@ export default class BinauralBeatSingleton {
             this.noiseGain
                 .gain
                 .rampTo(this.noiseLevel,9)
+
+            console.log(getContext().latencyHint);
 
         } else {
             this.carrierOscillator
