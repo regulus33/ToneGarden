@@ -1,13 +1,13 @@
-# README
+# DOCS
 
-Tone Garden is a simple mobile and web app that generates binaural beats in realtime.
+Todo:
+Postgres costs money now, we need to figure out the add on:
+https://devcenter.heroku.com/articles/heroku-postgresql#understanding-heroku-postgres-plans
 
 ### Style Guide:
 
 **Font:** 
 * Poppins sans-serrif 
-
-##App Icon
 
 ![IMAGE](./public/app_icon.png)
 

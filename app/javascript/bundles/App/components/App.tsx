@@ -28,6 +28,7 @@ import ErrorScreen from "../../Screens/ErrorScreen";
 import {createTheme, ThemeProvider, useTheme} from '@mui/material/styles';
 import {darkThemeOptions, themeOptions} from "../../Styles/Theme";
 import BodyClassHelper from "../../Helpers/BodyClassHelper";
+import SeoPage from "../../Screens/SeoPage";
 
 const App: FunctionComponent = () => {
   const darkTheme = createTheme(darkThemeOptions)
@@ -114,6 +115,11 @@ const App: FunctionComponent = () => {
                                     keyProp="create"
                                     component={BinauralBeatEditScreen as FunctionComponent}
                                     title="Create a beat"/>
+                                  <AuthenticatedRoute
+                                      path={Routes.SeoScreen}
+                                      keyProp="welcome"
+                                      component={SeoPage as FunctionComponent}
+                                      title="Create a beat"/>
                                 </Layout>
                               </Switch>
                             </BrowserRouter>

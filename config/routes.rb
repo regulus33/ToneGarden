@@ -3,8 +3,8 @@ Rails.application.routes.draw do
   get '/service-worker.js', to: 'service_worker#service_worker'
   get '/offline.html', to:  'initializers#index' #serve the same old react application shell in offline mode
 
-  # Actual classic mvc pages
-  get '/welcome', to: 'seo#welcome'
+  # Actual classic mvc pages TODO: why? just use react
+  # get '/welcome', to: 'seo#welcome'
   get '/privacy-policy', to: 'seo#privacy_policy'
 
   # React Router
@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   get '/preset_show/:preset_id', to: 'initializers#index'
   get '/create', to: 'initializers#index'
   get '/whoops', to: 'initializers#index'
+  get '/welcome', to: 'initializers#index'
 
   # API urls must be prefixed api
   # TODO: DRY

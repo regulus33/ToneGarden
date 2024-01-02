@@ -6,7 +6,7 @@ const environment = require('./environment')
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
-const { devServer } = require('@rails/webpacker')
+const {devServer} = require('@rails/webpacker')
 
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
