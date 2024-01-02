@@ -6,7 +6,6 @@ import {
     Context,
     setContext,
     getContext, BaseContext
-    // AutoFilter
 } from 'tone';
 import BeatOscillator from './BeatOscillator';
 import CarrierOscillator from "./CarrierOscillator";
@@ -17,7 +16,7 @@ import BetterOscillatorNode from "./BetterOscillatorNode";
 import OscillatorProxy from "./OscillatorProxy";
 import MergerProxy from "./MergerProxy";
 
-export default class BinauralBeatSingleton {
+export default class BinauralBeat {
 
     public static carrierMinMax = [-40, 40]
     public static beatMinMax = [0, 1500]
@@ -32,11 +31,12 @@ export default class BinauralBeatSingleton {
     editable: boolean
     description: string
     noiseLevel: number
+    isPlaying: boolean
 
-    private static instance: BinauralBeatSingleton;
+    private static instance: BinauralBeat;
 
     public static get inMemory() {
-        return BinauralBeatSingleton.instance != null
+        return BinauralBeat.instance != null
     }
 
     public static RAMPTIME = 1
@@ -78,16 +78,17 @@ export default class BinauralBeatSingleton {
     }
 
      playing(playing: boolean, useWhiteNoise: boolean, useAudioWorklet: boolean) {
+        this.isPlaying = playing
         const context = getContext()
+
         if (playing) {
             if(useAudioWorklet) {
                 context.rawContext.audioWorklet.addModule('/better-oscillator.js').then(() => {
                     this.setupAndPlayAudio(context, useWhiteNoise, useAudioWorklet)
-                });
+                })
             } else {
                 this.setupAndPlayAudio(context, useWhiteNoise, useAudioWorklet)
             }
-
 
         } else {
             this.carrierOscillator
@@ -95,7 +96,7 @@ export default class BinauralBeatSingleton {
                 .volume
                 .linearRampTo(
                     -Infinity,
-                    BinauralBeatSingleton.RAMPTIME
+                    BinauralBeat.RAMPTIME
                 )
 
             this.beatOscillator
@@ -103,7 +104,7 @@ export default class BinauralBeatSingleton {
                 .volume
                 .linearRampTo(
                     -Infinity,
-                    BinauralBeatSingleton.RAMPTIME
+                    BinauralBeat.RAMPTIME
                 )
 
             // Wait for fade out of audio then dispose
@@ -111,7 +112,7 @@ export default class BinauralBeatSingleton {
                 this.carrierOscillator.oscillatorProxy.stop()
                 this.beatOscillator.oscillatorProxy.stop()
                 context.dispose()
-            }, BinauralBeatSingleton.RAMPTIME * 1000)
+            }, BinauralBeat.RAMPTIME * 1000)
         }
     }
 
@@ -133,7 +134,7 @@ export default class BinauralBeatSingleton {
             .volume
             .linearRampTo(
                 this.initialVolume,
-                BinauralBeatSingleton.RAMPTIME
+                BinauralBeat.RAMPTIME
             )
 
         this.beatOscillator
@@ -151,7 +152,7 @@ export default class BinauralBeatSingleton {
             .volume
             .linearRampTo(
                 this.initialVolume,
-                BinauralBeatSingleton.RAMPTIME
+                BinauralBeat.RAMPTIME
             )
 
         if(useWhiteNoise) {
@@ -164,23 +165,23 @@ export default class BinauralBeatSingleton {
 
             this.noiseSource.volume.linearRampTo(
                 this.noiseLevel,
-                BinauralBeatSingleton.RAMPTIME
+                BinauralBeat.RAMPTIME
             )
         }
     }
 
-    public static ins(binauralBeatState?: BinauralBeatState): BinauralBeatSingleton {
-        if (!BinauralBeatSingleton.instance) {
+    public static ins(binauralBeatState?: BinauralBeatState): BinauralBeat {
+        if (!BinauralBeat.instance) {
             if (binauralBeatState) {
-                BinauralBeatSingleton.instance = new BinauralBeatSingleton(binauralBeatState)
+                BinauralBeat.instance = new BinauralBeat(binauralBeatState)
             } else {
-                BinauralBeatSingleton.instance = new BinauralBeatSingleton()
+                BinauralBeat.instance = new BinauralBeat()
             }
         } else if (binauralBeatState) {
-            BinauralBeatSingleton.instance.hydrateBeatState(binauralBeatState)
+            BinauralBeat.instance.hydrateBeatState(binauralBeatState)
         }
 
-        return BinauralBeatSingleton.instance;
+        return BinauralBeat.instance;
     }
 
     generateTitle(): string {

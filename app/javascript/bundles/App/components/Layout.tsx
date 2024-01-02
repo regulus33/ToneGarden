@@ -34,7 +34,7 @@ const Content: FunctionComponent<ContentProps> = (props) => {
     const classes = useStyles()
     const { drawerState, setDrawerState } = useSettingsDrawer()
     const { flashMessage, setFlashMessage } = useFlashMessage()
-    const { setAuthenticated } = useAuthenticated()
+    const { authenticated, setAuthenticated } = useAuthenticated()
     const { setError } = useError()
     const history = useHistory()
 
@@ -83,13 +83,13 @@ const Content: FunctionComponent<ContentProps> = (props) => {
 
     return (
         <div onKeyPress={handleInputKeyUp} tabIndex={0} className={classes.mainContainer}>
-           <Header toggleSettingsDrawer={toggleSettingsDrawer} title={title} gradient={gradient}/>
+           <Header authenticated={authenticated} toggleSettingsDrawer={toggleSettingsDrawer} title={title} gradient={gradient}/>
             {
                 props.children
             }
             <SettingsDrawer toggleSettingsDrawer={toggleSettingsDrawer}/>
                 <Flash flashMessage={flashMessage} />
-            <Footer/>
+            { authenticated ? <Footer/> : null }
         </div>
     )
 }
