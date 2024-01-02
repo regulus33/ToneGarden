@@ -59,6 +59,19 @@ const useStyles = makeStyles({
     },
     saveButtonContainer: {
         marginRight: '1.57rem'
+    },
+    canvasContainer: {
+        padding: '0 .7rem',
+        position: 'relative',
+        height: '22vh',
+        '& > canvas': {
+            height: '22vh',
+            width: 'calc(100% - 24px)',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            padding: '1.57em'
+        }
     }
 })
 

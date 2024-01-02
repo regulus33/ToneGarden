@@ -40,7 +40,6 @@ const ExtrasForm: FunctionComponent<Props> = (props) => {
         )
     }
 
-
     return (
         <div className={classes.root}>
             <Accordion className={classes.accordian}>
@@ -67,8 +66,9 @@ const ExtrasForm: FunctionComponent<Props> = (props) => {
                 </div>
                 <div className={classes.largeSlider}>
                     <PitchSlider
-                        minMax={[-80, 0]}
+                        minMax={[0, 1]}
                         label={'Volume'}
+                        step={0.001}
                         default={props.volume}
                         handleSliderChangeCallback={props.onVolumeChange}
                     />

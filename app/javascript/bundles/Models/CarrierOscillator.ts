@@ -1,35 +1,54 @@
-import {getContext, Oscillator} from "tone";
-import BeatOscillator from "./BeatOscillator";
-import OscillatorProxy from "./OscillatorProxy";
-import {AnyAudioContext} from "tone/build/esm/core/context/AudioContext";
+import ToneOscillator, {ToneProps} from "./ToneOscillator";
 import BinauralBeat from "./BinauralBeat";
 
-class CarrierOscillator {
+interface CarrierProps extends ToneProps {
+    offset: number,
+    parent?: ToneOscillator
+}
+
+class CarrierOscillator extends ToneOscillator {
     offset: number
-    oscillatorProxy: OscillatorProxy | Oscillator
-    beatOscillator: BeatOscillator
+    parent: ToneOscillator
 
-    constructor(offset: number, beatOscillator: BeatOscillator) {
+    constructor(props: CarrierProps) {
+        super(props)
+        this.offset = props.offset
+    }
+
+    validate(props: CarrierProps) {
+        if (props.offset === undefined) {
+            throw 'Oscillator cannot be carrier with no offset'
+        } else if (Math.abs(props.offset) > 40) {
+            throw 'Carrier offset too high: ' + props.offset
+        }
+    }
+
+    // Returns parent freq plus my offset
+    getFrequency(): number {
+        if (!!this.parent) return this.parent.frequency + this.offset
+        return this.frequency + this.offset
+    }
+
+    setParent(parent: ToneOscillator) {
+        this.parent = parent
+    }
+
+    setOffsetToPlay(offset: number) {
+        // Make sure we save offset in mem (for persistance later)
         this.offset = offset
-        this.beatOscillator = beatOscillator
-        // this is just a placeholder, needed for /create beat
-        this.oscillatorProxy = new OscillatorProxy()
+        if(BinauralBeat.ins().playing) {
+            this.oscillator.frequency.setValueAtTime(this.getFrequency(), 0)
+        }
     }
 
-    get frequency(): number {
-        return this.beatOscillator.frequency + this.offset
+    setFrequencyToPlay(value: number) {
+        return console.warn('Error: this is a carrier oscillator, only setOffsetToPlay allowed here')
     }
 
-    setFrequencyFromBase(newValue: number) {
-        const newValueSet = newValue + this.offset
-        console.log(newValueSet)
-        if(BinauralBeat.ins().isPlaying) {
-            this.oscillatorProxy
-                .frequency
-                .rampTo(
-                    newValueSet,
-                    0.5
-                )
+    // Parent calls this when he changes freq
+    public refreshFrequency() {
+        if(BinauralBeat.ins().playing) {
+            this.oscillator.frequency.setValueAtTime(this.getFrequency(), 0)
         }
     }
 

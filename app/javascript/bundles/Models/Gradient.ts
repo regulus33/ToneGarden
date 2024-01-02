@@ -46,6 +46,38 @@ export default class Gradient {
         }
     }
 
+    static beatColor(rangeString: string): string {
+        switch(rangeString) {
+            case 'delta':
+                return '#2605ff'
+            case 'theta':
+                return '#2605ff'
+            case 'alpha':
+                return '#2605ff'
+            case 'beta':
+                return '#2605ff'
+            case 'gamma':
+                return '#2605ff'
+        }
+        return 'red'
+    }
+
+    static carrierColor(rangeString: string): string {
+        switch(rangeString) {
+            case 'delta':
+                return '#ff72fc'
+            case 'theta':
+                return '#4a0050'
+            case 'alpha':
+                return '#3808d5'
+            case 'beta':
+                return '#5e00ff'
+            case 'gamma':
+                return '#a600ff'
+        }
+        return 'green'
+    }
+
     private static hexToRgb(hex) {
         var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
         return result ? {

@@ -1,0 +1,36 @@
+<div>
+    <button id="play">Play</button>
+</div>
+
+
+<script>
+
+    window.addEventListener('load', function () {
+        const play = document.getElementById('play')
+
+        play.addEventListener('click', function () {
+            alert('clicked')
+            const context = new AudioContext()
+            const l_osc = context.createOscillator()
+            const r_osc = context.createOscillator()
+            l_osc.type = 'sine'
+            r_osc.type = 'sine'
+            l_osc.frequency.value = 200
+            r_osc.frequency.value = 500
+
+            l_osc.volume.value = 0
+
+
+            const merger = context.createChannelMerger(2)
+            merger.channelInterpretation = "discrete";
+            l_osc.connect(merger, 0, 0);
+            r_osc.connect(merger, 0, 1);
+            merger.connect(context.destination);
+
+            l_osc.start();
+            r_osc.start();
+
+
+        })
+    })
+</script>

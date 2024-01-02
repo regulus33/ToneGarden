@@ -1,37 +1,41 @@
 import {
-    Oscillator,
     Noise,
-    Gain,
     Merge,
-    Context,
-    setContext,
-    getContext, BaseContext
+    getContext,
 } from 'tone';
-import BeatOscillator from './BeatOscillator';
+import ToneOscillator from "./ToneOscillator";
 import CarrierOscillator from "./CarrierOscillator";
 import BinauralBeatState from "../Types/BinauralBeatTypes";
 import FrequencyRangeHelper from "../Helpers/FrequencyRangeHelper";
-import FunctionName from "../Utils/FunctionName";
-import BetterOscillatorNode from "./BetterOscillatorNode";
-import OscillatorProxy from "./OscillatorProxy";
-import MergerProxy from "./MergerProxy";
+import Gradient from "./Gradient";
+import CanvasColorHelper from "../Helpers/CanvasColorHellper";
 
 export default class BinauralBeat {
-
     public static carrierMinMax = [-40, 40]
     public static beatMinMax = [0, 1500]
 
-    beatOscillator: BeatOscillator
+    beatOscillator: ToneOscillator
     carrierOscillator: CarrierOscillator
-    noiseSource: Noise
-    merge: Merge | ChannelMergerNode
-    volume: number = 0
+
+    volume: number
     id: number
     name: string
     editable: boolean
     description: string
     noiseLevel: number
-    isPlaying: boolean
+    playing: boolean
+
+    //New ToneOscillator stuff
+    context: AudioContext
+    channelMerger: ChannelMergerNode
+    gain: GainNode
+    carrierCanvas: HTMLCanvasElement
+    beatCanvas: HTMLCanvasElement
+    canvasWidth: number
+    canvasHeight: number
+
+    // For noise (optional feature)
+    noiseSource: Noise
 
     private static instance: BinauralBeat;
 
@@ -61,112 +65,120 @@ export default class BinauralBeat {
             description,
         } = binauralBeatState
 
+        // From BinauralBeats table
         this.id = id
         this.editable = editable
         this.name = name
         this.volume = volume
         this.description = description
         this.noiseLevel = noiseLevel
-        this.beatOscillator = new BeatOscillator(
-            beatOscillator,
-        )
-        this.carrierOscillator = new CarrierOscillator(
-            carrierOscillator,
-            this.beatOscillator
+
+        // For audio api
+        this.context = this.context || new AudioContext()
+
+        // Visualization
+        this.beatCanvas = document.getElementById('beatCanvas') as HTMLCanvasElement
+        this.carrierCanvas = document.getElementById('carrierCanvas') as HTMLCanvasElement
+        this.canvasWidth = this.carrierCanvas.width // we don't care which one, they are the same size
+        this.canvasHeight = this.carrierCanvas.height
+
+
+        const baseProps = {
+            context: this.context,
+            canvasHeight: this.canvasHeight,
+            canvasWidth: this.canvasWidth,
+        }
+
+        const pair = CanvasColorHelper.generateColorPair(carrierOscillator)
+
+        this.carrierOscillator = new CarrierOscillator({
+                ...baseProps,
+                canvas: this.carrierCanvas,
+                initialColor: pair.carrierColor,
+                type: 'carrier',
+                frequency: beatOscillator,
+                offset: carrierOscillator,
+            }
         )
 
+        this.beatOscillator = new ToneOscillator({
+                ...baseProps,
+                canvas: this.beatCanvas,
+                initialColor: pair.beatColor,
+                type: 'beat',
+                frequency: beatOscillator,
+                childOscillator: this.carrierOscillator
+            }
+        )
+
+        // This is important!
+        this.carrierOscillator.setParent(this.beatOscillator)
     }
 
-     playing(playing: boolean, useWhiteNoise: boolean, useAudioWorklet: boolean) {
-        this.isPlaying = playing
+    setPlayingState(playing: boolean, useWhiteNoise: boolean, useAudioWorklet: boolean) {
+        this.playing = playing
         const context = getContext()
 
         if (playing) {
-            if(useAudioWorklet) {
-                context.rawContext.audioWorklet.addModule('/better-oscillator.js').then(() => {
-                    this.setupAndPlayAudio(context, useWhiteNoise, useAudioWorklet)
-                })
-            } else {
-                this.setupAndPlayAudio(context, useWhiteNoise, useAudioWorklet)
-            }
+            this.playing = playing
+            // Create analyzers
+            this.carrierOscillator.analyser = this.context.createAnalyser()
+            this.beatOscillator.analyser = this.context.createAnalyser()
+
+            // Create web audio oscillator instances
+            this.carrierOscillator.oscillator = this.context.createOscillator()
+            this.beatOscillator.oscillator = this.context.createOscillator()
+
+
+            //Setup visual graph
+            this.carrierOscillator.oscillator.connect(this.carrierOscillator.analyser)
+            this.beatOscillator.oscillator.connect(this.beatOscillator.analyser)
+
+            // Set waveform
+            this.beatOscillator.oscillator.type = 'sine'
+            this.carrierOscillator.oscillator.type = 'sine'
+
+            // Set initial frequency of oscillators
+            this.beatOscillator.oscillator.frequency.value = this.beatOscillator.getFrequency()
+            this.carrierOscillator.oscillator.frequency.value = this.carrierOscillator.getFrequency()
+
+            // Set volume to 0 (no pops this way)
+            this.gain = this.context.createGain()
+            // this.gain.gain.value = 0
+
+            // Create the stereo channel merger
+            this.channelMerger = this.context.createChannelMerger(2)
+            this.channelMerger.channelInterpretation = "discrete"
+
+            // Send each oscillator to left or right speaker
+            this.carrierOscillator.oscillator.connect(this.channelMerger, 0, 0)
+            this.beatOscillator.oscillator.connect(this.channelMerger, 0, 1)
+
+
+            this.channelMerger.connect(this.gain)
+            this.gain.connect(this.context.destination)
+
+            // Start the actual sound
+            this.carrierOscillator.oscillator.start()
+            this.beatOscillator.oscillator.start()
+
+            // Visualize the sound for each osc
+            this.carrierOscillator.animate()
+            this.beatOscillator.animate()
+
+            this.gain.gain.linearRampToValueAtTime(this.volume, BinauralBeat.RAMPTIME)
 
         } else {
-            this.carrierOscillator
-                .oscillatorProxy
-                .volume
-                .linearRampTo(
-                    -Infinity,
-                    BinauralBeat.RAMPTIME
-                )
-
-            this.beatOscillator
-                .oscillatorProxy
-                .volume
-                .linearRampTo(
-                    -Infinity,
-                    BinauralBeat.RAMPTIME
-                )
-
-            // Wait for fade out of audio then dispose
-            setTimeout(() =>{
-                this.carrierOscillator.oscillatorProxy.stop()
-                this.beatOscillator.oscillatorProxy.stop()
-                context.dispose()
-            }, BinauralBeat.RAMPTIME * 1000)
-        }
-    }
-
-    setupAndPlayAudio(context: BaseContext, useWhiteNoise: boolean, useAudioWorklet: boolean) {
-        this.merge = new MergerProxy(context, useAudioWorklet).sourceMerger
-
-        this.carrierOscillator
-            .oscillatorProxy = new OscillatorProxy({
-            useAudioWorklet: useAudioWorklet,
-            frequency: this.carrierOscillator.frequency,
-            volume: -999,
-            context: context.rawContext
-        })
-            .connect(this.merge, 0, 0)
-            .start()
-
-        this.carrierOscillator
-            .oscillatorProxy
-            .volume
-            .linearRampTo(
-                this.initialVolume,
-                BinauralBeat.RAMPTIME
-            )
-
-        this.beatOscillator
-            .oscillatorProxy = new OscillatorProxy({
-            useAudioWorklet: useAudioWorklet,
-            frequency: this.beatOscillator.frequency,
-            volume: -999,
-            context: context.rawContext
-        })
-            .connect(this.merge, 0, 1)
-            .start()
-
-        this.beatOscillator
-            .oscillatorProxy
-            .volume
-            .linearRampTo(
-                this.initialVolume,
-                BinauralBeat.RAMPTIME
-            )
-
-        if(useWhiteNoise) {
-            this.noiseSource = new Noise({
-                type: 'pink',
-                volume: -Infinity
-            }).toDestination().start()
-
-            console.log(`[${FunctionName()}]: value of noiseLevel: ${Number(this.noiseLevel)}`)
-
-            this.noiseSource.volume.linearRampTo(
-                this.noiseLevel,
-                BinauralBeat.RAMPTIME
-            )
+            this.playing = false
+            this.gain.gain.linearRampToValueAtTime(0, BinauralBeat.RAMPTIME)
+            this.beatOscillator.oscillator.stop(0)
+            this.carrierOscillator.oscillator.stop(0)
+            this.gain.disconnect()
+            this.channelMerger.disconnect()
+            this.beatOscillator.oscillator.disconnect()
+            this.carrierOscillator.oscillator.disconnect()
+            this.beatOscillator.analyser.disconnect()
+            this.carrierOscillator.analyser.disconnect()
         }
     }
 
@@ -184,7 +196,7 @@ export default class BinauralBeat {
         return BinauralBeat.instance;
     }
 
-    generateTitle(): string {
+    public generateTitle(): string {
         const symbol = FrequencyRangeHelper.rangeSymbol(
             this.carrierOscillator.offset
         )
@@ -194,7 +206,7 @@ export default class BinauralBeat {
         return `<span style="color:#ffad00">${symbol} ${freqName}</span> ${this.name}`
     }
 
-    toState(): BinauralBeatState {
+    public toState(): BinauralBeatState {
         return {
             beatOscillator: this.beatOscillator.frequency,
             carrierOscillator: this.carrierOscillator.offset,
@@ -204,14 +216,6 @@ export default class BinauralBeat {
             id: this.id,
             editable: this.editable,
             description: this.description,
-        }
-    }
-
-    get initialVolume(): number {
-        if(this.volume <= -20) {
-            return this.volume
-        } else {
-            return -20
         }
     }
 }

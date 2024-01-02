@@ -10,4 +10,5 @@ export const GradientContext = createContext<GradientContextType>({
     gradient: new Gradient('alpha'),
     setGradient: gradient => {}
 });
+
 export const useGradient = () => useContext(GradientContext)
